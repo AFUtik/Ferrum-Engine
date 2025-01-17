@@ -11,6 +11,7 @@ vcpkg.json
 build/
 vcpkg_installed/
 .vscode/
+src/imgui/
 
 # User-specific files
 *.rsuser

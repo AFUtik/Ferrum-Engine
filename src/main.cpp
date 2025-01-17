@@ -3,17 +3,27 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>	
 
+#include "world/Chunks.hpp"
+#include "world/Chunk2d.hpp"
+
 #include "window/Window.hpp"
 #include "window/Events.hpp"
 
+#include "graphics/Renderer.hpp"
 #include "graphics/Camera.hpp"
 #include "graphics/Mesh.hpp"
 #include "graphics/Texture.hpp"
 #include "graphics/Shader.hpp"
+#include "graphics/Texture_loader.hpp"
 
 #include "imgui/imgui.h"
 #include "imgui/imgui_impl_glfw.h"
 #include "imgui/imgui_impl_opengl3.h"
+
+#include "window/Context.hpp"
+
+#include "glm/glm.hpp"
+#include "glm/ext.hpp"
 
 int WIDTH = 1920;
 int HEIGHT = 1080;
@@ -22,20 +32,27 @@ int main(int, char**){
     Window::init(WIDTH, HEIGHT, "Test Window");
 	Events::init();
 
-    //Shader* shader = load_shader("res/shaders/core.vert", "res/shaders/core.frag");
-	//if (shader == nullptr) {
-	//	std::cerr << "failed to load shader" << std::endl;
-	//	Window::terminate();
-	//	return 1;
-	//}
+    Shader* shader = load_shader("res/shaders/core.vert", "res/shaders/core.frag");
+	if (shader == nullptr) {
+		std::cerr << "failed to load shader" << std::endl;
+		Window::terminate();
+		return 1;
+	}
 
-	//Texture* texture = load_texture("E:/Cpp/VoxelEngine/res/images/block.png");
-	//if (texture == nullptr) {
-	//	std::cerr << "failed to load texture" << std::endl;
-	//	delete texture;
-	//	Window::terminate();
-	//	return 1;
-	//}
+	Texture* texture = load_texture("E:/Cpp/FerrumEngine/resources/block.png");
+	if (texture == nullptr) {
+		std::cerr << "failed to load texture" << std::endl;
+		delete texture;
+		Window::terminate();
+		return 1;
+	}
+
+	Renderer renderer(1024 * 1024 * 8);
+	Chunks* chunks = new Chunks(3, 3);
+	
+	for (size_t i = 0; i < chunks->volume; ++i) {
+		renderer.render_chunk(chunks->chunks[i], (const Chunk2d**) chunks->chunks);
+	}
 
     glClearColor(0.6f, 0.62f, 0.65f, 1);
 
@@ -52,16 +69,81 @@ int main(int, char**){
 	ImGui_ImplOpenGL3_Init("#version 330");
 
     Camera* camera = new Camera(glm::vec3(0, 0, 1), glm::radians(90.0f));
+    Context* context = new Context();
 
-	float lastTime = glfwGetTime();
-	float delta = 0.0f;
-
-    float camX = 0.0f;
-	float camY = 0.0f;
-
+	float speed = 25;
 	while (!Window::isShouldClose()) {
-        glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+        double currentTime = glfwGetTime();
+        context->delta_time = currentTime - context->last_ticks;
+        context->last_ticks = currentTime;
 
+	    
+
+        //float H = 1.0f;
+        //context->time_accu += context->delta_time;
+		if (Events::jpressed(GLFW_KEY_ESCAPE)) {
+			Window::setShouldClose(true);
+		}
+		if (Events::jpressed(GLFW_KEY_TAB)) {
+			Events::toggle_cursor();
+		}
+
+		if (Events::pressed(GLFW_KEY_W)) {
+			camera->position += camera->z_dir * context->delta_time * speed;
+		}
+		if (Events::pressed(GLFW_KEY_S)) {
+			camera->position -= camera->z_dir * context->delta_time * speed;
+		}
+		if (Events::pressed(GLFW_KEY_D)) {
+			camera->position += camera->x_dir * context->delta_time * speed;
+		}
+		if (Events::pressed(GLFW_KEY_A)) {
+			camera->position -= camera->x_dir * context->delta_time * speed;
+		}
+		if (Events::pressed(GLFW_KEY_SPACE)) {
+			camera->y_dir = glm::vec3(0, 1, 0);
+
+			camera->position += camera->y_dir * context->delta_time * speed;
+		}
+		if (Events::pressed(GLFW_KEY_LEFT_SHIFT)) {
+			camera->y_dir = glm::vec3(0, 1, 0);
+
+			camera->position -= camera->y_dir * context->delta_time * speed;
+		}
+		if (Events::pressed(GLFW_KEY_0)) {
+			camera->set_xyz(0, 0, 1);
+		}
+
+		if (Events::_cursor_locked) {
+			camera->cur_y += -Events::deltaY / Window::height * 2;
+			camera->cur_x += -Events::deltaX / Window::height * 2;
+
+			if (camera->cur_y < -radians(89.0f)) {
+				camera->cur_y = -radians(89.0f);
+			}
+			if (camera->cur_y > radians(89.0f)) {
+				camera->cur_y = radians(89.0f);
+			}
+
+			camera->rotation = mat4(1.0f);
+			camera->rotate(camera->cur_x, camera->cur_y, 0);
+		}
+
+		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+		shader->use();
+		shader->uniformMatrix("projview", camera->getProjection() * camera->getView());
+		texture->bind();
+
+		glm::mat4 model(1.0f);
+		for (size_t i = 0; i < chunks->volume; i++) {
+			Chunk2d* chunk = chunks->chunks[i];
+			Mesh* mesh = chunk->mesh;
+			model = glm::translate(mat4(1.0f), vec3(chunk->x * CHUNK_W + 0.5f, chunk->y * CHUNK_H + 0.5f, 0.0f));
+			shader->uniformMatrix("model", model);
+			mesh->draw(GL_TRIANGLES);
+		}
+            // IMGUI WINDOW // 
         ImGui_ImplOpenGL3_NewFrame();
 		ImGui_ImplGlfw_NewFrame();
 		ImGui::NewFrame();
@@ -73,6 +155,9 @@ int main(int, char**){
         Window::swapBuffers();
 		Events::pullEvents();
     }
+
+    delete camera;
+    delete context;
 
     Window::terminate();
     return 0;

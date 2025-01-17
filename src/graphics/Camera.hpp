@@ -10,6 +10,9 @@ public:
 	vec3 x_dir;
 	vec3 y_dir;
 	vec3 z_dir;
+	float cur_x = 0.0f;
+	float cur_y = 0.0f;
+	float cur_z = 0.0f;
 
 	vec3 position;
 	float fov;

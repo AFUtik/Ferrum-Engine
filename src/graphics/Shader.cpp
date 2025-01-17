@@ -14,7 +14,7 @@
 // Origin -> https://github.com/MihailRis/VoxelEngine-Cpp/blob/main/src/graphics/core/Shader.cpp
 
 
-const static std::string ABSOLUTE_PATH = "E:/Cpp/EnigmaEngine/";
+const static std::string ABSOLUTE_PATH = "E:/Cpp/FerrumEngine/";
 
 Shader::Shader(unsigned int id) : id(id) {
 }

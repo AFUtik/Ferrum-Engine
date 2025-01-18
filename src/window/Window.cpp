@@ -4,6 +4,8 @@
 #include <GLFW/glfw3.h>
 
 #include "Window.hpp"
+#include "../graphics/Texture.hpp"
+#include "../graphics/Texture_loader.hpp"
 
 GLFWwindow* Window::window;
 int Window::width = 0;
@@ -16,12 +18,23 @@ int Window::init(int width, int height, const char* title) {
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 	glfwWindowHint(GLFW_RESIZABLE, GL_TRUE);
 
+	iconTexture = load_texture("E:/Cpp/FerrumEngine/resources/icon.png");
+	iconTexture->flipImageVertically();
+
 	window = glfwCreateWindow(width, height, "simple window", nullptr, nullptr);
 	if (window == nullptr) {
 		std::cout << "Failed to create GLFW Window" << std::endl;
 		glfwTerminate();
 		return -1;
 	}
+	
+	GLFWimage icon;
+	icon.width = iconTexture->width;
+	icon.height = iconTexture->height;
+	icon.pixels = iconTexture->image_data;  // Используйте загруженные пиксели
+
+	glfwSetWindowIcon(window, 1, &icon);
+
 	glfwMakeContextCurrent(window);
 	glewExperimental = GL_TRUE;
 	if (glewInit() != GLEW_OK) {
@@ -41,6 +54,7 @@ void Window::setCursorMode(int mode) {
 
 void Window::terminate() {
 	glfwTerminate();
+	delete iconTexture;
 }
 
 bool Window::isShouldClose() {

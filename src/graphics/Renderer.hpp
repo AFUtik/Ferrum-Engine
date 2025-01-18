@@ -12,7 +12,7 @@ public:
 	Renderer(size_t capacity);
 	~Renderer();
 
-	void render_chunk(Chunk2d* chunk, const Chunk2d** chunks); // Generates Mesh and sets it in chunk class. //
+	void render_chunk2d(Chunk2d* chunk, const Chunk2d** chunks); // Generates Mesh and sets it in chunk class. //
 };
 
 #endif 

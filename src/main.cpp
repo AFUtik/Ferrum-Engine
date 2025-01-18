@@ -52,7 +52,7 @@ int main(int, char**){
 	Chunks* chunks = new Chunks(5, 5);
 	
 	for (size_t i = 0; i < chunks->volume; ++i) {
-		renderer.render_chunk(chunks->chunks[i], (const Chunk2d**) chunks->chunks);
+		renderer.render_chunk2d(chunks->chunks[i], (const Chunk2d**) chunks->chunks);
 	}
 
     glClearColor(0.6f, 0.62f, 0.65f, 1);
@@ -73,7 +73,7 @@ int main(int, char**){
 	camera->aspect = (float)Window::width / (float)Window::height;
 	camera->zNear = 0.1f;
 	camera->zFar = 10.0f;
-
+	camera->scale = 2.0f;
 
     Context* context = new Context();
 
@@ -91,12 +91,11 @@ int main(int, char**){
 		if (Events::jpressed(GLFW_KEY_TAB)) {
 			Events::toggle_cursor();
 		}
-
 		if (Events::pressed(GLFW_KEY_W)) {
-			camera->position += camera->z_dir * context->delta_time * speed;
+			camera->position += camera->y_dir * context->delta_time * speed;
 		}
 		if (Events::pressed(GLFW_KEY_S)) {
-			camera->position -= camera->z_dir * context->delta_time * speed;
+			camera->position -= camera->y_dir * context->delta_time * speed;
 		}
 		if (Events::pressed(GLFW_KEY_D)) {
 			camera->position += camera->x_dir * context->delta_time * speed;

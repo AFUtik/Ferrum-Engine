@@ -20,12 +20,16 @@ public:
 	float zNear;
 	float zFar;
 
+	vec3 *followed; // Position vec3 of followed entity/object //
 	vec3 position;
 	mat4 rotation;
 	Camera(vec3 position, float fov);
 
+	void update();
 	void set_xyz(float x, float y, float z);
 	void rotate(float x, float y, float z);
+	void follow(vec3 &pos);
+	void unfollow();
 
 	mat4 getOrthoProjview();
 	mat4 getPerspectiveProjview();

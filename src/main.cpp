@@ -3,12 +3,15 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>	
 
+#include "world/Player.hpp"
 #include "world/Tile.hpp"
 #include "world/Chunks.hpp"
 #include "world/Chunk2d.hpp"
 
 #include "window/Window.hpp"
 #include "window/Events.hpp"
+
+#include "physics/RigidBody.hpp"
 
 #include "graphics/Renderer.hpp"
 #include "graphics/Camera.hpp"
@@ -75,6 +78,12 @@ int main(int, char**){
 	camera->zFar = 10.0f;
 	camera->scale = 2.0f;
 
+	Player* player = new Player();
+	RigidBody* body = new RigidBody(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec2(25.0f, 25.0f), 50.0f);
+	player->rigid_body = body;
+
+	camera->follow(body->position);
+
     Context* context = new Context();
 
 	float speed = 25;
@@ -83,40 +92,32 @@ int main(int, char**){
         context->delta_time = currentTime - context->last_ticks;
         context->last_ticks = currentTime;
 
-        //float H = 1.0f;
-        //context->time_accu += context->delta_time;
+        float H = 0.001f;
+        context->time_accu += context->delta_time;
 		if (Events::jpressed(GLFW_KEY_ESCAPE)) {
 			Window::setShouldClose(true);
 		}
 		if (Events::jpressed(GLFW_KEY_TAB)) {
 			Events::toggle_cursor();
 		}
-		if (Events::pressed(GLFW_KEY_W)) {
-			camera->position += camera->y_dir * context->delta_time * speed;
+		if(context->time_accu >= H) {
+			if (Events::pressed(GLFW_KEY_W)) {
+				body->apply_force(vec2(0.0f, 10.0f));
+			}
+			if (Events::pressed(GLFW_KEY_S)) {
+				body->apply_force(vec2(0.0f, -10.0f));
+			}
+			if (Events::pressed(GLFW_KEY_D)) {
+				body->apply_force(vec2(10.0f, 0.0f));
+			}
+			if (Events::pressed(GLFW_KEY_A)) {
+				body->apply_force(vec2(-10.0f, 0.0f));
+			}
+			if (Events::pressed(GLFW_KEY_0)) {
+				camera->set_xyz(0, 0, 1);
+			}
+			context->time_accu -= H;
 		}
-		if (Events::pressed(GLFW_KEY_S)) {
-			camera->position -= camera->y_dir * context->delta_time * speed;
-		}
-		if (Events::pressed(GLFW_KEY_D)) {
-			camera->position += camera->x_dir * context->delta_time * speed;
-		}
-		if (Events::pressed(GLFW_KEY_A)) {
-			camera->position -= camera->x_dir * context->delta_time * speed;
-		}
-		if (Events::pressed(GLFW_KEY_SPACE)) {
-			camera->y_dir = glm::vec3(0, 1, 0);
-
-			camera->position += camera->y_dir * context->delta_time * speed;
-		}
-		if (Events::pressed(GLFW_KEY_LEFT_SHIFT)) {
-			camera->y_dir = glm::vec3(0, 1, 0);
-
-			camera->position -= camera->y_dir * context->delta_time * speed;
-		}
-		if (Events::pressed(GLFW_KEY_0)) {
-			camera->set_xyz(0, 0, 1);
-		}
-
 		if (Events::_cursor_locked) {
 			camera->cur_y += -Events::deltaY / Window::height * 2;
 			camera->cur_x += -Events::deltaX / Window::height * 2;
@@ -133,7 +134,7 @@ int main(int, char**){
 		}
 
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-
+		
 		// IMGUI WINDOW // 
         //ImGui_ImplOpenGL3_NewFrame();
 		//ImGui_ImplGlfw_NewFrame();
@@ -164,6 +165,8 @@ int main(int, char**){
 
     delete camera;
     delete context;
+
+	delete player;
 
 	delete chunks;
 

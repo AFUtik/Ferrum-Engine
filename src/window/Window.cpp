@@ -8,6 +8,7 @@
 #include "../graphics/Texture_loader.hpp"
 
 GLFWwindow* Window::window;
+Texture* Window::iconTexture;
 int Window::width = 0;
 int Window::height = 0;
 

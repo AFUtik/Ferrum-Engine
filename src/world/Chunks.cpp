@@ -1,6 +1,6 @@
+#include "Tile.hpp"
 #include "Chunks.hpp"
 #include "Chunk2d.hpp"
-#include "Tile.hpp"
 #include "iostream"
 
 #include <glm/glm.hpp>
@@ -16,7 +16,7 @@ Chunks::Chunks(int w, int h) : w(w), h(h) {
 
 	int index = 0;
 	for (int y = 0; y < h; y++) {
-		for (int x = 0; x < w; x++) {
+		for (int x = 0; x < w; x++, index++) {
 			chunks[index] = new Chunk2d(x, y);
 		}
 	}

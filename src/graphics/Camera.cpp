@@ -27,11 +27,14 @@ void Camera::rotate(float x, float y, float z) {
 	updateVectors();
 }
 
-mat4 Camera::getProjection() {
-	float aspect = (float)Window::width / (float)Window::height;
-	return glm::perspective(fov, aspect, 0.1f, 500.0f);
+mat4 Camera::getOrthoProjview() {
+	return glm::ortho(-aspect * scale, aspect * scale, -scale, scale, zNear, zFar) * glm::lookAt(position, position + z_dir, y_dir);
 }
 
-mat4 Camera::getView() {
-	return glm::lookAt(position, position + z_dir, y_dir);
+mat4 Camera::getPerspectiveProjview() {
+	return glm::perspective(fov, aspect, zNear, zFar) * glm::lookAt(position, position + z_dir, y_dir);;
 }
+ 
+//mat4 Camera::getView() {
+//	return glm::lookAt(position, position + z_dir, y_dir);
+//}

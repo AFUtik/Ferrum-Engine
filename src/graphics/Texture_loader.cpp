@@ -3,7 +3,7 @@
 #include <iostream>
 #include "GL/glew.h"
 #include "png.h"
-#include "graphics/Texture.hpp"
+#include "Texture.hpp"
 
 
 int _png_load(const char* file, int* width, int* height) {

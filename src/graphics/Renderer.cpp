@@ -1,9 +1,9 @@
 #include <iostream>
 
-#include "./world/Chunk2d.hpp"
-#include "./world/Tile.hpp"
-#include "graphics/Mesh.hpp"
-#include "graphics/Renderer.hpp"
+#include "../world/Tile.hpp"
+#include "../world/Chunk2d.hpp"
+#include "Mesh.hpp"
+#include "Renderer.hpp"
 
 #define VERTEX_SIZE (3 + 2 + 0)
 //
@@ -23,10 +23,10 @@
 								  buffer[INDEX+4] = (V);\
 								  INDEX += VERTEX_SIZE;
 
-int chunk_attrs[] = { 3,2,1, 0 };
+int chunk_attrs[] = { 3,2,0, 0 };
 
 Renderer::Renderer(size_t capacity) : capacity(capacity) {
-	buffer = new float[capacity * VERTEX_SIZE * 6];
+	buffer = new float[capacity * VERTEX_SIZE * 5];
 }
 
 Renderer::~Renderer() {
@@ -52,13 +52,48 @@ void Renderer::render_chunk(Chunk2d* chunk, const Chunk2d** chunks) {
 			float u = (id % 16) * uvsize;
 			float v = 1 - ((1 + id / 16) * uvsize);
 
-				VERTEX(index, x - 0.5f, y + 0.5f, 0.0f, u + uvsize, v);
-				VERTEX(index, x - 0.5f, y + 0.5f, 0.0f, u + uvsize, v + uvsize);
-				VERTEX(index, x + 0.5f, y + 0.5f, 0.0f, u, v + uvsize);
-                
-				VERTEX(index, x - 0.5f, y + 0.5f, 0.0f, u + uvsize, v);
-				VERTEX(index, x + 0.5f, y + 0.5f, 0.0f, u, v + uvsize);
-				VERTEX(index, x + 0.5f, y + 0.5f, 0.0f, u, v);
+
+				VERTEX(index, x - 0.5f, y + 0.5f, 0 - 0.5f, u + uvsize, v);
+				VERTEX(index, x - 0.5f, y + 0.5f, 0 + 0.5f, u + uvsize, v + uvsize);
+				VERTEX(index, x + 0.5f, y + 0.5f, 0 + 0.5f, u, v + uvsize);
+				VERTEX(index, x - 0.5f, y + 0.5f, 0 - 0.5f, u + uvsize, v);
+				VERTEX(index, x + 0.5f, y + 0.5f, 0 + 0.5f, u, v + uvsize);
+				VERTEX(index, x + 0.5f, y + 0.5f, 0 - 0.5f, u, v);
+			
+				VERTEX(index, x - 0.5f, y - 0.5f, 0 - 0.5f, u, v);
+				VERTEX(index, x + 0.5f, y - 0.5f, 0 + 0.5f, u + uvsize, v + uvsize);
+				VERTEX(index, x - 0.5f, y - 0.5f, 0 + 0.5f, u, v + uvsize);
+				VERTEX(index, x - 0.5f, y - 0.5f, 0 - 0.5f, u, v);
+				VERTEX(index, x + 0.5f, y - 0.5f, 0 - 0.5f, u + uvsize, v);
+				VERTEX(index, x + 0.5f, y - 0.5f, 0 + 0.5f, u + uvsize, v + uvsize);
+		
+				VERTEX(index, x + 0.5f, y - 0.5f, 0 - 0.5f, u + uvsize, v);
+				VERTEX(index, x + 0.5f, y + 0.5f, 0 - 0.5f, u + uvsize, v + uvsize);
+				VERTEX(index, x + 0.5f, y + 0.5f, 0 + 0.5f, u, v + uvsize);
+				VERTEX(index, x + 0.5f, y - 0.5f, 0 - 0.5f, u + uvsize, v);
+				VERTEX(index, x + 0.5f, y + 0.5f, 0 + 0.5f, u, v + uvsize);
+				VERTEX(index, x + 0.5f, y - 0.5f, 0 + 0.5f, u, v);
+			
+				VERTEX(index, x - 0.5f, y - 0.5f, 0 - 0.5f, u, v);
+				VERTEX(index, x - 0.5f, y + 0.5f, 0 + 0.5f, u + uvsize, v + uvsize);
+				VERTEX(index, x - 0.5f, y + 0.5f, 0 - 0.5f, u, v + uvsize);
+				VERTEX(index, x - 0.5f, y - 0.5f, 0 - 0.5f, u, v);
+				VERTEX(index, x - 0.5f, y - 0.5f, 0 + 0.5f, u + uvsize, v);
+				VERTEX(index, x - 0.5f, y + 0.5f, 0 + 0.5f, u + uvsize, v + uvsize);
+
+				VERTEX(index, x - 0.5f, y - 0.5f, 0 + 0.5f, u, v);
+				VERTEX(index, x + 0.5f, y + 0.5f, 0 + 0.5f, u + uvsize, v + uvsize);
+				VERTEX(index, x - 0.5f, y + 0.5f, 0 + 0.5f, u, v + uvsize);
+				VERTEX(index, x - 0.5f, y - 0.5f, 0 + 0.5f, u, v);
+				VERTEX(index, x + 0.5f, y - 0.5f, 0 + 0.5f, u + uvsize, v);
+				VERTEX(index, x + 0.5f, y + 0.5f, 0 + 0.5f, u + uvsize, v + uvsize);
+
+				VERTEX(index, x - 0.5f, y - 0.5f, 0 - 0.5f, u + uvsize, v);
+				VERTEX(index, x - 0.5f, y + 0.5f, 0 - 0.5f, u + uvsize, v + uvsize);
+				VERTEX(index, x + 0.5f, y + 0.5f, 0 - 0.5f, u, v + uvsize);
+				VERTEX(index, x - 0.5f, y - 0.5f, 0 - 0.5f, u + uvsize, v);
+				VERTEX(index, x + 0.5f, y + 0.5f, 0 - 0.5f, u, v + uvsize);
+				VERTEX(index, x + 0.5f, y - 0.5f, 0 - 0.5f, u, v);
 			
 		}
 	}

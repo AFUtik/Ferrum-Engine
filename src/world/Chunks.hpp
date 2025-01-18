@@ -4,11 +4,11 @@
 #include <cstdint>
 
 class Chunk2d;
-struct block;
+struct Tile;
 
 class Chunks {
 public:
-	unsigned int w, h, d;
+	unsigned int w, h;
 	Chunk2d** chunks;
 	size_t volume;
 	Chunks(int w, int h);

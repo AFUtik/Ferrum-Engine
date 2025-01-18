@@ -3,6 +3,7 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>	
 
+#include "world/Tile.hpp"
 #include "world/Chunks.hpp"
 #include "world/Chunk2d.hpp"
 
@@ -32,7 +33,7 @@ int main(int, char**){
     Window::init(WIDTH, HEIGHT, "Test Window");
 	Events::init();
 
-    Shader* shader = load_shader("res/shaders/core.vert", "res/shaders/core.frag");
+    Shader* shader = load_shader("resources/shaders/core.vert", "resources/shaders/core.frag");
 	if (shader == nullptr) {
 		std::cerr << "failed to load shader" << std::endl;
 		Window::terminate();
@@ -47,8 +48,8 @@ int main(int, char**){
 		return 1;
 	}
 
-	Renderer renderer(1024 * 1024 * 8);
-	Chunks* chunks = new Chunks(3, 3);
+	Renderer renderer(1024 * 1024 * 4);
+	Chunks* chunks = new Chunks(5, 5);
 	
 	for (size_t i = 0; i < chunks->volume; ++i) {
 		renderer.render_chunk(chunks->chunks[i], (const Chunk2d**) chunks->chunks);
@@ -69,6 +70,11 @@ int main(int, char**){
 	ImGui_ImplOpenGL3_Init("#version 330");
 
     Camera* camera = new Camera(glm::vec3(0, 0, 1), glm::radians(90.0f));
+	camera->aspect = (float)Window::width / (float)Window::height;
+	camera->zNear = 0.1f;
+	camera->zFar = 10.0f;
+
+
     Context* context = new Context();
 
 	float speed = 25;
@@ -76,8 +82,6 @@ int main(int, char**){
         double currentTime = glfwGetTime();
         context->delta_time = currentTime - context->last_ticks;
         context->last_ticks = currentTime;
-
-	    
 
         //float H = 1.0f;
         //context->time_accu += context->delta_time;
@@ -126,38 +130,43 @@ int main(int, char**){
 			}
 
 			camera->rotation = mat4(1.0f);
-			camera->rotate(camera->cur_x, camera->cur_y, 0);
+			camera->rotate(camera->cur_y, camera->cur_x, 0);
 		}
 
 		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+		// IMGUI WINDOW // 
+        //ImGui_ImplOpenGL3_NewFrame();
+		//ImGui_ImplGlfw_NewFrame();
+		//ImGui::NewFrame();
+
 		shader->use();
-		shader->uniformMatrix("projview", camera->getProjection() * camera->getView());
+		shader->uniformMatrix("projview", camera->getOrthoProjview());
 		texture->bind();
 
 		glm::mat4 model(1.0f);
 		for (size_t i = 0; i < chunks->volume; i++) {
 			Chunk2d* chunk = chunks->chunks[i];
-			Mesh* mesh = chunk->mesh;
-			model = glm::translate(mat4(1.0f), vec3(chunk->x * CHUNK_W + 0.5f, chunk->y * CHUNK_H + 0.5f, 0.0f));
+			model = glm::translate(glm::mat4(1.0f), glm::vec3(chunk->x * CHUNK_W + 0.5f, chunk->y * CHUNK_H + 0.5f, 0.0f));
 			shader->uniformMatrix("model", model);
-			mesh->draw(GL_TRIANGLES);
+			chunk->mesh->draw(GL_TRIANGLES);
 		}
-            // IMGUI WINDOW // 
-        ImGui_ImplOpenGL3_NewFrame();
-		ImGui_ImplGlfw_NewFrame();
-		ImGui::NewFrame();
-
-        ImGui::ShowDemoWindow();
-		ImGui::Render();
-		ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+        
+        //ImGui::ShowDemoWindow();
+		//ImGui::Render();
+		//ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
         Window::swapBuffers();
 		Events::pullEvents();
     }
 
+	delete texture;
+	delete shader;
+
     delete camera;
     delete context;
+
+	delete chunks;
 
     Window::terminate();
     return 0;

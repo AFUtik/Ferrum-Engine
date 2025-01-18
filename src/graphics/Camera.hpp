@@ -14,17 +14,21 @@ public:
 	float cur_y = 0.0f;
 	float cur_z = 0.0f;
 
-	vec3 position;
+	float scale = 1.0f;
 	float fov;
+	float aspect;
+	float zNear;
+	float zFar;
+
+	vec3 position;
 	mat4 rotation;
 	Camera(vec3 position, float fov);
 
 	void set_xyz(float x, float y, float z);
-
 	void rotate(float x, float y, float z);
 
-	mat4 getProjection();
-	mat4 getView();
+	mat4 getOrthoProjview();
+	mat4 getPerspectiveProjview();
 };
 
 #endif /* WINDOW_CAMERA_H_ */

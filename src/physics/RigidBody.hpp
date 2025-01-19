@@ -9,6 +9,7 @@ public:
     glm::mat4 model_mat;
     glm::mat2 rotation_mat;
     
+    glm::vec3 pixelated_position;
     glm::vec3 position;
     glm::vec2 velocity;
     glm::vec2 acceleration;
@@ -20,7 +21,7 @@ public:
     float acceleration_time;
     float time_elapsed;
 
-    RigidBody(glm::vec3 pos, glm::vec2 vel, float m) : position(pos), velocity(vel), mass(m), model_mat(1.0f), force(0.0f), acceleration(0.0f) {};
+    RigidBody(glm::vec3 pos, glm::vec2 vel, float m) : position(pos), pixelated_position(pos), velocity(vel), mass(m), model_mat(1.0f), force(0.0f), acceleration(0.0f) {};
 
     void apply_force(glm::vec2 applied_force);
 

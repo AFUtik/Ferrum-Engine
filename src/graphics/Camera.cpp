@@ -10,6 +10,7 @@ Camera::Camera(vec3 pos, float fov) : fov(fov), rotation(1.0f), position(pos), f
 
 void Camera::unfollow() {
 	followed = &position;
+
 }
 
 void Camera::follow(vec3 &pos) {
@@ -36,11 +37,12 @@ void Camera::rotate(float x, float y, float z) {
 }
 
 mat4 Camera::getOrthoProjview() {
-	return glm::ortho(-aspect * scale, aspect * scale, -scale, scale, zNear, zFar) * glm::lookAt(*followed, *followed + z_dir, y_dir);
+	return glm::ortho(-aspect * scale, aspect * scale, -scale, scale, zNear, zFar) * 
+	glm::lookAt(*followed + vec3(0.0f, 0.0f, 1.0f), *followed + z_dir, y_dir);
 }
 
 mat4 Camera::getPerspectiveProjview() {
-	return glm::perspective(fov, aspect, zNear, zFar) * glm::lookAt(*followed, *followed + z_dir, y_dir);;
+	return glm::perspective(fov, aspect, zNear, zFar) * glm::lookAt(floor((*followed/(1.0f/16.0f))*1.0f/16.0f), *followed + z_dir, y_dir);;
 }
  
 //mat4 Camera::getView() {

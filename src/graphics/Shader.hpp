@@ -11,6 +11,7 @@ public:
 	~Shader();
 
 	void uniformMatrix(std::string name, glm::mat4 matrix);
+	void uniformFloat(std::string name, float value);
 	void use();
 };
 

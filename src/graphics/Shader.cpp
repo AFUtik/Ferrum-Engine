@@ -28,6 +28,11 @@ void Shader::uniformMatrix(std::string name, glm::mat4 matrix) {
     glUniformMatrix4fv(transformLoc, 1, GL_FALSE, glm::value_ptr(matrix));
 }
 
+void Shader::uniformFloat(std::string name, float value) {
+    GLuint transformLoc = glGetUniformLocation(id, name.c_str());
+    glUniform1f(transformLoc, value);
+}
+
 Shader::~Shader() {
 	glDeleteProgram(id);
 }

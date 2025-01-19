@@ -73,14 +73,14 @@ int main(int, char**){
 
     Camera* camera = new Camera(glm::vec3(0, 0, 1), glm::radians(90.0f));
 	camera->aspect = (float)Window::width / (float)Window::height;
-	camera->zNear = -1.0f;
-	camera->zFar = 10.0f;
-	camera->scale = 2.0f;
+	camera->zNear = 0.1f;
+	camera->zFar = 100.0f;
+	camera->scale = 4.0f;
 
 	Player* player = new Player();
 	player->render();
 
-	RigidBody* body = new RigidBody(glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(0.0f, 0.0f), 50.0f);
+	RigidBody* body = new RigidBody(glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(0.0f, 0.0f), 25.0f);
 	player->rigid_body = body;
 
 	camera->follow(body->position);

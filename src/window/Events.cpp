@@ -10,6 +10,8 @@ float Events::deltaX = 0.0f;
 float Events::deltaY = 0.0f;
 float Events::x = 0.0f;
 float Events::y = 0.0f;
+double Events::x_scroll = 0.0f;
+double Events::y_scroll = 0.0f;
 bool Events::_cursor_locked = false;
 bool Events::_cursor_started = false;
 
@@ -41,6 +43,11 @@ void mouse_button_callback(GLFWwindow* window, int button, int action, int mode)
 	}
 }
 
+void scroll_callback(GLFWwindow* window, double xoffset, double yoffset) {
+	Events::x_scroll = xoffset;
+	Events::y_scroll = yoffset;
+}
+
 void key_callback(GLFWwindow* window, int key, int scancode, int action, int mode) {
 	if (action == GLFW_PRESS){
 		Events::_keys[key] = true;
@@ -59,11 +66,21 @@ int Events::init(){
 
 	memset(_keys, false, 1032*sizeof(bool));
 	memset(_frames, 0, 1032*sizeof(uint));
+
 	// Initializes each callback function //
 	glfwSetKeyCallback(window, key_callback);
+	glfwSetScrollCallback(window, scroll_callback);
 	glfwSetMouseButtonCallback(window, mouse_button_callback);
 	glfwSetCursorPosCallback(window, cursor_position_callback); 
 	return 0;
+}
+
+bool Events::is_scrolled_up() {
+	return Events::y_scroll > 0;
+}
+
+bool Events::is_scrolled_down() {
+	return Events::y_scroll < 0;
 }
 
 bool Events::pressed(int keycode){
@@ -95,6 +112,8 @@ void Events::toggle_cursor() {
 
 void Events::pullEvents(){
 	_current++;
+	x_scroll = 0.0f;
+	y_scroll = 0.0f;
 	deltaX = 0.0f;
 	deltaY = 0.0f;
 	glfwPollEvents();

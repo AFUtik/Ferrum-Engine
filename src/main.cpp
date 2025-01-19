@@ -80,7 +80,8 @@ int main(int, char**){
 	Player* player = new Player();
 	player->render();
 
-	RigidBody* body = new RigidBody(glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(0.0f, 0.0f), 25.0f);
+	RigidBody* body = new RigidBody(glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(0.0f, 0.0f), 20.0f, 0.5f);
+	body->pixel_perfect = true;
 	player->rigid_body = body;
 
 	camera->follow(body->position);
@@ -95,6 +96,12 @@ int main(int, char**){
 
         float H = 0.016f;
         context->time_accu += context->delta_time;
+		if(Events::is_scrolled_up() && camera->scale > 1) {
+			camera->scale -= 1;
+		} 
+		if(Events::is_scrolled_down()) {
+			camera->scale += 1;
+		} 
 		if (Events::jpressed(GLFW_KEY_ESCAPE)) {
 			Window::setShouldClose(true);
 		}
@@ -103,16 +110,16 @@ int main(int, char**){
 		}
 		if(context->time_accu >= H) {
 			if (Events::pressed(GLFW_KEY_W)) {
-				body->apply_force(vec2(0.0f, 10.0f));
+				body->apply_force(vec2(0.0f, 5.0f));
 			}
 			if (Events::pressed(GLFW_KEY_S)) {
-				body->apply_force(vec2(0.0f, -10.0f));
+				body->apply_force(vec2(0.0f, -5.0f));
 			}
 			if (Events::pressed(GLFW_KEY_D)) {
-				body->apply_force(vec2(10.0f, 0.0f));
+				body->apply_force(vec2(5.0f, 0.0f));
 			}
 			if (Events::pressed(GLFW_KEY_A)) {
-				body->apply_force(vec2(-10.0f, 0.0f));
+				body->apply_force(vec2(-5.0f, 0.0f));
 			}
 			if (Events::pressed(GLFW_KEY_0)) {
 				camera->set_xyz(0, 0, 1);

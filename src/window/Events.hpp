@@ -14,11 +14,16 @@ public:
 	static float deltaY;
 	static float x;
 	static float y;
+	static double x_scroll;
+	static double y_scroll;
 	static bool _cursor_locked;
 	static bool _cursor_started;
 
 	static int init();
 	static void pullEvents();
+
+	static bool is_scrolled_up();
+	static bool is_scrolled_down();
 
 	static bool pressed(int keycode);
 	static bool jpressed(int keycode);

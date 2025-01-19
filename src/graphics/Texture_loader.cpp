@@ -113,12 +113,6 @@ int _png_load(const char* file, int* width, int* height, png_byte **image_data) 
     glTexImage2D(GL_TEXTURE_2D, 0, GL_RGBA, t_width, t_height, 0, alpha, GL_UNSIGNED_BYTE, (GLvoid*)*image_data);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MIN_FILTER, GL_NEAREST);
     glTexParameteri(GL_TEXTURE_2D, GL_TEXTURE_MAG_FILTER, GL_NEAREST);
-
-    GLenum err = glGetError();
-    if (err != GL_NO_ERROR) {
-        std::cerr << "OpenGL Error: " << err << std::endl;
-    }
-
     glBindTexture(GL_TEXTURE_2D, 0);
 
     png_destroy_read_struct(&png_ptr, &info_ptr, &end_info);

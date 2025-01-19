@@ -3,15 +3,8 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>	
 
-#include "world/Player.hpp"
-#include "world/Tile.hpp"
-#include "world/Chunks.hpp"
-#include "world/Chunk2d.hpp"
-
 #include "window/Window.hpp"
 #include "window/Events.hpp"
-
-#include "physics/RigidBody.hpp"
 
 #include "graphics/Renderer.hpp"
 #include "graphics/Camera.hpp"
@@ -19,6 +12,12 @@
 #include "graphics/Texture.hpp"
 #include "graphics/Shader.hpp"
 #include "graphics/Texture_loader.hpp"
+
+#include "physics/RigidBody.hpp"
+#include "world/Player.hpp"
+#include "world/Tile.hpp"
+#include "world/Chunks.hpp"
+#include "world/Chunk2d.hpp"
 
 #include "imgui/imgui.h"
 #include "imgui/imgui_impl_glfw.h"
@@ -74,25 +73,27 @@ int main(int, char**){
 
     Camera* camera = new Camera(glm::vec3(0, 0, 1), glm::radians(90.0f));
 	camera->aspect = (float)Window::width / (float)Window::height;
-	camera->zNear = 0.1f;
+	camera->zNear = -1.0f;
 	camera->zFar = 10.0f;
 	camera->scale = 2.0f;
 
 	Player* player = new Player();
-	RigidBody* body = new RigidBody(glm::vec3(0.0f, 0.0f, 0.0f), glm::vec2(25.0f, 25.0f), 50.0f);
+	player->render();
+
+	RigidBody* body = new RigidBody(glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(0.0f, 0.0f), 50.0f);
 	player->rigid_body = body;
 
 	camera->follow(body->position);
 
     Context* context = new Context();
 
-	float speed = 25;
+	float speed = 10;
 	while (!Window::isShouldClose()) {
         double currentTime = glfwGetTime();
         context->delta_time = currentTime - context->last_ticks;
         context->last_ticks = currentTime;
 
-        float H = 0.001f;
+        float H = 0.016f;
         context->time_accu += context->delta_time;
 		if (Events::jpressed(GLFW_KEY_ESCAPE)) {
 			Window::setShouldClose(true);
@@ -151,6 +152,10 @@ int main(int, char**){
 			shader->uniformMatrix("model", model);
 			chunk->mesh->draw(GL_TRIANGLES);
 		}
+		
+		body->update(H);
+		shader->uniformMatrix("model", body->model_mat);
+		player->mesh->draw(GL_TRIANGLES);
         
         //ImGui::ShowDemoWindow();
 		//ImGui::Render();
@@ -167,7 +172,6 @@ int main(int, char**){
     delete context;
 
 	delete player;
-
 	delete chunks;
 
     Window::terminate();

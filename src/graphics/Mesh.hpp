@@ -1,9 +1,10 @@
-#ifndef GRAPHICS_MESH_HPP_
-#define GRAPHICS_MESH_HPP_
+#ifndef MESH_HPP
+#define MESH_HPP
 
 #include <stdlib.h>
 
 class Mesh {
+private:
 	unsigned int vao;
 	unsigned int vbo;
 	size_t vertices;

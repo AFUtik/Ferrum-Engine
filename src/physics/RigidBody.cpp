@@ -40,7 +40,14 @@ void RigidBody::update(float delta_time) {
     
     position += glm::vec3(velocity * delta_time, 0.0f);
 
-    model_mat = pixel_perfect ? glm::translate(glm::mat4(1.0f), pixel_perfect_clamp(position)) : glm::translate(glm::mat4(1.0f), position);
+    if(pixel_perfect) {
+        pixel_position = pixel_perfect_clamp(position);
+        model_mat = glm::translate(glm::mat4(1.0f), pixel_position);
+    } else {
+        model_mat = glm::translate(glm::mat4(1.0f), position);
+    }
+
+    //position = glm::vec3(pixel_pos.x, pixel_pos.y, position.z);
     
     dir = glm::vec2(0.0f, 0.0f);
     force = glm::vec2(0.0f, 0.0f);

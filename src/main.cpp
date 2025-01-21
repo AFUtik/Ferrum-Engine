@@ -61,8 +61,8 @@ int main(int, char**){
 
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_CULL_FACE);
-	//glEnable(GL_BLEND);
-	//glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	glEnable(GL_BLEND);
+	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
     IMGUI_CHECKVERSION();
 	ImGui::CreateContext();
@@ -72,16 +72,17 @@ int main(int, char**){
 	ImGui_ImplOpenGL3_Init("#version 330");
 
     Camera* camera = new Camera(glm::vec3(0, 0, 1), glm::radians(90.0f));
-	camera->aspect = (float)1920.0 / (float)1080.0;
+	camera->aspect = (float)320.0 / (float)180.0;
 	camera->zNear = -1.0f;
 	camera->zFar = 100.0f;
 	camera->scale = 1.0f;
+	camera->smooth_factor = 1.0f;
 
 
 	Player* player = new Player();
 	player->render();
 
-	camera->follow(player->rigid_body->position);
+	camera->follow(player->rigid_body->pixel_position);
     Context* context = new Context();
 
 	float speed = 10;
@@ -145,12 +146,9 @@ int main(int, char**){
 			//ImGui::NewFrame();
 
 			shader->use();
-			shader->uniformMatrix("projview", camera->getOrthoProjview());
 			texture->bind();
-			
-			player->rigid_body->update(H);
-			shader->uniformMatrix("model", player->rigid_body->model_mat);
-			player->mesh->draw(GL_TRIANGLES);
+			player->rigid_body->update(H); // Placed here to prevent the jitter motion //
+			shader->uniformMatrix("projview", camera->getOrthoProjview());
 
 			glm::mat4 model(1.0f);
 			for (size_t i = 0; i < chunks->volume; i++) {
@@ -159,7 +157,9 @@ int main(int, char**){
 				shader->uniformMatrix("model", model);
 				chunk->mesh->draw(GL_TRIANGLES);
 			}
-
+			
+			shader->uniformMatrix("model", player->rigid_body->model_mat);
+			player->mesh->draw(GL_TRIANGLES);
 			
 	
         	//ImGui::ShowDemoWindow();

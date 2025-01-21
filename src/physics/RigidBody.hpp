@@ -9,6 +9,7 @@ public:
     glm::mat4 model_mat;
     glm::mat2 rotation_mat;
 
+    glm::vec3 pixel_position;
     glm::vec3 position;
     glm::vec2 velocity;
     glm::vec2 acceleration;

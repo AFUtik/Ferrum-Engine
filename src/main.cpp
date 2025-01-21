@@ -61,8 +61,8 @@ int main(int, char**){
 
 	glEnable(GL_DEPTH_TEST);
 	glEnable(GL_CULL_FACE);
-	glEnable(GL_BLEND);
-	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
+	//glEnable(GL_BLEND);
+	//glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
     IMGUI_CHECKVERSION();
 	ImGui::CreateContext();
@@ -72,20 +72,16 @@ int main(int, char**){
 	ImGui_ImplOpenGL3_Init("#version 330");
 
     Camera* camera = new Camera(glm::vec3(0, 0, 1), glm::radians(90.0f));
-	camera->aspect = (float)Window::width / (float)Window::height;
-	camera->zNear = 0.1f;
+	camera->aspect = (float)1920.0 / (float)1080.0;
+	camera->zNear = -1.0f;
 	camera->zFar = 100.0f;
-	camera->scale = 4.0f;
+	camera->scale = 1.0f;
+
 
 	Player* player = new Player();
 	player->render();
 
-	RigidBody* body = new RigidBody(glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(0.0f, 0.0f), 20.0f, 0.5f);
-	body->pixel_perfect = true;
-	player->rigid_body = body;
-
-	camera->follow(body->position);
-
+	camera->follow(player->rigid_body->position);
     Context* context = new Context();
 
 	float speed = 10;
@@ -96,80 +92,84 @@ int main(int, char**){
 
         float H = 0.016f;
         context->time_accu += context->delta_time;
-		if(Events::is_scrolled_up() && camera->scale > 1) {
-			camera->scale -= 1;
-		} 
-		if(Events::is_scrolled_down()) {
-			camera->scale += 1;
-		} 
-		if (Events::jpressed(GLFW_KEY_ESCAPE)) {
-			Window::setShouldClose(true);
+		if(context->time_accu >= context->delta_time) {
+			if(Events::is_scrolled_up() && camera->scale > 1) {
+				camera->scale -= 1;
+			} 
+			if(Events::is_scrolled_down()) {
+				camera->scale += 1;
+			} 
+			if (Events::jpressed(GLFW_KEY_ESCAPE)) {
+				Window::setShouldClose(true);
+			}
+			if (Events::jpressed(GLFW_KEY_TAB)) {
+				Events::toggle_cursor();
+			}
+			//if(context->time_accu >= H) {
+				if (Events::pressed(GLFW_KEY_W)) {
+					player->rigid_body->apply_direction(vec2(0.0f, 1.0f));
+				}
+				if (Events::pressed(GLFW_KEY_S)) {
+					player->rigid_body->apply_direction(vec2(0.0f, -1.0f));
+				}
+				if (Events::pressed(GLFW_KEY_D)) {
+					player->rigid_body->apply_direction(vec2(1.0f, 0.0f));
+				}
+				if (Events::pressed(GLFW_KEY_A)) {
+					player->rigid_body->apply_direction(vec2(-1.0f, 0.0f));
+				}
+				if (Events::pressed(GLFW_KEY_0)) {
+					camera->set_xyz(0, 0, 1);
+				}
+			//}
+			if (Events::_cursor_locked) {
+				camera->cur_y += -Events::deltaY / Window::height * 2;
+				camera->cur_x += -Events::deltaX / Window::height * 2;
+
+				if (camera->cur_y < -radians(89.0f)) {
+					camera->cur_y = -radians(89.0f);
+				}
+				if (camera->cur_y > radians(89.0f)) {
+					camera->cur_y = radians(89.0f);
+				}
+
+				camera->rotation = mat4(1.0f);
+				camera->rotate(camera->cur_y, camera->cur_x, 0);
+			}
+
+			glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
+
+			// IMGUI WINDOW // 
+        	//ImGui_ImplOpenGL3_NewFrame();
+			//ImGui_ImplGlfw_NewFrame();
+			//ImGui::NewFrame();
+
+			shader->use();
+			shader->uniformMatrix("projview", camera->getOrthoProjview());
+			texture->bind();
+			
+			player->rigid_body->update(H);
+			shader->uniformMatrix("model", player->rigid_body->model_mat);
+			player->mesh->draw(GL_TRIANGLES);
+
+			glm::mat4 model(1.0f);
+			for (size_t i = 0; i < chunks->volume; i++) {
+				Chunk2d* chunk = chunks->chunks[i];
+				model = glm::translate(glm::mat4(1.0f), glm::vec3(chunk->x * CHUNK_W + 0.5f, chunk->y * CHUNK_H + 0.5f, 0.0f));
+				shader->uniformMatrix("model", model);
+				chunk->mesh->draw(GL_TRIANGLES);
+			}
+
+			
+	
+        	//ImGui::ShowDemoWindow();
+			//ImGui::Render();
+			//ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+
+        	Window::swapBuffers();
+			Events::pullEvents();
+			context->time_accu -= context->delta_time;
 		}
-		if (Events::jpressed(GLFW_KEY_TAB)) {
-			Events::toggle_cursor();
-		}
-		if(context->time_accu >= H) {
-			if (Events::pressed(GLFW_KEY_W)) {
-				body->apply_force(vec2(0.0f, 5.0f));
-			}
-			if (Events::pressed(GLFW_KEY_S)) {
-				body->apply_force(vec2(0.0f, -5.0f));
-			}
-			if (Events::pressed(GLFW_KEY_D)) {
-				body->apply_force(vec2(5.0f, 0.0f));
-			}
-			if (Events::pressed(GLFW_KEY_A)) {
-				body->apply_force(vec2(-5.0f, 0.0f));
-			}
-			if (Events::pressed(GLFW_KEY_0)) {
-				camera->set_xyz(0, 0, 1);
-			}
-			context->time_accu -= H;
-		}
-		if (Events::_cursor_locked) {
-			camera->cur_y += -Events::deltaY / Window::height * 2;
-			camera->cur_x += -Events::deltaX / Window::height * 2;
-
-			if (camera->cur_y < -radians(89.0f)) {
-				camera->cur_y = -radians(89.0f);
-			}
-			if (camera->cur_y > radians(89.0f)) {
-				camera->cur_y = radians(89.0f);
-			}
-
-			camera->rotation = mat4(1.0f);
-			camera->rotate(camera->cur_y, camera->cur_x, 0);
-		}
-
-		glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
-		
-		// IMGUI WINDOW // 
-        //ImGui_ImplOpenGL3_NewFrame();
-		//ImGui_ImplGlfw_NewFrame();
-		//ImGui::NewFrame();
-
-		shader->use();
-		shader->uniformMatrix("projview", camera->getOrthoProjview());
-		texture->bind();
-
-		glm::mat4 model(1.0f);
-		for (size_t i = 0; i < chunks->volume; i++) {
-			Chunk2d* chunk = chunks->chunks[i];
-			model = glm::translate(glm::mat4(1.0f), glm::vec3(chunk->x * CHUNK_W + 0.5f, chunk->y * CHUNK_H + 0.5f, 0.0f));
-			shader->uniformMatrix("model", model);
-			chunk->mesh->draw(GL_TRIANGLES);
-		}
-		
-		body->update(H);
-		shader->uniformMatrix("model", body->model_mat);
-		player->mesh->draw(GL_TRIANGLES);
-        
-        //ImGui::ShowDemoWindow();
-		//ImGui::Render();
-		//ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-
-        Window::swapBuffers();
-		Events::pullEvents();
     }
 
 	delete texture;

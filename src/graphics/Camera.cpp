@@ -4,7 +4,7 @@
 #include <glm/ext.hpp>
 
 
-Camera::Camera(vec3 pos, float fov) : fov(fov), rotation(1.0f), position(pos), followed(&position) {
+Camera::Camera(vec3 pos, float fov) : fov(fov), rotation(1.0f), position(pos), followed(&position), last_pos(0.0f), smooth_factor(0.05f) {
 	updateVectors();
 }
 
@@ -37,8 +37,12 @@ void Camera::rotate(float x, float y, float z) {
 }
 
 mat4 Camera::getOrthoProjview() {
-	return glm::ortho(-aspect * scale, aspect * scale, -scale, scale, zNear, zFar) * 
-	glm::lookAt(*followed + vec3(0.0f, 0.0f, 1.0f), *followed + z_dir, y_dir);
+    glm::vec3 new_position = glm::mix(this->last_pos, *followed, smooth_factor);
+
+	mat4 projview = glm::ortho(-aspect * scale, aspect * scale, -scale, scale, zNear, zFar) * 
+	glm::lookAt(new_position + vec3(0.0f, 0.0f, 0.5f), new_position + z_dir, y_dir);
+	this->last_pos = new_position;
+	return projview;
 }
 
 mat4 Camera::getPerspectiveProjview() {

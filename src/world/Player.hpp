@@ -10,7 +10,7 @@ public:
     Mesh* mesh;
     float buffer[5*6];
     
-    Player() : rigid_body(nullptr), mesh(nullptr) {};
+    Player();
     ~Player();
 
     void render();

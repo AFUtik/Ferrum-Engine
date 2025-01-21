@@ -12,6 +12,11 @@
 
 int attrs[] = { 3,2,0, 0 };
 
+Player::Player() : rigid_body(nullptr), mesh(nullptr) {
+    rigid_body = new RigidBody(glm::vec3(0.0f, 0.0f, 1.0f), glm::vec2(2.2f, 2.2f), 1.5f);
+	rigid_body->pixel_perfect = true;
+};
+
 void Player::render() {
     int index = 0;
     int id = 1;

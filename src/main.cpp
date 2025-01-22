@@ -17,7 +17,7 @@
 #include "world/Player.hpp"
 #include "world/Tile.hpp"
 #include "world/Chunks.hpp"
-#include "world/Chunk2d.hpp"
+#include "world/Chunk.hpp"
 
 #include "imgui/imgui.h"
 #include "imgui/imgui_impl_glfw.h"
@@ -77,12 +77,11 @@ int main(int, char**){
 	camera->zFar = 100.0f;
 	camera->scale = 1.0f;
 	camera->smooth_factor = 1.0f;
-
+	
 
 	Player* player = new Player();
 	player->render();
 
-	camera->follow(player->rigid_body->pixel_position);
     Context* context = new Context();
 
 	float speed = 10;

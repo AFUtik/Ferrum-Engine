@@ -1,6 +1,6 @@
 #include "Tile.hpp"
 #include "Chunks.hpp"
-#include "Chunk2d.hpp"
+#include "Chunk.hpp"
 #include "iostream"
 
 #include <glm/glm.hpp>
@@ -12,12 +12,12 @@ using namespace glm;
 
 Chunks::Chunks(int w, int h) : w(w), h(h) {
 	volume = w * h;
-	chunks = new Chunk2d * [volume];
+	chunks = new Chunk * [volume];
 
 	int index = 0;
 	for (int y = 0; y < h; y++) {
 		for (int x = 0; x < w; x++, index++) {
-			chunks[index] = new Chunk2d(x, y);
+			chunks[index] = new Chunk(x, y);
 		}
 	}
 }
@@ -27,6 +27,16 @@ Chunks::~Chunks() {
 		delete chunks[i];
 	}
 	delete[] chunks;
+}
+
+GridCollider* Chunks::getGridCollider(int x, int y) {
+	int cx = x / CHUNK_W;
+	int cy = x / CHUNK_H;
+	if (x < 0) cx--;
+ 	if (y < 0) cy--;
+	if (cx < 0 || cy < 0 || cx >= w || cy >= h)
+ 		return nullptr;
+	return chunks[cy*h + cx]->grid_collider;
 }
 //
 //block* Chunks::get(int x, int y, int z) {

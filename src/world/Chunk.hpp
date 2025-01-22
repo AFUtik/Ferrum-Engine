@@ -1,5 +1,5 @@
-#ifndef CHUNK2D_HPP
-#define CHUNK2D_HPP
+#ifndef CHUNK_HPP
+#define CHUNK_HPP
 
 #include <vector>
 
@@ -9,22 +9,24 @@
 
 struct Tile;
 struct Entity;
+class GridCollider;
 class Lightmap;
 class Mesh;
 
-class Chunk2d {
+class Chunk {
 public:
 	int x, y;
 	Tile* tiles;
     std::vector<Entity*> entities;
+	GridCollider* grid_collider;
 	Lightmap* lightmap;
 	Mesh* mesh;
 
 	unsigned char biome;
 	bool isDirty = true;
 	
-	Chunk2d(int x, int y);
-	~Chunk2d();
+	Chunk(int x, int y);
+	~Chunk();
 };
 
 #endif // !CHUNK_HPP

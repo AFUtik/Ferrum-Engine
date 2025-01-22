@@ -3,16 +3,19 @@
 
 #include <cstdint>
 
-class Chunk2d;
+class Chunk;
+class GridCollider;
 struct Tile;
 
 class Chunks {
 public:
 	unsigned int w, h;
-	Chunk2d** chunks;
+	Chunk** chunks;
 	size_t volume;
 	Chunks(int w, int h);
 	~Chunks();
+
+	GridCollider* getGridCollider(int x, int y);
 	
 	//block* get(int x, int y, int z);
 	//Chunk* getChunk(int x, int y, int z);

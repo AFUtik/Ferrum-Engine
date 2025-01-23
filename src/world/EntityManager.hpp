@@ -11,10 +11,9 @@
 class Entity;
 
 class EntityManager {
-private:
-    std::vector<Entity*> entities;
 public:
-    static std::vector<Entity> registered_entities;
+    std::vector<Entity*> entities;
+    static std::vector<Entity*> registered_entities;
 
     static void register_entity(unsigned int unique_id, Entity entity);
 

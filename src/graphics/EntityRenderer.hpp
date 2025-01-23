@@ -12,7 +12,7 @@ public:
     int max_render_entities = 256;
     void render(std::vector<Entity*> entities);
 
-    void draw(DrawContext* draw_context) override;
+    void draw(DrawContext* draw_context, std::vector<Entity*> &entities);
 };
 
 #endif

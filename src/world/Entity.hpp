@@ -14,12 +14,8 @@ public:
     unsigned int texture_id;
     bool rendered;
 
-    virtual Entity* instance() = 0;
-
     Entity();
     ~Entity();
-
-    std::string tag;
     
 };
 

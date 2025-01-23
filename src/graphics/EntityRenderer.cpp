@@ -1,5 +1,14 @@
+#include "../physics/RigidBody.hpp"
+#include "../world/Entity.hpp"
+
 #include "EntityRenderer.hpp"
+
+#include "Shader.hpp"
 #include "Mesh.hpp"
+#include "Texture.hpp"
+#include "DrawContext.hpp"
+
+#include "glm/glm.hpp"
 
 void EntityRenderer::render(std::vector<Entity*> entities) { // Renders only registered entities//
     Mesh* mesh = new Mesh(PLANE, attrs);
@@ -22,8 +31,11 @@ void EntityRenderer::render(std::vector<Entity*> entities) { // Renders only reg
     meshes.push_back(mesh);
 }
 
-void EntityRenderer::draw(DrawContext* draw_context) {
-    for(Drawable* drawable : objects) {
-        
+void EntityRenderer::draw(DrawContext* draw_context, std::vector<Entity*> &entities) {
+    glm::mat4 model(1.0f);
+    for(Entity* drawable : entities) {
+        textures[drawable->texture_id]->bind();
+        model = glm::translate(glm::mat4(1.0f), drawable->rigid_body->position);
+        draw_context->shader->uniformMatrix("model", model);
     }
 }

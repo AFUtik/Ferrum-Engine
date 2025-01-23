@@ -9,6 +9,7 @@ class Camera;
 class Texture;
 class Mesh;
 class Drawable;
+class Shader;
 
 class EntityRenderer;
 class ChunkRenderer;
@@ -23,8 +24,7 @@ public:
 
     Camera *camera;
     //std::vector<Light*> lights //
-    std::string frag_shader;
-    std::string vertex_shader;
+    Shader *shader;
 
     void draw_all();
 };

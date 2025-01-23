@@ -11,6 +11,7 @@ public:
     Chunks* chunks;
 
     void render(DrawContext* draw_context);
+    void draw(DrawContext* draw_context);
 
     GameContext();
     ~GameContext();

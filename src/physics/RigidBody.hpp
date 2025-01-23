@@ -9,9 +9,6 @@ class GridCollider;
 
 class RigidBody {
 public:
-    glm::mat4 model_mat; // Determines how object is placed in the space. This matrix passes into vertex shader //
-    glm::mat2 rotation_mat;
-
     glm::vec3 pixel_position;
     glm::vec3 position;
     glm::vec2 velocity;

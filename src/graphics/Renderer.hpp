@@ -1,18 +1,25 @@
 #ifndef RENDERER_HPP
 #define RENDERER_HPP
 
+class DrawContext;
+class Drawable;
 class Mesh;
-class Chunk2d;
+class Texture;
+
+#include <forward_list>
+#include <vector>
+
+#define VERTEX_SIZE (3+2)
+
+static int attrs[] = { 3,2,0, 0 };
 
 class Renderer {
-	size_t capacity;
-	float* buffer;
 public:
-	
-	Renderer(size_t capacity);
-	~Renderer();
+    std::vector<Texture*> textures;
+    std::vector<Mesh*> meshes;
+    std::forward_list<Drawable*> objects;
 
-	void render_chunk2d(Chunk2d* chunk, const Chunk2d** chunks); // Generates Mesh and sets it in chunk class. //
+    virtual void draw(DrawContext* draw_context) = 0;
 };
 
-#endif 
+#endif

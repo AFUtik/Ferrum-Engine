@@ -21,7 +21,6 @@ DrawContext::DrawContext(ResourceManager* resource_m, GameContext* game_context)
 	if (shader == nullptr) {
 		std::cerr << "failed to load shader" << std::endl;
 	}
-    
 
     ModelManager* model_m = resource_m->getModelManager();
     entity_renderer = std::make_unique<EntityRenderer>(model_m, game_context->getEntitySystem());

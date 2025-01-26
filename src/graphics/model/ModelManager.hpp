@@ -5,8 +5,10 @@
 #include <memory>
 
 #include "../texture/TextureManager.hpp"
-#include "Model.hpp"
 #include "BakedModel.hpp"
+#include "Model.hpp"
+
+class BakedModel;
 
 class ModelManager {
 private:

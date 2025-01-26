@@ -42,7 +42,6 @@ int WIDTH = 1920;
 int HEIGHT = 1080;
 
 int main(int, char**){
-	
     Window::init(WIDTH, HEIGHT, "Test Window");
 	Events::init();
 

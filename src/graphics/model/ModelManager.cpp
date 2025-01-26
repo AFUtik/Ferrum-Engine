@@ -1,6 +1,5 @@
 #include "../texture/TextureManager.hpp"
 #include "ModelManager.hpp"
-#include "Model.hpp"
 #include "Mesh.hpp"
 
 int attrs[] = { 3,2,0 };

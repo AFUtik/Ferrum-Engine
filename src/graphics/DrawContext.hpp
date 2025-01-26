@@ -5,28 +5,32 @@
 #include <vector>
 #include <memory>
 
-class Camera;
-class Texture;
-class Mesh;
-class Drawable;
-class Shader;
+#include "../game/GameContext.hpp"
 
-class EntityRenderer;
-class ChunkRenderer;
+#include "Camera.hpp"
+#include "Shader.hpp"
+
+#include "ResourceManager.hpp"
+#include "renderer/EntityRenderer.hpp"
+//class ChunkRenderer;
+
 
 class DrawContext {
+private:
+    std::shared_ptr<ResourceManager> resource_m;
+
+    std::unique_ptr<EntityRenderer> entity_renderer;
+    //std::unique_ptr<ChunkRenderer> chunk_renderer;
+    
+    std::unique_ptr<Camera> camera;
+    std::unique_ptr<Shader> shader;
 public:
-    EntityRenderer *entity_renderer;
-    ChunkRenderer *chunk_renderer;
+    DrawContext(ResourceManager* resource_m, GameContext* game_context);
+    // virtual ~DrawContext();
 
-    DrawContext();
-    ~DrawContext();
+    Camera* getCamera();
 
-    Camera *camera;
-    //std::vector<Light*> lights //
-    Shader *shader;
-
-    void draw_all();
+    void render();
 };
 
 #endif

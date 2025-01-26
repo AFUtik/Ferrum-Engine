@@ -6,7 +6,6 @@
 
 #include <stdlib.h>
 
-
 class Mesh {
 private:
 	unsigned int vao;
@@ -17,10 +16,10 @@ private:
 	float* buffer;
 	int index;
 public:
-	Mesh(size_t vertices, const int* attrs);
+	Mesh(size_t vertices, int* attrs);
 	~Mesh();
 
-	void add_vertex(int x, int y, int z, int u, int v);
+	void add_vertex(float x, float y, float z, float u, float v);
 	void generate();
 	void draw(unsigned int primitive);
 };

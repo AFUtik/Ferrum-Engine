@@ -12,14 +12,12 @@ void Texture::flipImageVertically() {
         unsigned char* top_row = image_data + y * row_size;
         unsigned char* bottom_row = image_data + (height - 1 - y) * row_size;
 
-        // Копируем верхнюю строку во временный буфер
         memcpy(temp_row, top_row, row_size);
-        // Меняем строки местами
+
         memcpy(top_row, bottom_row, row_size);
         memcpy(bottom_row, temp_row, row_size);
     }
-
-    free(temp_row);  // Освобождаем временный буфер
+    free(temp_row);
 }
 
 void Texture::bind() {

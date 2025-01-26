@@ -5,7 +5,6 @@
 #include "png.h"
 #include "Texture.hpp"
 
-
 int _png_load(const char* file, int* width, int* height, png_byte **image_data) {
     FILE* f;
     int is_png, bit_depth, color_type, row_bytes;
@@ -123,7 +122,7 @@ int _png_load(const char* file, int* width, int* height, png_byte **image_data) 
     return texture;
 }
 
-Texture* load_texture(std::string filename) {
+Texture* load_texture_png(std::string filename) {
     int width, height;
     png_byte *image_data;
     GLuint texture = _png_load(filename.c_str(), &width, &height, &image_data);

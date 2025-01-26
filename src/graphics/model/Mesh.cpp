@@ -1,14 +1,15 @@
 #include "Mesh.hpp"
 #include <GL/glew.h>
+#include <iostream>
 
-Mesh::Mesh(size_t vertices, const int* attrs) : vertex_size(0), index(0), vertices(vertices) {
+Mesh::Mesh(size_t vertices, int* attrs) : attrs(attrs), vertex_size(0), index(0), vertices(vertices) {
 	for (int i = 0; attrs[i]; i++) {
 		vertex_size += attrs[i];
 	}
 	buffer = new float[vertices*vertex_size];
 }
 
-void Mesh::add_vertex(int x, int y, int z, int u, int v) {
+void Mesh::add_vertex(float x, float y, float z, float u, float v) {
 	buffer[index]   = x;
 	buffer[index+1] = y;
 	buffer[index+2] = z;
@@ -18,11 +19,6 @@ void Mesh::add_vertex(int x, int y, int z, int u, int v) {
 }
 
 void Mesh::generate() {
-	int vertex_size = 0;
-	for (int i = 0; attrs[i]; i++) {
-		vertex_size += attrs[i];
-	}
-
 	glGenVertexArrays(1, &vao);
 	glGenBuffers(1, &vbo);
 

@@ -4,8 +4,8 @@
 #include <GLFW/glfw3.h>
 
 #include "Window.hpp"
-#include "../graphics/Texture.hpp"
-#include "../graphics/Texture_loader.hpp"
+#include "../graphics/texture/Texture.hpp"
+#include "../graphics/texture/Texture_loader.hpp"
 
 GLFWwindow* Window::window;
 Texture* Window::iconTexture;
@@ -19,7 +19,7 @@ int Window::init(int width, int height, const char* title) {
 	glfwWindowHint(GLFW_OPENGL_PROFILE, GLFW_OPENGL_CORE_PROFILE);
 	glfwWindowHint(GLFW_RESIZABLE, GL_TRUE);
 
-	iconTexture = load_texture("E:/Cpp/FerrumEngine/resources/icon.png");
+	iconTexture = load_texture_png("E:/Cpp/FerrumEngine/resources/icon.png");
 	iconTexture->flipImageVertically();
 
 	window = glfwCreateWindow(width, height, "simple window", nullptr, nullptr);

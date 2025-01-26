@@ -2,7 +2,7 @@
 
 #include "GL/glew.h"
 
-Texture::Texture(unsigned int id, int width, int height, unsigned char* image_data) : id(id), width(width), height(height), image_data(image_data) {}
+Texture::Texture(unsigned int success, int width, int height, unsigned char* image_data) : success(success), width(width), height(height), image_data(image_data) {}
 
 void Texture::flipImageVertically() {
     int row_size = width * 4;  // Размер одной строки изображения
@@ -21,10 +21,10 @@ void Texture::flipImageVertically() {
 }
 
 void Texture::bind() {
-	glBindTexture(GL_TEXTURE_2D, id);
+	//glBindTexture(GL_TEXTURE_2D, id);
 }
 
 Texture::~Texture() {
 	free(image_data);
-	glDeleteTextures(1, &id);
+	//glDeleteTextures(1, &id);
 }

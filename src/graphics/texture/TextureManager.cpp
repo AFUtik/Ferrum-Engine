@@ -1,7 +1,11 @@
-#include "Texture_loader.hpp"
+#include "TextureHandler.hpp"
 #include "TextureManager.hpp"
 
 TextureManager::TextureManager(std::string &resource_loc) : resource_location(&resource_loc), texture_location("") {}
+
+const TextureMap& TextureManager::getTextureMap() {
+    return texture_map;
+}
 
 Texture* TextureManager::getTexture(size_t location) {
     return texture_map[location].get();

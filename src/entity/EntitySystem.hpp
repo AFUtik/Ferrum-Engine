@@ -26,7 +26,7 @@ public:
     EntitySystem() {};
     // ~EntitySystem();
 
-    bool createEntity(Entity* entity, size_t id);
+    void createEntity(Entity* entity, size_t id);
 
     void deleteEntity(Entity* entity);
 

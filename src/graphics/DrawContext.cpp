@@ -31,6 +31,7 @@ DrawContext::DrawContext(ResourceManager* resource_m, GameContext* game_context)
 void DrawContext::render() {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
+    shader->use();
     shader->uniformMatrix("projview", camera->getOrthoProjview());
 
     entity_renderer->render(shader.get());

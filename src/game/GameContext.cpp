@@ -6,7 +6,7 @@
 #include "../entity/EntitySystem.hpp"
 
 
-GameContext::GameContext(ResourceManager* resource_m) : resource_m(resource_m) {
+GameContext::GameContext(ResourceManager* resource_m) : resource_m(resource_m), entity_system(new EntitySystem()) {
     
 }
 

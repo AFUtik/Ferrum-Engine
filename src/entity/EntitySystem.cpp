@@ -5,7 +5,7 @@
 #include <iostream>
 
 void EntitySystem::createEntity(Entity* entity, size_t id) {
-	entity_map[0].emplace(entity, std::unique_ptr<Entity>(entity));
+	entity_map[id].emplace(entity, std::unique_ptr<Entity>(entity));
 	entity->id = id;
 	entity->system = this;
 

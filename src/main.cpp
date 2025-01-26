@@ -58,8 +58,6 @@ int main(int, char**){
 	GameContext game_context(resource_m);
 	DrawContext draw_context(resource_m, &game_context);
 
-	std::cout << "test 5" << std::endl;
-
     //Shader* shader = load_shader("resources/shaders/core.vert", "resources/shaders/core.frag");
 	//if (shader == nullptr) {
 	//	std::cerr << "failed to load shader" << std::endl;
@@ -96,23 +94,15 @@ int main(int, char**){
 	camera->zFar = 100.0f;
 	camera->scale = 1.0f;
 	camera->smooth_factor = 1.0f;
-	
-	std::cout << "test 3" << std::endl;
 
     Context* context = new Context();
 	
 	EntitySystem* ent_system = game_context.getEntitySystem();
 
-	std::cout << "test 4" << std::endl;
-
 	PlayerEntity* player = new PlayerEntity();
 	RigidBody* body = player->getPhysicBody();
 
-	std::cout << "test 5" << std::endl;
-
 	ent_system->createEntity(player, PLAYER_ENTITY);
-	
-	std::cout << "test 6" << std::endl;
 
 	while (!Window::isShouldClose()) {
         double currentTime = glfwGetTime();
@@ -169,7 +159,7 @@ int main(int, char**){
 			//ImGui_ImplGlfw_NewFrame();
 			//ImGui::NewFrame();
 
-			// ent_system->update(context->delta_time);
+			ent_system->update(context->delta_time);
 			draw_context.render();
 			
         	//ImGui::ShowDemoWindow();

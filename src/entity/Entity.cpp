@@ -9,6 +9,10 @@ Entity::Entity() : system(nullptr) {
 
 }
 
+size_t Entity::getId() {
+    return id;
+}
+
 RigidBody* Entity::getPhysicBody() {
     return rigid_body.get();
 }

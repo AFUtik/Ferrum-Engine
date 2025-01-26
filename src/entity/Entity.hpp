@@ -21,6 +21,7 @@ public:
     Entity();
     // virtual ~Entity();
 
+    size_t getId();
     glm::vec3 getTransform();
     RigidBody* getPhysicBody();
 

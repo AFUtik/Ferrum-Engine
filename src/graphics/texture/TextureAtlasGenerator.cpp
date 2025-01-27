@@ -3,7 +3,7 @@
 #include "TextureAtlas.hpp"
 #include "Texture.hpp"
 
-TextureAtlas* TextureAtlasGenerator::generateTextureAtlas(unsigned int width, unsigned int height, std::set<size_t> categories) {
+TextureAtlas* TextureAtlasGenerator::generateTextureAtlas(TextureManager* texture_manager, unsigned int width, unsigned int height, std::set<size_t> categories) {
     const TextureMap& tex_map = texture_manager->getTextureMap();
 
     unsigned char* buffer = new unsigned char[width*4*height]; // 4 channels //

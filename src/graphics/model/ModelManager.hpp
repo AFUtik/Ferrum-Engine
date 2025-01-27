@@ -8,8 +8,6 @@
 #include "BakedModel.hpp"
 #include "Model.hpp"
 
-class BakedModel;
-
 class ModelManager {
 private:
     TextureManager* texture_manager;

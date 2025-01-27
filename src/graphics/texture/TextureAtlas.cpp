@@ -3,3 +3,10 @@
 
 #include <GL/glew.h>
 
+Texture* TextureAtlas::getTexture() {
+    return texture;
+}
+
+TextureAtlas::~TextureAtlas() {
+    delete texture;
+}

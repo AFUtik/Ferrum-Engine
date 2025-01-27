@@ -11,9 +11,10 @@ private:
     Texture* texture;
     //size_t index;
 public:
-    TextureAtlas(int size);
+    TextureAtlas(Texture* texture) : texture(texture) {};
     ~TextureAtlas();
 
+    Texture* getTexture();
     void addTexture(Texture* texture);
 
     void init();

@@ -169,8 +169,8 @@ int _png_save(const char* file, int width, int height, png_byte *image_data) {
     png_write_info(png, info);
 
     png_bytep* rowPointers = (png_bytep*)malloc(sizeof(png_bytep) * height);
-    for (int y = 0; y < height; ++y) {
-        rowPointers[y] = image_data + y * width * 4;
+    for (unsigned int y = 0; y < height; ++y) {
+        rowPointers[y] = image_data + (height - 1 - y) * width * 4; // RGBA
     }
     png_write_image(png, rowPointers);
     png_write_end(png, nullptr);
@@ -193,7 +193,7 @@ Texture* load_texture_png(std::string filename) {
     return new Texture(success, width, height, image_data);
 }
 
-bool save_texture_png(Texture* texture, std::string filename) {
+bool save_texture_png(std::string filename, Texture* texture) {
     int width, height;
     png_byte *image_data;
     unsigned int success = _png_save(filename.c_str(), texture->width, texture->height, texture->image_data);

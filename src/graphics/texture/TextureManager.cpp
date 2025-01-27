@@ -3,6 +3,10 @@
 
 TextureManager::TextureManager(std::string &resource_loc) : resource_location(&resource_loc), texture_location("") {}
 
+void TextureManager::changeTextureLocation(std::string location) {
+    texture_location = location;
+}
+
 const TextureMap& TextureManager::getTextureMap() {
     return texture_map;
 }

@@ -5,7 +5,7 @@
 
 #include "Window.hpp"
 #include "../graphics/texture/Texture.hpp"
-#include "../graphics/texture/Texture_loader.hpp"
+#include "../graphics/texture/TextureHandler.hpp"
 
 GLFWwindow* Window::window;
 Texture* Window::iconTexture;

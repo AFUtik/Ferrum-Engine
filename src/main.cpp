@@ -25,13 +25,20 @@
 #include "graphics/model/ModelManager.hpp"
 #include "graphics/model/EntityModel.hpp"
 
+#include "graphics/texture/Texture.hpp"
+#include "graphics/texture/TextureHandler.hpp"
+#include "graphics/texture/TextureAtlas.hpp"
+#include "graphics/texture/TextureAtlasGenerator.hpp"
+
 #include "glm/glm.hpp"
 #include "glm/ext.hpp"
 
 #pragma once
 
 enum Textures {
-	ATLAS_TEXTURE
+	MISSING_TEXTURE,
+	DIRT_TEXTURE,
+	GRASS_TEXTURE
 };
 
 enum Models {
@@ -47,28 +54,18 @@ int main(int, char**){
 
 	ResourceManager* resource_m = new ResourceManager();
 	resource_m->changeResourceLocation("E:/Cpp/FerrumEngine/resources/");
-	
+
 	TextureManager* texture_m = resource_m->getTextureManager();
-	texture_m->loadTexture(ATLAS_TEXTURE, "block.png");
+	texture_m->changeTextureLocation("textures/tiles/");
+	texture_m->loadTexture(MISSING_TEXTURE, "block1.png");
+	texture_m->loadTexture(DIRT_TEXTURE, "block2.png");
+	texture_m->loadTexture(GRASS_TEXTURE, "block3.png");
 	
 	ModelManager* model_m = resource_m->getModelManager();
-	model_m->bakeModel(EntityModel(), PLAYER_ENTITY, ATLAS_TEXTURE);
-	
+	model_m->bakeModel(EntityModel(), PLAYER_ENTITY, GRASS_TEXTURE);
+
 	GameContext game_context(resource_m);
 	DrawContext draw_context(resource_m, &game_context);
-
-    //Shader* shader = load_shader("resources/shaders/core.vert", "resources/shaders/core.frag");
-	//if (shader == nullptr) {
-	//	std::cerr << "failed to load shader" << std::endl;
-	//	Window::terminate();
-	//	return 1;
-	//}
-	
-	//Chunks* chunks = new Chunks(5, 5);
-	//
-	//for (size_t i = 0; i < chunks->volume; ++i) {
-	//	renderer.render_chunk2d(chunks->chunks[i], (const Chunk**) chunks->chunks);
-	//}
 
 	glClearColor(0.6f, 0.62f, 0.65f, 1);
 
@@ -170,7 +167,10 @@ int main(int, char**){
 			context->time_accu -= context->delta_time;
 		}
     }
-
-    Window::terminate();
+	//Texture* texture = TextureAtlasGenerator::generateTextureAtlas(texture_m, 512, 512, 
+	//{MISSING_TEXTURE, DIRT_TEXTURE, GRASS_TEXTURE}
+	//)->getTexture();
+	//save_texture_png("E:/Cpp/FerrumEngine/resources/textures/atlases/atlas.png", texture);
+	Window::terminate();
     return 0;
 }

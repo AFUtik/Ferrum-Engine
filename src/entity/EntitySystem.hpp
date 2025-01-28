@@ -13,9 +13,11 @@
 
 #include "Entity.hpp"
 
+typedef std::map<size_t, std::map<Entity*, std::unique_ptr<Entity>>> EntityMap;
+
 class EntitySystem {
 protected:
-    std::map<size_t, std::map<Entity*, std::unique_ptr<Entity>>> entity_map;
+    EntityMap entity_map;
 	std::set<Entity*> m_entitiesToDestroy;
     //static std::vector<Entity> registered;
 
@@ -26,7 +28,7 @@ public:
     EntitySystem() {};
     // ~EntitySystem();
 
-    void createEntity(Entity* entity, size_t id);
+    void createEntity(Entity* entity);
 
     void deleteEntity(Entity* entity);
 

@@ -18,7 +18,7 @@ protected:
 
     friend class EntitySystem;
 public:
-    Entity();
+    Entity(size_t id);
     // virtual ~Entity();
 
     size_t getId();

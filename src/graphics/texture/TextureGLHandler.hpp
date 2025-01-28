@@ -1,11 +1,12 @@
-#ifndef TEXTUREBINDER_HPP
-#define TEXTUREBINDER_HPP
+#ifndef TEXTUREHANDLER_HPP
+#define TEXTUREHANDLER_HPP
 
+class GLTexture;
 class Texture;
 
-class TextureGLBinder {
+class TextureGLHandler {
 public:
-    static void createTexture(Texture* texture);
+    static GLTexture* createTexture(Texture* texture);
 };
 
 #endif

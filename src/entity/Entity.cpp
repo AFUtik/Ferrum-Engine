@@ -5,7 +5,7 @@
 //
 //}
 
-Entity::Entity() : system(nullptr) {
+Entity::Entity(size_t id) : system(nullptr), id(id) {
 
 }
 

@@ -3,7 +3,7 @@
 
 #include "Model.hpp"
 
-static std::vector<float> vertices = {
+static float vertices[] = {
     -0.5f, -0.5f, 0.0f, 0.0f, 0.0f,
 	 0.5f,  0.5f, 0.0f, 1.0f, 1.0f,
 	-0.5f,  0.5f, 0.0f, 0.0f, 1.0f,
@@ -14,7 +14,13 @@ static std::vector<float> vertices = {
 
 class EntityModel : public Model {
 public:
-    EntityModel() : Model(vertices) {};
+    EntityModel() : Model() {
+		vertexBufferData.vertices_list = vertices;
+		vertexBufferData.vertex_size = 5;
+		vertexBufferData.list_size = 6;
+		vertexBufferData.attributes_list = attrs;
+		vertexBufferData.attributes_list_size = 3;
+	};
 };
 
 #endif

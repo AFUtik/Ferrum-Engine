@@ -1,26 +1,18 @@
 #ifndef MESH_HPP
 #define MESH_HPP
 
-#define PLANE 6
-#define CUBE 36
-
 #include <stdlib.h>
+#include "../VertexBufferDescriptor.hpp"
 
 class Mesh {
 private:
+	VertexBufferDescriptor m_vertexBufferData;
 	unsigned int vao;
 	unsigned int vbo;
-	size_t vertices;
-	int* attrs;
-	int vertex_size;
-	float* buffer;
-	int index;
 public:
-	Mesh(size_t vertices, int* attrs);
+	Mesh(const VertexBufferDescriptor &data);
 	~Mesh();
 
-	void add_vertex(float x, float y, float z, float u, float v);
-	void generate();
 	void draw(unsigned int primitive);
 };
 

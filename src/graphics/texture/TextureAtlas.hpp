@@ -1,23 +1,25 @@
 #ifndef TEXTUREATLAS_HPP
 #define TEXTUREATLAS_HPP
 
-#include <vector>
+#include <unordered_map>
+#include <memory>
+
+#include "TextureAtlasPos.hpp"
 
 class Texture;
 
 class TextureAtlas {
 private:
-    unsigned int texture_id;
+    std::unordered_map<size_t, std::unique_ptr<TextureAtlasPos>> atlas_pos_m;
     Texture* texture;
-    //size_t index;
+
+    friend class TextureAtlasGenerator;
 public:
     TextureAtlas(Texture* texture) : texture(texture) {};
     ~TextureAtlas();
 
+    TextureAtlasPos* getAtlasPos(size_t location);
     Texture* getTexture();
-    void addTexture(Texture* texture);
-
-    void init();
 };
 
 #endif

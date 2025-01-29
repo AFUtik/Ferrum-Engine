@@ -1,5 +1,5 @@
-#ifndef TEXTUREHANDLER_HPP
-#define TEXTUREHANDLER_HPP
+#ifndef TEXTUREGLHANDLER_HPP
+#define TEXTUREGLHANDLER_HPP
 
 class GLTexture;
 class Texture;

@@ -1,7 +1,5 @@
 #include "Texture.hpp"
 
-#include "GL/glew.h"
-
 Texture::Texture(bool loaded, int width, int height, unsigned char* image_data) : loaded(loaded), width(width), height(height), image_data(image_data) {}
 
 void Texture::flipImageVertically() {

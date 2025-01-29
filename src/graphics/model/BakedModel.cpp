@@ -4,7 +4,7 @@
 
 #define GL_TRIANGLES 4
 
-Texture* BakedModel::getTexture() {
+GLTexture* BakedModel::getTexture() {
     return texture;
 }
 

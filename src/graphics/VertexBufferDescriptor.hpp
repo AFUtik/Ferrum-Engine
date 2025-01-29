@@ -1,9 +1,6 @@
 #ifndef VERTEXBUFFERDESCRIPTOR_HPP
 #define VERTEXBUFFERDESCRIPTOR_HPP
 
-#include <string>
-#include <glm/glm.hpp>
-
 class VertexBufferDescriptor {
 public:
     float* vertices_list = nullptr;

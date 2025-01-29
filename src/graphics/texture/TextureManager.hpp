@@ -26,6 +26,7 @@ public:
     const GLTextureMap& getGLTextureMap();
 
     Texture* getTexture(size_t location);
+    GLTexture* getGLTexture(size_t location);
 
     void loadTexture(size_t location, std::string texture_name);
 };

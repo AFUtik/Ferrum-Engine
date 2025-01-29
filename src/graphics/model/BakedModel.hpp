@@ -2,19 +2,20 @@
 #define BAKEDMODEL_HPP
 
 class Mesh;
-class Texture;
+class GLTexture;
+class TextureAtlasPos;
 
 class BakedModel {
 protected:
     Mesh* mesh;
-    Texture* texture;
+    GLTexture* texture;
 
     friend class ModelManager;
 public:
-    BakedModel(Mesh* mesh, Texture* texture) : mesh(mesh), texture(texture) {};
+    BakedModel(Mesh* mesh, GLTexture* texture) : mesh(mesh), texture(texture) {};
     ~BakedModel();
 
-    Texture* getTexture();
+    GLTexture* getTexture();
 
     void render();
 };

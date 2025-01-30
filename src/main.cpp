@@ -38,7 +38,8 @@
 enum Textures {
 	MISSING_TEXTURE,
 	DIRT_TEXTURE,
-	GRASS_TEXTURE
+	GRASS_TEXTURE,
+	BASIC_ATLAS_TEXTURE
 };
 
 enum Models {
@@ -49,20 +50,20 @@ int WIDTH = 1920;
 int HEIGHT = 1080;
 
 int main(int, char**){
-    Window::init(WIDTH, HEIGHT, "Test Window");
+    Window::init(WIDTH, HEIGHT, "Test Window", false);
 	Events::init();
 
-	ResourceManager* resource_m = new ResourceManager();
-	resource_m->changeResourceLocation("E:/Cpp/FerrumEngine/resources/");
+	ResourceManager* resource_m = new ResourceManager("E:/Cpp/FerrumEngine/resources/");
 
 	TextureManager* texture_m = resource_m->getTextureManager();
 	texture_m->changeTextureLocation("textures/tiles/");
 	texture_m->loadTexture(MISSING_TEXTURE, "block1.png");
-	texture_m->loadTexture(DIRT_TEXTURE, "block2.png");
-	texture_m->loadTexture(GRASS_TEXTURE, "block3.png");
+	texture_m->loadTexture(DIRT_TEXTURE, "block3.png");
+	texture_m->loadTexture(GRASS_TEXTURE, "block2.png");
+	texture_m->loadAtlas(BASIC_ATLAS_TEXTURE, {MISSING_TEXTURE, DIRT_TEXTURE, GRASS_TEXTURE});
 	
 	ModelManager* model_m = resource_m->getModelManager();
-	model_m->bakeModel(EntityModel(), PLAYER_ENTITY, GRASS_TEXTURE);
+	model_m->bakeModel(EntityModel(), PLAYER_ENTITY, GRASS_TEXTURE, BASIC_ATLAS_TEXTURE);
 
 	GameContext game_context(resource_m);
 	DrawContext draw_context(resource_m, &game_context);
@@ -98,7 +99,7 @@ int main(int, char**){
 	PlayerEntity* player = new PlayerEntity();
 	RigidBody* body = player->getPhysicBody();
 
-	ent_system->createEntity(player, PLAYER_ENTITY);
+	ent_system->createEntity(player);
 
 	while (!Window::isShouldClose()) {
         double currentTime = glfwGetTime();

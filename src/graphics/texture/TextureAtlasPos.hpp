@@ -6,7 +6,7 @@ public:
     float u1, u2;
     float v1, v2;
 
-    TextureAtlasPos();
+    TextureAtlasPos() {};
 };
 
 #endif

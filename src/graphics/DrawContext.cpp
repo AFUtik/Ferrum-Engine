@@ -1,6 +1,7 @@
 #include "ResourceManager.hpp"
 #include "renderer/EntityRenderer.hpp"
 //#include "renderer/ChunkRenderer.hpp"
+#include "../game/GameContext.hpp"
 #include "DrawContext.hpp"
 
 
@@ -9,7 +10,7 @@
 
 #include "../entity/EntitySystem.hpp"
 
-#include "../game/GameContext.hpp"
+
 #include <iostream>
 
 #include <GLFW/glfw3.h>	
@@ -23,8 +24,8 @@ DrawContext::DrawContext(ResourceManager* resource_m, GameContext* game_context)
 	}
 
     ModelManager* model_m = resource_m->getModelManager();
-    entity_renderer = std::make_unique<EntityRenderer>(model_m, game_context->getEntitySystem());
-
+    TextureManager* tex_m = resource_m->getTextureManager();
+    entity_renderer = std::make_unique<EntityRenderer>(tex_m, model_m, game_context->getEntitySystem());
 }
 
 void DrawContext::render() {

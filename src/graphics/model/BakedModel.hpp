@@ -7,15 +7,16 @@ class TextureAtlasPos;
 
 class BakedModel {
 protected:
+    //GLTexture* gl_texture;
     Mesh* mesh;
-    GLTexture* texture;
 
     friend class ModelManager;
 public:
-    BakedModel(Mesh* mesh, GLTexture* texture) : mesh(mesh), texture(texture) {};
+    BakedModel(Mesh* mesh) : mesh(mesh) {};
     ~BakedModel();
 
-    GLTexture* getTexture();
+    //TextureAtlasPos* getAtlasPos();
+    //GLTexture* getGLTexture();
 
     void render();
 };

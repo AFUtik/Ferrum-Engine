@@ -12,7 +12,7 @@ Texture* Window::iconTexture;
 int Window::width = 0;
 int Window::height = 0;
 
-int Window::init(int width, int height, const char* title) {
+int Window::init(int width, int height, const char* title, bool vsync) {
 	glfwInit();
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MAJOR, 3);
 	glfwWindowHint(GLFW_CONTEXT_VERSION_MINOR, 3);
@@ -37,6 +37,7 @@ int Window::init(int width, int height, const char* title) {
 	glfwSetWindowIcon(window, 1, &icon);
 
 	glfwMakeContextCurrent(window);
+	if(vsync) glfwSwapInterval(0);
 	glewExperimental = GL_TRUE;
 	if (glewInit() != GLEW_OK) {
 		std::cout << "Failed to initialize GLEW" << std::endl;

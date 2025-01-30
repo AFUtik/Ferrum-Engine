@@ -1,22 +1,19 @@
 #ifndef ENTITYRENDERER_HPP
 #define ENTITYRENDERER_HPP
 
-//#include "Renderer.hpp"
+#include "ObjectRenderer.hpp"
 //#include <vector>
 
-class Shader;
 class EntitySystem;
-class ModelManager;
 
-class EntityRenderer {
+class EntityRenderer : public ObjectRenderer {
 private:
-    ModelManager* model_m;
     EntitySystem* entity_s;
 public:
-    EntityRenderer(ModelManager* model_m, EntitySystem* entity_s);
-    //virtual ~EntityRenderer();
+    EntityRenderer(TextureManager* tex_m, ModelManager* model_m, EntitySystem* entity_s) : 
+    ObjectRenderer(tex_m, model_m), entity_s(entity_s) {};
 
-    void render(Shader* shader);
+    void render(Shader* shader) override;
 };
 
 #endif

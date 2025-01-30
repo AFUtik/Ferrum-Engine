@@ -4,9 +4,9 @@
 
 #define GL_TRIANGLES 4
 
-GLTexture* BakedModel::getTexture() {
-    return texture;
-}
+//TextureAtlasPos* BakedModel::getAtlasPos() {
+//    return atlas_pos;
+//}
 
 void BakedModel::render() {
     mesh->draw(GL_TRIANGLES);

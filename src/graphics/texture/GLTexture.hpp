@@ -7,7 +7,7 @@ private:
 
     friend class TextureGLHandler;
 public:
-    GLTexture();
+    GLTexture() {};
     ~GLTexture();
 
     void bind();

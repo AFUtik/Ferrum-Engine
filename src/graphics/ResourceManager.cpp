@@ -1,6 +1,6 @@
 #include "ResourceManager.hpp"
 
-ResourceManager::ResourceManager() : 
+ResourceManager::ResourceManager(std::string location) : location(location),
 texture_m(new TextureManager(location)) {
     model_m = std::make_unique<ModelManager>(texture_m.get());
 }

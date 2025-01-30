@@ -15,7 +15,7 @@ private:
 
     std::string location;
 public:
-    ResourceManager();
+    ResourceManager(std::string location);
 
     std::string getLocation() const;
     void changeResourceLocation(std::string resource_location);

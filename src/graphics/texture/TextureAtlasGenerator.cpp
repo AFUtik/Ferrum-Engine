@@ -1,12 +1,6 @@
-#include "TextureManager.hpp"
 #include "TextureAtlasGenerator.hpp"
-#include "TextureAtlas.hpp"
-#include "Texture.hpp"
 
-#include <memory>
-
-TextureAtlas* TextureAtlasGenerator::generateTextureAtlas(TextureManager* texture_manager, unsigned int width, unsigned int height, std::vector<size_t> categories) {
-    const TextureMap& tex_map = texture_manager->getTextureMap();
+TextureAtlas* TextureAtlasGenerator::generateTextureAtlas(TextureMap& tex_map, unsigned int width, unsigned int height, const std::set<size_t> &categories) {
     TextureAtlas* texture_atlas = new TextureAtlas(nullptr);
 
     unsigned char* buffer = new unsigned char[width*4*height]; // 4 channels //
@@ -19,7 +13,7 @@ TextureAtlas* TextureAtlasGenerator::generateTextureAtlas(TextureManager* textur
         int tilesize = width / tex->width;
         float uvsize = 1.0f / (float)tilesize;
         atlas_pos->u1 = (id % tilesize) * uvsize;
-        atlas_pos->v1 = (1 + static_cast<float>(id) / static_cast<float>(tilesize)) * uvsize;
+        atlas_pos->v1 = id / tilesize * uvsize;
         atlas_pos->u2 = atlas_pos->u1 + uvsize;
         atlas_pos->v2 = atlas_pos->v1 + uvsize;
         texture_atlas->atlas_pos_m[category] = std::unique_ptr<TextureAtlasPos>(atlas_pos);
@@ -35,6 +29,8 @@ TextureAtlas* TextureAtlasGenerator::generateTextureAtlas(TextureManager* textur
             offset_x -= width;
             offset_y += tex->height;
         }
+
+        id++;
     }
     texture_atlas->texture = new Texture(true, width, height, buffer);
     return texture_atlas;

@@ -18,7 +18,6 @@
 class DrawContext {
 private:
     std::shared_ptr<ResourceManager> resource_m;
-
     std::unique_ptr<EntityRenderer> entity_renderer;
     //std::unique_ptr<ChunkRenderer> chunk_renderer;
     

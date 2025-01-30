@@ -1,21 +1,22 @@
-#ifndef OBJECTRENDERER_HPP
-#define OBJECTRENDERER_HPP
+#ifndef OBJECTRENDERERDISPATCHER_HPP
+#define OBJECTRENDERERDISPATCHER_HPP
 
 class Shader;
 class GLTexture;
 class TextureManager;
 class ModelManager;
+class BakedModel;
 
-class ObjectRenderer {
+#include "glm/glm.hpp"
+
+class ObjectRendererDispatcher {
 protected:
-    GLTexture* atlas;
-
     TextureManager* texture_m;
     ModelManager* model_m;
 public:
     ObjectRenderer(TextureManager* textureManager, ModelManager* modelManager) : texture_m(textureManager), model_m(modelManager) {};
 
-    virtual void renderObject(Shader* shader) = 0;
+    virtual void renderObject(BakedModel* model, glm::mat4 &model_mat) = 0;
 
     void useAtlas(size_t location) const;
 };

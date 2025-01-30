@@ -1,7 +1,7 @@
 #ifndef MESH_HPP
 #define MESH_HPP
 
-#include "../VertexBufferDescriptor.hpp"
+#include "VertexBufferDescriptor.hpp"
 
 class Mesh {
 private:

@@ -2,7 +2,7 @@
 #define VERTEXINFO_HPP
 
 #include <vector>
-#include "../VertexBufferDescriptor.hpp"
+#include "VertexBufferDescriptor.hpp"
 
 static unsigned int attrs[] = { 3,2,0 };
 

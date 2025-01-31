@@ -37,7 +37,7 @@ int Window::init(int width, int height, const char* title, bool vsync) {
 	glfwSetWindowIcon(window, 1, &icon);
 
 	glfwMakeContextCurrent(window);
-	if(vsync) glfwSwapInterval(0);
+	if(!vsync) glfwSwapInterval(0);
 	glewExperimental = GL_TRUE;
 	if (glewInit() != GLEW_OK) {
 		std::cout << "Failed to initialize GLEW" << std::endl;

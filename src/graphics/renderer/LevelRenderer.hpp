@@ -1,7 +1,6 @@
 #ifndef LEVELRENDERER_HPP
 #define LEVELRENDERER_HPP
 
-#include <set>
 #include "ObjectRenderer.hpp"
 #include "RenderCnunkInfo.hpp"
 //#include <vector>

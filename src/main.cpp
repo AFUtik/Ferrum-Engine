@@ -14,9 +14,9 @@
 
 #include "physics/RigidBody.hpp"
 #include "game/GameContext.hpp"
-#include "entity/Entity.hpp"
-#include "entity/PlayerEntity.hpp"
-#include "entity/EntitySystem.hpp"
+#include "game/entity/Entity.hpp"
+#include "game/entity/PlayerEntity.hpp"
+#include "game/entity/EntitySystem.hpp"
 #include "graphics/DrawContext.hpp"
 #include "graphics/Camera.hpp"
 #include "graphics/ResourceManager.hpp"
@@ -50,7 +50,7 @@ int WIDTH = 1920;
 int HEIGHT = 1080;
 
 int main(int, char**){
-    Window::init(WIDTH, HEIGHT, "Test Window", true);
+    Window::init(WIDTH, HEIGHT, "Test Window", false);
 	Events::init();
 
 	ResourceManager* resource_m = new ResourceManager("E:/Cpp/FerrumEngine/resources/");

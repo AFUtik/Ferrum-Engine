@@ -23,7 +23,7 @@ public:
 	Mesh* mesh;
 
 	unsigned char biome;
-	bool isDirty = true;
+	bool isDirty = false;
 	
 	Chunk(int x, int y);
 	~Chunk();

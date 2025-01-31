@@ -2,8 +2,7 @@
 
 //#include "../graphics/ChunkRenderer.hpp"
 #include "GameContext.hpp"
-#include "../entity/Entity.hpp"
-#include "../entity/EntitySystem.hpp"
+#include "entity/Entity.hpp"
 
 
 GameContext::GameContext(ResourceManager* resource_m) : resource_m(resource_m), entity_system(new EntitySystem()), chunks(new Chunks()) {

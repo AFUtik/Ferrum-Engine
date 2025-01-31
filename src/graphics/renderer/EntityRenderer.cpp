@@ -1,6 +1,6 @@
 #include "EntityRenderer.hpp"
 
-#include "../../entity/EntitySystem.hpp"
+#include "../../game/entity/EntitySystem.hpp"
 
 #include "../model/Mesh.hpp"
 #include "../model/BakedModel.hpp"

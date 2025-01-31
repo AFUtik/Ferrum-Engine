@@ -1,9 +1,7 @@
 #ifndef ENTITYRENDERER_HPP
 #define ENTITYRENDERER_HPP
 
-#include <set>
 #include "ObjectRenderer.hpp"
-//#include <vector>
 
 class EntitySystem;
 

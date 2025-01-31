@@ -1,4 +1,4 @@
-#include "../../game/Chunk.hpp"
+#include "../../game/level/Chunk.hpp"
 #include "RenderCnunkInfo.hpp"
 
 RenderChunk* RenderChunkInfo::getRenderChunk(Chunk* chunk) {

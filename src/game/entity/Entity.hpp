@@ -7,7 +7,7 @@
 
 class EntitySystem;
 
-#include "../physics/RigidBody.hpp"
+#include "../../physics/RigidBody.hpp"
 
 class Entity {
 protected:

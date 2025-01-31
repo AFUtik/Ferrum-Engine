@@ -2,9 +2,9 @@
 
 #include "../texture/TextureManager.hpp"
 
-#include "../../game/Tile.hpp"
-#include "../../game/Chunk.hpp"
-#include "../../game/Chunks.hpp"
+#include "../../game/level/Tile.hpp"
+#include "../../game/level/Chunk.hpp"
+#include "../../game/level/Chunks.hpp"
 
 #include "../model/VertexBufferDescriptor.hpp"
 
@@ -43,6 +43,7 @@ void LevelRenderer::render() {
     texture_m->getGLTexture(3)->bind();
     for(size_t i = 0; i < chunks->volume; i++) {
         Chunk* chunk = chunks->chunks[i];
+
         RenderChunk* render_chunk = render_chunk_info->getRenderChunk(chunk);
         Mesh* mesh = nullptr;
 

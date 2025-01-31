@@ -15,6 +15,7 @@ public:
 	Chunks();
 	~Chunks();
 
+	void load();
 	void set(int w, int h);
 	GridCollider* getGridCollider(int x, int y);
 	

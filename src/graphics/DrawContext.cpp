@@ -1,15 +1,7 @@
-#include "ResourceManager.hpp"
-#include "renderer/EntityRenderer.hpp"
-//#include "renderer/ChunkRenderer.hpp"
-#include "../game/GameContext.hpp"
 #include "DrawContext.hpp"
-
 
 #include "Shader.hpp"
 #include "Camera.hpp"
-
-#include "../entity/EntitySystem.hpp"
-
 
 #include <iostream>
 

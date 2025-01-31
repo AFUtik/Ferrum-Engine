@@ -3,14 +3,9 @@
 
 #include "memory"
 
-
 #include "../graphics/ResourceManager.hpp"
-
-#include "../entity/EntitySystem.hpp"
-#include "../game/Chunks.hpp"
-
-//class Chunks;
-
+#include "entity/EntitySystem.hpp"
+#include "level/Chunks.hpp"
 class GameContext {
 private:
     std::shared_ptr<ResourceManager> resource_m;

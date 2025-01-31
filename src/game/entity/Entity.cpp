@@ -1,9 +1,4 @@
-#include "../physics/RigidBody.hpp"
 #include "Entity.hpp"
-
-//Entity::Entity(size_t id) : id(id) {
-//
-//}
 
 Entity::Entity(size_t id) : system(nullptr), id(id) {
 

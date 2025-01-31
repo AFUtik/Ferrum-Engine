@@ -1,23 +1,25 @@
 #ifndef OBJECTRENDERER_HPP
 #define OBJECTRENDERER_HPP
 
+class Mesh;
+class BakedModel;
 class Shader;
 class GLTexture;
 class TextureManager;
 class ModelManager;
 
+#include "glm/glm.hpp"
+
 class ObjectRenderer {
 protected:
-    GLTexture* atlas;
+    GLTexture* basic_atlas;
+    Shader* shader;
 
-    TextureManager* texture_m;
-    ModelManager* model_m;
 public:
-    ObjectRenderer(TextureManager* textureManager, ModelManager* modelManager) : texture_m(textureManager), model_m(modelManager) {};
+    ObjectRenderer(Shader* shader) : shader(shader) {};
 
-    virtual void renderObject(Shader* shader) = 0;
-
-    void useAtlas(size_t location) const;
+    void render(Mesh* mesh, glm::mat4 &transform);
+    void render(BakedModel* model, glm::mat4 &transform);
 };
 
 #endif

@@ -12,9 +12,10 @@ public:
 	unsigned int w, h;
 	Chunk** chunks;
 	size_t volume;
-	Chunks(int w, int h);
+	Chunks();
 	~Chunks();
 
+	void set(int w, int h);
 	GridCollider* getGridCollider(int x, int y);
 	
 	//block* get(int x, int y, int z);

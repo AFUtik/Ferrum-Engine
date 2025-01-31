@@ -7,6 +7,27 @@ Mesh::Mesh(const VertexBufferDescriptor& data) {
 	m_vertexBufferData = data;
 }
 
+Mesh& Mesh::xyz(float x, float y, float z) {
+	m_vertexBufferData.vertices_list[index] = x;
+	m_vertexBufferData.vertices_list[index+1] = y;
+	m_vertexBufferData.vertices_list[index+2] = z;
+	index += 3;
+	return *this;
+}
+
+Mesh& Mesh::uv(float u, float v) {
+	m_vertexBufferData.vertices_list[index] = u;
+	m_vertexBufferData.vertices_list[index+1] = v;
+	index += 2;
+	return *this;
+}
+
+Mesh& Mesh::uv2(float u) {
+	m_vertexBufferData.vertices_list[index] = u;
+	index++;
+	return *this;
+}
+
 void Mesh::generate() {
 	glGenVertexArrays(1, &vao);
 	glGenBuffers(1, &vbo);

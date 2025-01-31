@@ -10,7 +10,11 @@ using namespace glm;
 #include <math.h>
 #include <limits.h>
 
-Chunks::Chunks(int w, int h) : w(w), h(h) {
+Chunks::Chunks() {
+
+}
+
+void Chunks::set(int w, int h) {
 	volume = w * h;
 	chunks = new Chunk * [volume];
 
@@ -20,6 +24,9 @@ Chunks::Chunks(int w, int h) : w(w), h(h) {
 			chunks[index] = new Chunk(x, y);
 		}
 	}
+
+	this->w = w; 
+	this->h = h;
 }
 
 Chunks::~Chunks() {

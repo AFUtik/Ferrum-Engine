@@ -25,7 +25,11 @@ DrawContext::DrawContext(ResourceManager* resource_m, GameContext* game_context)
 
     ModelManager* model_m = resource_m->getModelManager();
     TextureManager* tex_m = resource_m->getTextureManager();
-    entity_renderer = std::make_unique<EntityRenderer>(tex_m, model_m, game_context->getEntitySystem());
+    ObjectRenderer* obj_renderer = new ObjectRenderer(shader.get());
+
+    object_renderer = std::unique_ptr<ObjectRenderer>(obj_renderer);
+    entity_renderer = std::make_unique<EntityRenderer>(obj_renderer, tex_m, model_m, game_context->getEntitySystem());
+    level_renderer = std::make_unique<LevelRenderer>(obj_renderer, tex_m, game_context->getChunks());
 }
 
 void DrawContext::render() {
@@ -34,7 +38,8 @@ void DrawContext::render() {
     shader->use();
     shader->uniformMatrix("projview", camera->getOrthoProjview());
 
-    entity_renderer->render(shader.get());
+    entity_renderer->render();
+    level_renderer->render();
 
     //chunk_renderer->render(game_context);
 }

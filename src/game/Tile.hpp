@@ -2,6 +2,7 @@
 #define TILE_HPP
 
 struct Tile {
+    unsigned int texture_id;
     unsigned int id;
 };
 

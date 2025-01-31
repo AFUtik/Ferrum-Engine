@@ -11,15 +11,20 @@
 #include "Shader.hpp"
 
 #include "ResourceManager.hpp"
+
+#include "renderer/ObjectRenderer.hpp"
 #include "renderer/EntityRenderer.hpp"
+#include "renderer/LevelRenderer.hpp"
 //class ChunkRenderer;
 
 
 class DrawContext {
 private:
     std::shared_ptr<ResourceManager> resource_m;
+
+    std::unique_ptr<ObjectRenderer> object_renderer;
     std::unique_ptr<EntityRenderer> entity_renderer;
-    //std::unique_ptr<ChunkRenderer> chunk_renderer;
+    std::unique_ptr<LevelRenderer> level_renderer;
     
     std::unique_ptr<Camera> camera;
     std::unique_ptr<Shader> shader;

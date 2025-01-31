@@ -50,10 +50,12 @@ int WIDTH = 1920;
 int HEIGHT = 1080;
 
 int main(int, char**){
-    Window::init(WIDTH, HEIGHT, "Test Window", false);
+    Window::init(WIDTH, HEIGHT, "Test Window", true);
 	Events::init();
 
 	ResourceManager* resource_m = new ResourceManager("E:/Cpp/FerrumEngine/resources/");
+
+	std::cout << "test 1" << std::endl;
 
 	TextureManager* texture_m = resource_m->getTextureManager();
 	texture_m->changeTextureLocation("textures/tiles/");
@@ -62,11 +64,22 @@ int main(int, char**){
 	texture_m->loadTexture(GRASS_TEXTURE, "block2.png");
 	texture_m->loadAtlas(BASIC_ATLAS_TEXTURE, {MISSING_TEXTURE, DIRT_TEXTURE, GRASS_TEXTURE});
 	
+	std::cout << "test 2" << std::endl;
+
 	ModelManager* model_m = resource_m->getModelManager();
 	model_m->bakeModel(EntityModel(), PLAYER_ENTITY, GRASS_TEXTURE, BASIC_ATLAS_TEXTURE);
 
+	std::cout << "test 3" << std::endl;
+
 	GameContext game_context(resource_m);
 	DrawContext draw_context(resource_m, &game_context);
+
+	std::cout << "test 4" << std::endl;
+
+	Chunks* chunks = game_context.getChunks();
+	chunks->set(3, 3);
+
+	std::cout << "test 5" << std::endl;
 
 	glClearColor(0.6f, 0.62f, 0.65f, 1);
 
@@ -75,12 +88,12 @@ int main(int, char**){
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
-    //IMGUI_CHECKVERSION();
-	//ImGui::CreateContext();
-	//ImGuiIO& io = ImGui::GetIO(); (void)io;
-	//ImGui::StyleColorsDark();
-	//ImGui_ImplGlfw_InitForOpenGL(Window::window, true);
-	//ImGui_ImplOpenGL3_Init("#version 330");
+    IMGUI_CHECKVERSION();
+	ImGui::CreateContext();
+	ImGuiIO& io = ImGui::GetIO(); (void)io;
+	ImGui::StyleColorsDark();
+	ImGui_ImplGlfw_InitForOpenGL(Window::window, true);
+	ImGui_ImplOpenGL3_Init("#version 330");
 
     //Camera* camera = new Camera(glm::vec3(0, 0, 1), glm::radians(90.0f));
 	Camera* camera = draw_context.getCamera();
@@ -100,6 +113,8 @@ int main(int, char**){
 	RigidBody* body = player->getPhysicBody();
 
 	ent_system->createEntity(player);
+
+	std::cout << "test 6" << std::endl;
 
 	while (!Window::isShouldClose()) {
         double currentTime = glfwGetTime();
@@ -152,16 +167,16 @@ int main(int, char**){
 			}
 
 			// IMGUI WINDOW // 
-        	//ImGui_ImplOpenGL3_NewFrame();
-			//ImGui_ImplGlfw_NewFrame();
-			//ImGui::NewFrame();
+        	ImGui_ImplOpenGL3_NewFrame();
+			ImGui_ImplGlfw_NewFrame();
+			ImGui::NewFrame();
 
 			ent_system->update(context->delta_time);
 			draw_context.render();
 			
-        	//ImGui::ShowDemoWindow();
-			//ImGui::Render();
-			//ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
+        	ImGui::ShowDemoWindow();
+			ImGui::Render();
+			ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
 
         	Window::swapBuffers();
 			Events::pullEvents();

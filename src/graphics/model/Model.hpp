@@ -2,7 +2,7 @@
 #define VERTEXINFO_HPP
 
 #include <vector>
-#include "VertexBufferDescriptor.hpp"
+#include "VertexBuffer.hpp"
 
 static unsigned int attrs[] = { 3,2,0 };
 
@@ -10,7 +10,7 @@ class ModelManager;
 
 class Model {
 protected:
-    VertexBufferDescriptor vertexBufferData;
+    VertexBuffer vertexBufferData;
 
     friend class ModelManager;
 public:

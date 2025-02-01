@@ -23,7 +23,7 @@
 #include "graphics/texture/TextureManager.hpp"
 #include "graphics/model/BakedModel.hpp"
 #include "graphics/model/ModelManager.hpp"
-#include "graphics/model/EntityModel.hpp"
+#include "graphics/model/PlaneModel.hpp"
 
 #include "graphics/texture/Texture.hpp"
 #include "graphics/texture/TextureHandler.hpp"
@@ -67,7 +67,7 @@ int main(int, char**){
 	std::cout << "test 2" << std::endl;
 
 	ModelManager* model_m = resource_m->getModelManager();
-	model_m->bakeModel(EntityModel(), PLAYER_ENTITY, GRASS_TEXTURE, BASIC_ATLAS_TEXTURE);
+	model_m->bakeModel(PlaneModel(), PLAYER_ENTITY, GRASS_TEXTURE, BASIC_ATLAS_TEXTURE);
 
 	std::cout << "test 3" << std::endl;
 
@@ -84,7 +84,7 @@ int main(int, char**){
 	glClearColor(0.6f, 0.62f, 0.65f, 1);
 
 	glEnable(GL_DEPTH_TEST);
-	glEnable(GL_CULL_FACE);
+	glDisable(GL_CULL_FACE);
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 

@@ -3,29 +3,41 @@
 
 #include <iostream>
 
-Mesh::Mesh(const VertexBufferDescriptor& data) {
-	m_vertexBufferData = data;
+Mesh::Mesh(VertexBuffer *data) : m_vertexBufferData(data) {
+
 }
 
 Mesh& Mesh::xyz(float x, float y, float z) {
-	m_vertexBufferData.vertices_list[index] = x;
-	m_vertexBufferData.vertices_list[index+1] = y;
-	m_vertexBufferData.vertices_list[index+2] = z;
-	index += 3;
+	m_vertexBufferData->vertex_arr[buffer_index] = x;
+	m_vertexBufferData->vertex_arr[buffer_index+1] = y;
+	m_vertexBufferData->vertex_arr[buffer_index+2] = z;
+	buffer_index+=3;
 	return *this;
 }
 
 Mesh& Mesh::uv(float u, float v) {
-	m_vertexBufferData.vertices_list[index] = u;
-	m_vertexBufferData.vertices_list[index+1] = v;
-	index += 2;
+	m_vertexBufferData->vertex_arr[buffer_index] = u;
+	m_vertexBufferData->vertex_arr[buffer_index+1] = v;
+	buffer_index+=2;
 	return *this;
 }
 
 Mesh& Mesh::uv2(float u) {
-	m_vertexBufferData.vertices_list[index] = u;
-	index++;
+	m_vertexBufferData->vertex_arr[buffer_index] = u;
+	buffer_index++;
 	return *this;
+}
+
+Mesh& Mesh::index(unsigned int i1, unsigned int i2, unsigned int i3) {
+	m_vertexBufferData->index_arr[ind_index] = ind_offset+i1;
+	m_vertexBufferData->index_arr[ind_index+1] = ind_offset+i2;
+	m_vertexBufferData->index_arr[ind_index+2] = ind_offset+i3;
+	ind_index+=3;
+	return *this;
+}
+
+void Mesh::endIndex() {
+	ind_offset=(buffer_index/m_vertexBufferData->vertex_size);
 }
 
 void Mesh::generate() {
@@ -36,16 +48,19 @@ void Mesh::generate() {
 	glBindBuffer(GL_ARRAY_BUFFER, vbo);
 	glBufferData(
 	GL_ARRAY_BUFFER, 
-	sizeof(float) * m_vertexBufferData.list_size * m_vertexBufferData.vertex_size, 
-	m_vertexBufferData.vertices_list, 
+	sizeof(GLfloat) * m_vertexBufferData->vertex_count * m_vertexBufferData->vertex_size, 
+	m_vertexBufferData->vertex_arr, 
 	GL_STATIC_DRAW
 	);
 
-	// attributes
+	glGenBuffers(1, &ebo);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
+	glBufferData(GL_ELEMENT_ARRAY_BUFFER, m_vertexBufferData->indices_size * sizeof(GLuint), m_vertexBufferData->index_arr, GL_STATIC_DRAW);
+
 	int offset = 0;
-	for (int i = 0; m_vertexBufferData.attributes_list[i]; i++) {
-		int size = m_vertexBufferData.attributes_list[i];
-		glVertexAttribPointer(i, size, GL_FLOAT, GL_FALSE, m_vertexBufferData.vertex_size * sizeof(float), (GLvoid*)(offset * sizeof(float)));
+	for (int i = 0; m_vertexBufferData->attributes_arr[i]; i++) {
+		int size = m_vertexBufferData->attributes_arr[i];
+		glVertexAttribPointer(i, size, GL_FLOAT, GL_FALSE, m_vertexBufferData->vertex_size * sizeof(GLfloat), (GLvoid*)(offset * sizeof(float)));
 		glEnableVertexAttribArray(i);
 		offset += size;
 	}
@@ -56,19 +71,20 @@ void Mesh::generate() {
 
 void Mesh::draw(unsigned int primitive) {
 	glBindVertexArray(vao);
-	glDrawArrays(primitive, 0, m_vertexBufferData.list_size);
+	glDrawElements(GL_TRIANGLES, m_vertexBufferData->indices_size, GL_UNSIGNED_INT, 0);
 	glBindVertexArray(0);
 }
 
 Mesh::~Mesh() {
 	glDeleteVertexArrays(1, &vao);
 	glDeleteBuffers(1, &vbo);
+	glDeleteBuffers(1, &ebo);
 }
 
 void Mesh::setUV(float min_u, float max_u, float min_v, float max_v) {
-	for(int i = 0; i < m_vertexBufferData.list_size; i++) {
-		float &u = m_vertexBufferData.vertices_list[3+i*m_vertexBufferData.vertex_size];
-		float &v = m_vertexBufferData.vertices_list[4+i*m_vertexBufferData.vertex_size];
+	for(int i = 0; i < m_vertexBufferData->vertex_count; i++) {
+		float &u = m_vertexBufferData->vertex_arr[3+i*m_vertexBufferData->vertex_size];
+		float &v = m_vertexBufferData->vertex_arr[4+i*m_vertexBufferData->vertex_size];
 
 		if(u==0.0f) u = min_u;
 		else u = max_u;

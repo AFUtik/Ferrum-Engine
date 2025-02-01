@@ -13,11 +13,8 @@ private:
     std::unordered_map<size_t, std::unique_ptr<BakedModel>> baked_models;
 public:
     ModelManager(TextureManager* tex_manager) : texture_manager(tex_manager) {}
-    // virtual ~ModelManager();
 
     BakedModel* getModel(size_t location);
-
-    //void bakeModel(Model model, size_t location, size_t texture_location);
     void bakeModel(Model model, size_t location, size_t texture_location, size_t atlas_location);
 };
 

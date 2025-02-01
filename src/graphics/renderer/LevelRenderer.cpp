@@ -6,33 +6,38 @@
 #include "../../game/level/Chunk.hpp"
 #include "../../game/level/Chunks.hpp"
 
-#include "../model/VertexBufferDescriptor.hpp"
+#include "../model/VertexBuffer.hpp"
+#include "../model/VertexInfo.hpp"
 
 #include "glm/ext.hpp"
 #include <iostream>
 
-unsigned int attrs[] = {3, 2, 0};
-
 Mesh* LevelRenderer::render(Chunk* chunk) {
-    VertexBufferDescriptor vertexBuffer;
-    vertexBuffer.attributes_list = attrs;
-    vertexBuffer.vertex_size = 5;
-    vertexBuffer.list_size = CHUNK_VOL*6;
-    vertexBuffer.vertices_list = new float[CHUNK_VOL*5*6];
+    VertexBuffer *vertexBuffer = new VertexBuffer();
+    vertexBuffer->attributes_arr = attrs;
+    vertexBuffer->attributes_size = 3;
+
+    vertexBuffer->vertex_arr = new float[CHUNK_VOL*VERTEX_SIZE*4];
+    vertexBuffer->vertex_count = CHUNK_VOL*4;
+    vertexBuffer->vertex_count = VERTEX_SIZE;
+
+    vertexBuffer->index_arr = new unsigned int[CHUNK_VOL*SQUARE_INDEX_SIZE];
+    vertexBuffer->indices_size = CHUNK_VOL*SQUARE_INDEX_SIZE;
 
     TextureAtlas* texture_atlas = texture_m->getAtlas(3);
     Mesh* mesh = new Mesh(vertexBuffer);
     for(int y = 0; y < CHUNK_H; y++) {
         for(int x = 0; x < CHUNK_W; x++) {
             Tile& tile = chunk->tiles[(y*CHUNK_W)+x];
+            if(tile.id==0) continue;
+
             TextureAtlasPos* uv_pos = texture_atlas->getAtlasPos(tile.id);
 
             mesh->xyz(x-0.5f, y-0.5f, 0.0f).uv(uv_pos->u1, uv_pos->v1);
+            mesh->xyz(x-0.5f, y+0.5f, 0.0f).uv(uv_pos->u1, uv_pos->v2);
             mesh->xyz(x+0.5f, y+0.5f, 0.0f).uv(uv_pos->u2, uv_pos->v2);
-            mesh->xyz(x-0.5f, y+0.5, 0.0f).uv(uv_pos->u1, uv_pos->v2);
-            mesh->xyz(x-0.5f, y-0.5f, 0.0f).uv(uv_pos->u1, uv_pos->v1);
             mesh->xyz(x+0.5f, y-0.5f, 0.0f).uv(uv_pos->u2, uv_pos->v1);
-            mesh->xyz(x+0.5f, y+0.5f, 0.0f).uv(uv_pos->u2, uv_pos->v2);
+            mesh->index(0, 1, 3).index(1, 2, 3).endIndex();
         }
     }
     mesh->generate();

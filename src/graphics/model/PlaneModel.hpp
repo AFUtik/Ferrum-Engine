@@ -19,15 +19,17 @@ static unsigned int indices[] = {
 class PlaneModel : public Model {
 public:
     PlaneModel() : Model() {
-		vertexBufferData->vertices_list = vertices;
-		vertexBufferData->vertex_size = 5;
-		vertexBufferData->list_size = 4;
-		
-		vertexBufferData->attributes_list = attrs;
-		vertexBufferData->attributes_list_size = 3;
+		vertexBufferData = new VertexBuffer();
 
-		vertexBufferData->indices_list = indices;
-		vertexBufferData->indices_list_size = 6;
+		vertexBufferData->vertex_arr = vertices;
+		vertexBufferData->vertex_size = VERTEX_SIZE;
+		vertexBufferData->vertex_count = 4;
+		
+		vertexBufferData->attributes_arr = attrs;
+		vertexBufferData->attributes_size = 3;
+
+		vertexBufferData->index_arr = indices;
+		vertexBufferData->indices_size = SQUARE_INDEX_SIZE;
 	};
 };
 

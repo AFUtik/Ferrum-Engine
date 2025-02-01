@@ -14,6 +14,8 @@
 
 #include "physics/RigidBody.hpp"
 #include "game/GameContext.hpp"
+#include "game/level/Tiles.hpp"
+#include "game/entity/Entities.hpp"
 #include "game/entity/Entity.hpp"
 #include "game/entity/PlayerEntity.hpp"
 #include "game/entity/EntitySystem.hpp"
@@ -25,6 +27,7 @@
 #include "graphics/model/ModelManager.hpp"
 #include "graphics/model/PlaneModel.hpp"
 
+#include "graphics/texture/Textures.hpp"
 #include "graphics/texture/Texture.hpp"
 #include "graphics/texture/TextureHandler.hpp"
 #include "graphics/texture/TextureAtlas.hpp"
@@ -34,17 +37,6 @@
 #include "glm/ext.hpp"
 
 #pragma once
-
-enum Textures {
-	MISSING_TEXTURE,
-	DIRT_TEXTURE,
-	GRASS_TEXTURE,
-	BASIC_ATLAS_TEXTURE
-};
-
-enum Models {
-	PLAYER_ENTITY
-};
 
 int WIDTH = 1920;
 int HEIGHT = 1080;
@@ -62,12 +54,15 @@ int main(int, char**){
 	texture_m->loadTexture(MISSING_TEXTURE, "block1.png");
 	texture_m->loadTexture(DIRT_TEXTURE, "block3.png");
 	texture_m->loadTexture(GRASS_TEXTURE, "block2.png");
-	texture_m->loadAtlas(BASIC_ATLAS_TEXTURE, {MISSING_TEXTURE, DIRT_TEXTURE, GRASS_TEXTURE});
+	texture_m->loadAtlas(ALL_TEXTURES_ATLAS, {MISSING_TEXTURE, DIRT_TEXTURE, GRASS_TEXTURE});
 	
 	std::cout << "test 2" << std::endl;
 
 	ModelManager* model_m = resource_m->getModelManager();
-	model_m->bakeModel(PlaneModel(), PLAYER_ENTITY, GRASS_TEXTURE, BASIC_ATLAS_TEXTURE);
+	model_m->bakeModel(PlaneModel(), PLAYER_ENTITY, GRASS_TEXTURE, ALL_TEXTURES_ATLAS);
+
+	model_m->createModel(DIRT_TILE, DIRT_TEXTURE, ALL_TEXTURES_ATLAS);
+	model_m->createModel(GRASS_TILE, GRASS_TEXTURE, ALL_TEXTURES_ATLAS);
 
 	std::cout << "test 3" << std::endl;
 
@@ -111,6 +106,9 @@ int main(int, char**){
 
 	PlayerEntity* player = new PlayerEntity();
 	RigidBody* body = player->getPhysicBody();
+	body->pixel_perfect = true;
+	camera->follow(body->pixel_position);
+
 
 	ent_system->createEntity(player);
 

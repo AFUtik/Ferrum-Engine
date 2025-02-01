@@ -15,6 +15,7 @@ protected:
     GLTexture* basic_atlas;
     Shader* shader;
 
+    unsigned int primitive;
 public:
     ObjectRenderer(Shader* shader) : shader(shader) {};
 

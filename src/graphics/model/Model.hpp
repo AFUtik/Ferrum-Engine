@@ -1,20 +1,22 @@
 #ifndef VERTEXINFO_HPP
 #define VERTEXINFO_HPP
 
-#include <vector>
 #include "VertexBuffer.hpp"
-
-static unsigned int attrs[] = { 3,2,0 };
+#include "VertexInfo.hpp"
 
 class ModelManager;
+class TextureAtlasPos;
 
 class Model {
 protected:
-    VertexBuffer vertexBufferData;
+    VertexBuffer *vertexBufferData;
+    TextureAtlasPos* tex_atlas_pos;
 
     friend class ModelManager;
 public:
     Model() {};
+
+    inline TextureAtlasPos* getUVPos() {return tex_atlas_pos;};
 };
 
 #endif

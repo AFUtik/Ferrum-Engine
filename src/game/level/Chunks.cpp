@@ -36,15 +36,15 @@ Chunks::~Chunks() {
 	delete[] chunks;
 }
 
-GridCollider* Chunks::getGridCollider(int x, int y) {
-	int cx = x / CHUNK_W;
-	int cy = x / CHUNK_H;
-	if (x < 0) cx--;
- 	if (y < 0) cy--;
-	if (cx < 0 || cy < 0 || cx >= w || cy >= h)
- 		return nullptr;
-	return chunks[cy*h + cx]->grid_collider;
-}
+//GridCollider* Chunks::getGridCollider(int x, int y) {
+//	int cx = x / CHUNK_W;
+//	int cy = x / CHUNK_H;
+//	if (x < 0) cx--;
+// 	if (y < 0) cy--;
+//	if (cx < 0 || cy < 0 || cx >= w || cy >= h)
+// 		return nullptr;
+//	return chunks[cy*h + cx]->grid_collider;
+//}
 //
 //block* Chunks::get(int x, int y, int z) {
 //	int cx = x / CHUNK_W;

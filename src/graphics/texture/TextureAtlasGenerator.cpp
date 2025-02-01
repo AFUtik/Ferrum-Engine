@@ -3,6 +3,7 @@
 TextureAtlas* TextureAtlasGenerator::generateTextureAtlas(TextureMap& tex_map, unsigned int width, unsigned int height, const std::set<size_t> &categories) {
     TextureAtlas* texture_atlas = new TextureAtlas(nullptr);
 
+    //unsigned int padding = 4;
     unsigned char* buffer = new unsigned char[width*4*height]; // 4 channels //
     unsigned int offset_x = 0, offset_y = 0;
     int id = 0;
@@ -10,7 +11,8 @@ TextureAtlas* TextureAtlasGenerator::generateTextureAtlas(TextureMap& tex_map, u
         Texture* tex = tex_map.at(category).get();
         TextureAtlasPos* atlas_pos = new TextureAtlasPos();
         
-        int tilesize = width / tex->width;
+        float padding_uvsize = 2.0f / (float)width;
+        int tilesize = width / (tex->width);
         float uvsize = 1.0f / (float)tilesize;
         atlas_pos->u1 = (id % tilesize) * uvsize;
         atlas_pos->v1 = id / tilesize * uvsize;
@@ -29,7 +31,6 @@ TextureAtlas* TextureAtlasGenerator::generateTextureAtlas(TextureMap& tex_map, u
             offset_x -= width;
             offset_y += tex->height;
         }
-
         id++;
     }
     texture_atlas->texture = new Texture(true, width, height, buffer);

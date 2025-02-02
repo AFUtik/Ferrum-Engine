@@ -5,8 +5,8 @@ RenderChunk* RenderChunkInfo::getRenderChunk(Chunk* chunk) {
     return render_chunks[chunk].get();
 }
 
-void RenderChunkInfo::loadChunk(Chunk* chunk, Mesh* mesh) {
-    render_chunks[chunk] = std::make_unique<RenderChunk>(mesh);
+void RenderChunkInfo::loadChunk(Chunk* chunk, RenderChunk* render_chunk) {
+    render_chunks[chunk] = std::unique_ptr<RenderChunk>(render_chunk);
 }
 
 void RenderChunkInfo::unloadChunk(Chunk* chunk) {

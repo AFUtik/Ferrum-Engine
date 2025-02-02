@@ -23,7 +23,13 @@ Mesh* LevelRenderer::makeMesh(Chunk* chunk) {
     vertexBuffer->index_arr = new unsigned int[CHUNK_VOL*SQUARE_INDEX_SIZE];
     vertexBuffer->indices_size = CHUNK_VOL*SQUARE_INDEX_SIZE;
 
-    Mesh* mesh = new Mesh(vertexBuffer);
+    std::cout << "test chunk renderer mesh 1" << std::endl; 
+    InstanceBuffer *instanceBuffer = new InstanceBuffer();
+    std::cout << "test chunk renderer mesh 2" << std::endl; 
+    instanceBuffer->mats.push_back(glm::translate(glm::mat4(1.0f), glm::vec3(chunk->x, chunk->y, 0.0f)));
+    std::cout << "test chunk renderer mesh 3" << std::endl; 
+
+    Mesh* mesh = new Mesh(vertexBuffer, instanceBuffer);
     for(int y = 0; y < CHUNK_H; y++) {
         for(int x = 0; x < CHUNK_W; x++) {
             Tile& tile = chunk->tiles[(y*CHUNK_W)+x];
@@ -38,7 +44,9 @@ Mesh* LevelRenderer::makeMesh(Chunk* chunk) {
             mesh->index(0, 1, 3).index(1, 2, 3).endIndex();
         }
     }
+    std::cout << "test chunk renderer mesh 4" << std::endl; 
     mesh->generate();
+    std::cout << "test chunk renderer mesh 5" << std::endl; 
     return mesh;
 }
 
@@ -51,12 +59,18 @@ void LevelRenderer::render() {
         Mesh* mesh = nullptr;
 
         if(chunk->isDirty || render_chunk==nullptr) {
+            std::cout << "test chunk renderer 1" << std::endl; 
             mesh = makeMesh(chunk);
-            render_chunk_info->loadChunk(chunk, mesh);
+            std::cout << "test chunk renderer 2" << std::endl; 
+
+            RenderChunk* render_chunk = new RenderChunk(mesh);
+            std::cout << "test chunk renderer 3" << std::endl; 
+
+            render_chunk_info->loadChunk(chunk, render_chunk);
+            std::cout << "test chunk renderer 4" << std::endl; 
         } else {
             mesh = render_chunk->getMesh();
         }
-        glm::mat4 transform = glm::translate(glm::mat4(1.0f), glm::vec3(chunk->x, chunk->y, 0.0f));
-        object_renderer->render(mesh, transform);
+        object_renderer->render(mesh);
     }
 }

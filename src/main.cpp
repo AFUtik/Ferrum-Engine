@@ -60,9 +60,10 @@ int main(int, char**){
 
 	ModelManager* model_m = resource_m->getModelManager();
 	model_m->bakeModel(PlaneModel(), PLAYER_ENTITY, GRASS_TEXTURE, ALL_TEXTURES_ATLAS);
-
 	model_m->createModel(DIRT_TILE, DIRT_TEXTURE, ALL_TEXTURES_ATLAS);
 	model_m->createModel(GRASS_TILE, GRASS_TEXTURE, ALL_TEXTURES_ATLAS);
+
+	BakedModel* baked_model = model_m->getModel(0);
 
 	std::cout << "test 3" << std::endl;
 
@@ -109,8 +110,11 @@ int main(int, char**){
 	body->pixel_perfect = true;
 	camera->follow(body->pixel_position);
 
-
+	//PlayerEntity* player2 = new PlayerEntity();
 	ent_system->createEntity(player);
+	for(int i = 0; i < 256; i++) {
+		ent_system->createEntity(new PlayerEntity());
+	}
 
 	std::cout << "test 6" << std::endl;
 

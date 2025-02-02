@@ -19,8 +19,8 @@ protected:
 public:
     ObjectRenderer(Shader* shader) : shader(shader) {};
 
-    void render(Mesh* mesh, glm::mat4 &transform);
-    void render(BakedModel* model, glm::mat4 &transform);
+    void render(Mesh* mesh);
+    void render(BakedModel* model);
 };
 
 #endif

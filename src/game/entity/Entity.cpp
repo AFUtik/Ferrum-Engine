@@ -12,7 +12,7 @@ RigidBody* Entity::getPhysicBody() {
     return rigid_body.get();
 }
 
-glm::vec3 Entity::getTransform() {
+const glm::vec3& Entity::getTransform() {
     return rigid_body->pixel_perfect ? rigid_body->pixel_position : rigid_body->position;
 }
 

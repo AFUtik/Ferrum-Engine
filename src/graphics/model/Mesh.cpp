@@ -1,9 +1,10 @@
 #include "Mesh.hpp"
-#include <GL/glew.h>
 
+#include <GL/glew.h>
+#include <vector>
 #include <iostream>
 
-Mesh::Mesh(VertexBuffer *data) : m_vertexBufferData(data) {
+Mesh::Mesh(VertexBuffer *data, InstanceBuffer *instance_data) : m_vertexBufferData(data), m_instanceBufferData(instance_data) {
 
 }
 
@@ -44,6 +45,8 @@ void Mesh::generate() {
 	glGenVertexArrays(1, &vao);
 	glGenBuffers(1, &vbo);
 
+	std::cout << "add mesh 1" << std::endl;
+
 	glBindVertexArray(vao);
 	glBindBuffer(GL_ARRAY_BUFFER, vbo);
 	glBufferData(
@@ -58,28 +61,57 @@ void Mesh::generate() {
 	glBufferData(GL_ELEMENT_ARRAY_BUFFER, m_vertexBufferData->indices_size * sizeof(GLuint), m_vertexBufferData->index_arr, GL_STATIC_DRAW);
 
 	int offset = 0;
-	for (int i = 0; m_vertexBufferData->attributes_arr[i]; i++) {
+	int i = 0;
+	while(m_vertexBufferData->attributes_arr[i]) {
 		int size = m_vertexBufferData->attributes_arr[i];
 		glVertexAttribPointer(i, size, GL_FLOAT, GL_FALSE, m_vertexBufferData->vertex_size * sizeof(GLfloat), (GLvoid*)(offset * sizeof(float)));
 		glEnableVertexAttribArray(i);
 		offset += size;
+		i++;
 	}
+	
+	glGenBuffers(1, &instance_vbo);
+	glBindBuffer(GL_ARRAY_BUFFER, instance_vbo);
+	glBufferData(GL_ARRAY_BUFFER, 2 + m_instanceBufferData->getInstancesCount() * sizeof(glm::mat4), m_instanceBufferData->mats.data(), GL_DYNAMIC_DRAW);
+
+	for (int j = 0; j < 4; j++) {
+    	glEnableVertexAttribArray(j + i);
+    	glVertexAttribPointer(j + i, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4), (void*)(sizeof(glm::vec4) * j));
+    	glVertexAttribDivisor(j + i, 1);
+	} 
 
 	glBindVertexArray(0);
 }
 
+void Mesh::expandInstanceBuffer() {
+	glBindBuffer(GL_ARRAY_BUFFER, instance_vbo);
+	glBufferData(GL_ARRAY_BUFFER, m_instanceBufferData->getInstancesCount() * sizeof(glm::mat4), m_instanceBufferData->mats.data(), GL_DYNAMIC_DRAW);
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+}
+
+void Mesh::updateInstanceBuffer() {
+	glBindBuffer(GL_ARRAY_BUFFER, instance_vbo);
+    glBufferData(GL_ARRAY_BUFFER, m_instanceBufferData->getInstancesCount() * sizeof(glm::mat4), m_instanceBufferData->mats.data(), GL_DYNAMIC_DRAW);
+    glBindBuffer(GL_ARRAY_BUFFER, 0);
+}
+
+void Mesh::updateInstanceBuffer(int index, glm::mat4 &mat) {
+	glBindBuffer(GL_ARRAY_BUFFER, instance_vbo);
+	void* ptr = glMapBufferRange(GL_ARRAY_BUFFER, index * sizeof(glm::mat4), sizeof(glm::mat4),
+	                             GL_MAP_WRITE_BIT | GL_MAP_UNSYNCHRONIZED_BIT);
+	if (ptr) {
+	    memcpy(ptr, &mat, sizeof(glm::mat4));
+	    glUnmapBuffer(GL_ARRAY_BUFFER);
+	}
+	glBindBuffer(GL_ARRAY_BUFFER, 0);
+}
 
 void Mesh::draw(unsigned int primitive) {
 	glBindVertexArray(vao);
-	glDrawElements(GL_TRIANGLES, m_vertexBufferData->indices_size, GL_UNSIGNED_INT, 0);
+	glDrawElementsInstanced(GL_TRIANGLES, m_vertexBufferData->indices_size, GL_UNSIGNED_INT, 0, m_instanceBufferData->getInstancesCount());
 	glBindVertexArray(0);
 }
 
-Mesh::~Mesh() {
-	glDeleteVertexArrays(1, &vao);
-	glDeleteBuffers(1, &vbo);
-	glDeleteBuffers(1, &ebo);
-}
 
 void Mesh::setUV(float min_u, float max_u, float min_v, float max_v) {
 	for(int i = 0; i < m_vertexBufferData->vertex_count; i++) {
@@ -91,6 +123,13 @@ void Mesh::setUV(float min_u, float max_u, float min_v, float max_v) {
 		if(v==0.0f) v = min_v;
 		else v = max_v;
 	}
+}
+
+Mesh::~Mesh() {
+	glDeleteVertexArrays(1, &vao);
+	glDeleteBuffers(1, &vbo);
+	glDeleteBuffers(1, &ebo);
+	glDeleteBuffers(1, &instance_vbo);
 }
 
 //void Mesh::add_vertex(float x, float y, float z, float u, float v) {

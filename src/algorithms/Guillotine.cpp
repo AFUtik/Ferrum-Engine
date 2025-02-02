@@ -1,5 +1,29 @@
 #include "Guillotine.hpp"
 
+
+void GuillotinePacker::splitRectangle(const Rectangle& freeRect, const Rectangle& usedRect) {
+    // area to the right //
+    if (freeRect.width > usedRect.width) {
+        freeRectangles.push_back(Rectangle(
+            freeRect.x + usedRect.width,
+            freeRect.y,
+            freeRect.width - usedRect.width,
+            freeRect.height
+        ));
+    }
+
+    // area at the bottom //
+    if (freeRect.height > usedRect.height) {
+        freeRectangles.push_back(Rectangle(
+            freeRect.x,
+            freeRect.y + usedRect.height,
+            usedRect.width,
+            freeRect.height - usedRect.height
+        ));
+    }
+}
+
+
 bool GuillotinePacker::pack(Rectangle& tile) {
     auto bestIt = freeRectangles.end();
     for (auto it = freeRectangles.begin(); it != freeRectangles.end(); ++it) {
@@ -15,29 +39,8 @@ bool GuillotinePacker::pack(Rectangle& tile) {
     tile.x = usedRect.x;
     tile.y = usedRect.y;
 
-    splitRectangle(*bestIt, usedRect);
+    Rectangle temp = *bestIt;
     freeRectangles.erase(bestIt);
+    splitRectangle(temp, usedRect);
     return true;
-}
-
-void GuillotinePacker::splitRectangle(const Rectangle& freeRect, const Rectangle& usedRect) {
-    // area to the right //
-    if (freeRect.width > usedRect.width) {
-        freeRectangles.push_back(Rectangle(
-            freeRect.x + usedRect.width,
-            freeRect.y,
-            freeRect.width - usedRect.width,
-            freeRect.height
-        ));
-    }
-    
-    // area at the bottom //
-    if (freeRect.height > usedRect.height) {
-        freeRectangles.push_back(Rectangle(
-            freeRect.x,
-            freeRect.y + usedRect.height,
-            usedRect.width,
-            freeRect.height - usedRect.height
-        ));
-    }
 }

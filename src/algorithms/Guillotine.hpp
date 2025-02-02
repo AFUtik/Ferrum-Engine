@@ -4,13 +4,13 @@
 #include <vector>
 
 // The algorithm below is designed to pack textures into a Texture Atlas.
-
 struct Rectangle {
-    int x, y;
-    int width, height;
+    unsigned int x, y;
+    unsigned int width, height;
+    size_t data;
 
     Rectangle(int x = 0, int y = 0, int width = 0, int height = 0)
-        : x(x), y(y), width(width), height(height) {}
+        : x(x), y(y), width(width), height(height){}
 
     inline bool canFit(int tileWidth, int tileHeight) const {
         return width >= tileWidth && height >= tileHeight;
@@ -18,6 +18,11 @@ struct Rectangle {
 };
 
 class GuillotinePacker {
+private:
+    int atlasWidth, atlasHeight;
+    std::vector<Rectangle> freeRectangles;
+    
+    void splitRectangle(const Rectangle& freeRect, const Rectangle& usedRect);
 public:
     GuillotinePacker(int initialWidth, int initialHeight)
         : atlasWidth(initialWidth), atlasHeight(initialHeight) {
@@ -28,11 +33,6 @@ public:
 
     inline int getAtlasWidth() const { return atlasWidth; }
     inline int getAtlasHeight() const { return atlasHeight; }
-private:
-    void splitRectangle(const Rectangle& freeRect, const Rectangle& usedRect);
-
-    int atlasWidth, atlasHeight;
-    std::vector<Rectangle> freeRectangles;
 };
 
 #endif

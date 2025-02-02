@@ -34,7 +34,7 @@ void TextureManager::loadTexture(size_t location, std::string texture_name) {
 }
 
 void TextureManager::loadAtlas(size_t location, std::set<size_t> locations) {
-    TextureAtlas* texture_atlas = TextureAtlasGenerator::generateTextureAtlas(texture_map, 512, 512, locations);
+    TextureAtlas* texture_atlas = TextureAtlasGenerator::generateTextureAtlas(texture_map, locations);
     if(texture_atlas != nullptr) atlas_map[location] = std::unique_ptr<TextureAtlas>(texture_atlas);
 
     GLTexture *gl_texture = TextureGLHandler::createTexture(texture_atlas->getTexture());

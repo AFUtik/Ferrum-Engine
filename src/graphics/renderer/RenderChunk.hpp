@@ -12,6 +12,7 @@ public:
     RenderChunk(Mesh* mesh) : mesh(mesh) {};
 
     Mesh* getMesh();
+    void setMesh(Mesh *mesh);
     void setNotDirty();
 };
 

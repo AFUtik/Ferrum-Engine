@@ -14,7 +14,7 @@ public:
 
     RenderChunk* getRenderChunk(Chunk* chunk);
 
-    void loadChunk(Chunk* chunk, Mesh* mesh);
+    void loadChunk(Chunk* chunk, RenderChunk* render_chunk);
     void unloadChunk(Chunk* chunk);
 };
 

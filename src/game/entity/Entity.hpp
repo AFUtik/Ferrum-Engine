@@ -22,7 +22,7 @@ public:
     // virtual ~Entity();
 
     size_t getId();
-    glm::vec3 getTransform();
+    const glm::vec3& getTransform();
     RigidBody* getPhysicBody();
 
     void onUpdate(float delta);

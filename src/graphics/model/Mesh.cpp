@@ -72,8 +72,7 @@ void Mesh::generate() {
 	
 	glGenBuffers(1, &instance_vbo);
 	glBindBuffer(GL_ARRAY_BUFFER, instance_vbo);
-	glBufferData(GL_ARRAY_BUFFER, 2 + m_instanceBufferData->getInstancesCount() * sizeof(glm::mat4), m_instanceBufferData->mats.data(), GL_DYNAMIC_DRAW);
-
+	glBufferData(GL_ARRAY_BUFFER, m_instanceBufferData->getInstancesCount() * sizeof(glm::mat4), m_instanceBufferData->mats.data(), GL_DYNAMIC_DRAW);
 	for (int j = 0; j < 4; j++) {
     	glEnableVertexAttribArray(j + i);
     	glVertexAttribPointer(j + i, 4, GL_FLOAT, GL_FALSE, sizeof(glm::mat4), (void*)(sizeof(glm::vec4) * j));
@@ -83,15 +82,9 @@ void Mesh::generate() {
 	glBindVertexArray(0);
 }
 
-void Mesh::expandInstanceBuffer() {
-	glBindBuffer(GL_ARRAY_BUFFER, instance_vbo);
-	glBufferData(GL_ARRAY_BUFFER, m_instanceBufferData->getInstancesCount() * sizeof(glm::mat4), m_instanceBufferData->mats.data(), GL_DYNAMIC_DRAW);
-	glBindBuffer(GL_ARRAY_BUFFER, 0);
-}
-
 void Mesh::updateInstanceBuffer() {
 	glBindBuffer(GL_ARRAY_BUFFER, instance_vbo);
-    glBufferData(GL_ARRAY_BUFFER, m_instanceBufferData->getInstancesCount() * sizeof(glm::mat4), m_instanceBufferData->mats.data(), GL_DYNAMIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER,  m_instanceBufferData->getInstancesCount() * sizeof(glm::mat4), m_instanceBufferData->mats.data(), GL_DYNAMIC_DRAW);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 

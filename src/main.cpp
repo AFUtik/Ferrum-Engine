@@ -42,7 +42,7 @@ int WIDTH = 1920;
 int HEIGHT = 1080;
 
 int main(int, char**){
-    Window::init(WIDTH, HEIGHT, "Test Window", false);
+    Window::init(WIDTH, HEIGHT, "Test Window", true);
 	Events::init();
 
 	ResourceManager* resource_m = new ResourceManager("E:/Cpp/FerrumEngine/resources/");
@@ -112,8 +112,10 @@ int main(int, char**){
 
 	//PlayerEntity* player2 = new PlayerEntity();
 	ent_system->createEntity(player);
-	for(int i = 0; i < 256; i++) {
-		ent_system->createEntity(new PlayerEntity());
+	for(int i = 0; i < 255; i++) {
+		PlayerEntity *new_player = new PlayerEntity();
+		new_player->getPhysicBody()->apply_direction(glm::linearRand(glm::vec2(-0.2f), glm::vec2(0.2f)));
+		ent_system->createEntity(new_player);
 	}
 
 	std::cout << "test 6" << std::endl;

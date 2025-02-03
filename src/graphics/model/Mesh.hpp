@@ -34,7 +34,6 @@ public:
 	inline VertexBuffer* getVertexBuffer() {return m_vertexBufferData.get();}
 	inline InstanceBuffer* getInstanceBuffer() {return m_instanceBufferData.get();}
 
-	void expandInstanceBuffer();
 	void updateInstanceBuffer(int index, glm::mat4 &mat);
 	void updateInstanceBuffer();
 };

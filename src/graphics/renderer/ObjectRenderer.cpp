@@ -10,4 +10,5 @@ void ObjectRenderer::render(Mesh* mesh) {
 
 void ObjectRenderer::render(BakedModel* model) {
     model->render();
+
 }

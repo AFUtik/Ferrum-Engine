@@ -7,8 +7,3 @@
 void ObjectRenderer::render(Mesh* mesh) {
     mesh->draw(4);
 }
-
-void ObjectRenderer::render(BakedModel* model) {
-    model->render();
-
-}

@@ -16,10 +16,8 @@ protected:
 public:
     BakedModel(Mesh* mesh) : mesh(mesh) {};
     ~BakedModel();
-    
-    void clearInstances();
-    void updateInstances(int size);
-    void updateInstance(int index, glm::mat4 &transform);
+
+    Mesh* getMesh();
     void render();
 };
 

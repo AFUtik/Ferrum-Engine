@@ -20,7 +20,6 @@ public:
     ObjectRenderer(Shader* shader) : shader(shader) {};
 
     void render(Mesh* mesh);
-    void render(BakedModel* model);
 };
 
 #endif

@@ -1,24 +1,28 @@
 #ifndef MESH_HPP
 #define MESH_HPP
 
+#define INSTANCE_DATA_LENGTH (16+2) // MATRIX4X4 + VEC2 //
+#define MAX_INSTANCES 2000
+
 #include <memory>
 
 #include "VertexBuffer.hpp"
-#include "InstanceBuffer.hpp"
 
 class Mesh {
 private:
 	std::unique_ptr<VertexBuffer> m_vertexBufferData;
-	std::unique_ptr<InstanceBuffer> m_instanceBufferData;
 	unsigned int vao;
 	unsigned int vbo;
 	unsigned int ebo;
 	unsigned int instance_vbo;
+	unsigned int instance_count = 0;
 	unsigned int buffer_index = 0;
 	unsigned int ind_index = 0;
 	unsigned int ind_offset = 0;
+
+	static constexpr size_t INSTANCE_MEMORY_SIZE = INSTANCE_DATA_LENGTH * sizeof(float);
 public:
-	Mesh(VertexBuffer *data, InstanceBuffer *instance_data);
+	Mesh(VertexBuffer *data);
 	~Mesh();
 
 	Mesh& xyz(float x, float y, float z);
@@ -32,10 +36,10 @@ public:
 	void draw(unsigned int primitive);
 
 	inline VertexBuffer* getVertexBuffer() {return m_vertexBufferData.get();}
-	inline InstanceBuffer* getInstanceBuffer() {return m_instanceBufferData.get();}
+	inline unsigned int& getInstancesAmount() {return instance_count;}
 
-	void updateInstanceBuffer(int index, glm::mat4 &mat);
-	void updateInstanceBuffer();
+	void updateInstanceBuffer(int index, float* data);
+	void updateInstanceBuffer(size_t size);
 };
 
 #endif /* GRAPHICS_MESH_H_ */

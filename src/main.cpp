@@ -112,9 +112,11 @@ int main(int, char**){
 
 	//PlayerEntity* player2 = new PlayerEntity();
 	ent_system->createEntity(player);
-	for(int i = 0; i < 255; i++) {
+	for(int i = 0; i < 1024; i++) {
 		PlayerEntity *new_player = new PlayerEntity();
-		new_player->getPhysicBody()->apply_direction(glm::linearRand(glm::vec2(-0.2f), glm::vec2(0.2f)));
+		RigidBody* body2 = new_player->getPhysicBody();
+		//body2->pixel_perfect = true;
+		body2->apply_direction(glm::linearRand(glm::vec2(-0.2f), glm::vec2(0.2f)));
 		ent_system->createEntity(new_player);
 	}
 

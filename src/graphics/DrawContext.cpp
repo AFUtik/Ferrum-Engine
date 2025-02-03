@@ -28,9 +28,9 @@ void DrawContext::render() {
     glClear(GL_COLOR_BUFFER_BIT | GL_DEPTH_BUFFER_BIT);
 
     shader->use();
-    shader->uniformMatrix("projview", camera->getOrthoProjview());; 
+    shader->uniformMatrix("projview", camera->getOrthoProjview());
     entity_renderer->render();
-    //level_renderer->render();
+    level_renderer->render();
     //chunk_renderer->render(game_context);
 }
 

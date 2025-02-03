@@ -8,6 +8,8 @@
 #include "../../game/level/Chunk.hpp"
 #include "../../game/level/Chunks.hpp"
 
+#include "../../math/MatrixUtils.hpp"
+
 #include "glm/ext.hpp"
 #include <iostream>
 
@@ -22,14 +24,9 @@ Mesh* LevelRenderer::makeMesh(Chunk* chunk) {
 
     vertexBuffer->index_arr = new unsigned int[CHUNK_VOL*SQUARE_INDEX_SIZE];
     vertexBuffer->indices_size = CHUNK_VOL*SQUARE_INDEX_SIZE;
+    
+    Mesh* mesh = new Mesh(vertexBuffer);
 
-    std::cout << "test chunk renderer mesh 1" << std::endl; 
-    InstanceBuffer *instanceBuffer = new InstanceBuffer();
-    std::cout << "test chunk renderer mesh 2" << std::endl; 
-    instanceBuffer->mats.push_back(glm::translate(glm::mat4(1.0f), glm::vec3(chunk->x, chunk->y, 0.0f)));
-    std::cout << "test chunk renderer mesh 3" << std::endl; 
-
-    Mesh* mesh = new Mesh(vertexBuffer, instanceBuffer);
     for(int y = 0; y < CHUNK_H; y++) {
         for(int x = 0; x < CHUNK_W; x++) {
             Tile& tile = chunk->tiles[(y*CHUNK_W)+x];
@@ -44,9 +41,22 @@ Mesh* LevelRenderer::makeMesh(Chunk* chunk) {
             mesh->index(0, 1, 3).index(1, 2, 3).endIndex();
         }
     }
-    std::cout << "test chunk renderer mesh 4" << std::endl; 
     mesh->generate();
-    std::cout << "test chunk renderer mesh 5" << std::endl; 
+
+    std::cout << "s1" << std::endl;
+    float instance_data[INSTANCE_DATA_LENGTH];
+    Matrix4x4ArrayUtils::fill(instance_data, 1.0f);
+    std::cout << "s2" << std::endl;
+    Matrix4x4ArrayUtils::setPosition(instance_data, glm::vec3(chunk->x, chunk->y, 0.0f));
+    std::cout << "s3" << std::endl;
+    for(int i = 0; i < 2; i++) instance_data[16+i] = 0.0f;
+
+    mesh->updateInstanceBuffer(1);
+    std::cout << "s4" << std::endl;
+    mesh->updateInstanceBuffer(0, instance_data);
+    std::cout << "s5" << std::endl;
+    unsigned int &in_count = mesh->getInstancesAmount();
+    in_count = 1;
     return mesh;
 }
 

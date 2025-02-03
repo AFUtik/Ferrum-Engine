@@ -8,20 +8,10 @@
 //    return atlas_pos;
 //}
 
-void BakedModel::clearInstances() {
-    InstanceBuffer* instanceBuffer = mesh->getInstanceBuffer();
-    instanceBuffer->mats.clear();
-}
+Mesh* BakedModel::getMesh() {
+    return mesh;
+};
 
-void BakedModel::updateInstances(int size) {
-    InstanceBuffer* instanceBuffer = mesh->getInstanceBuffer();
-    instanceBuffer->mats.resize(size);
-    mesh->updateInstanceBuffer();
-}
-
-void BakedModel::updateInstance(int index, glm::mat4 &transform) {
-    mesh->updateInstanceBuffer(index, transform);
-}
 
 void BakedModel::render() {
     mesh->draw(GL_TRIANGLES);

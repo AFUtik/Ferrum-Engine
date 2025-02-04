@@ -3,17 +3,18 @@
 
 #include "../../algorithms/Guillotine.hpp"
 #include <algorithm>
-#include <iostream>
 
-TextureAtlas* TextureAtlasGenerator::generateTextureAtlas(TextureMap& tex_map, const std::set<size_t> &categories) {
+//#include <iostream>
+
+TextureAtlas* TextureAtlasGenerator::generateTextureAtlas(TextureMap &tex_map, const std::set<size_t> &tex_locs) {
     GuillotinePacker packer(MIN_WIDTH, MIN_HEIGHT);
     std::vector<Rectangle> tiles;
     unsigned int padding = 1;
     unsigned int channels = 4;
-    for(size_t category : categories) {
-        Texture* tex = tex_map.at(category).get();
+    for(const size_t &loc : tex_locs) {
+        Texture* tex = tex_map.at(loc).get();
         Rectangle rectangle(0, 0, tex->width+padding, tex->height+padding);
-        rectangle.data = category;
+        rectangle.data = loc;
         auto it = std::lower_bound(tiles.begin(), tiles.end(), rectangle, [](const Rectangle& a, const Rectangle& b) {
             return a.width * a.height > b.width * b.height;
         });

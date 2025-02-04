@@ -7,7 +7,6 @@
 #define MAX_HEIGHT 4096
 #define MAX_WIDTH 4096
 
-#include <set>
 #include "TextureManager.hpp"
 
 class TextureAtlas;
@@ -16,7 +15,7 @@ class TextureAtlasGenerator {
 private:
 
 public:
-    static TextureAtlas* generateTextureAtlas(TextureMap &tex_map, const std::set<size_t> &categories);
+    static TextureAtlas* generateTextureAtlas(TextureMap &tex_map, const std::set<size_t> &tex_locs);
 };
 
 #endif

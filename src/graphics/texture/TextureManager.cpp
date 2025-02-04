@@ -10,19 +10,15 @@ void TextureManager::changeTextureLocation(std::string location) {
 }
 
 const TextureMap& TextureManager::getTextureMap() {
-    return texture_map;
-}
-
-GLTexture* TextureManager::getGLTexture(size_t location) {
-    return gl_texture_map[location].get();
+    return texture_m;
 }
 
 TextureAtlas* TextureManager::getAtlas(size_t location) {
-    return atlas_map[location].get();
+    return atlas_m[location].get();
 }
 
 Texture* TextureManager::getTexture(size_t location) {
-    return texture_map[location].get();
+    return texture_m[location].get();
 }
 
 void TextureManager::loadTexture(size_t location, std::string texture_name) {
@@ -39,4 +35,9 @@ void TextureManager::loadAtlas(size_t location, std::set<size_t> locations) {
 
     GLTexture *gl_texture = TextureGLHandler::createTexture(texture_atlas->getTexture());
     if(gl_texture != nullptr) gl_texture_map[location] = std::unique_ptr<GLTexture>(gl_texture);
+}
+
+void TextureManager::clearTextures() {
+    cleared = true;
+    texture_m.clear();
 }

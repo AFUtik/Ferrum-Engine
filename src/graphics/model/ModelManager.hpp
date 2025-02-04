@@ -16,6 +16,8 @@ private:
 public:
     ModelManager(TextureManager* tex_manager) : texture_manager(tex_manager) {}
 
+    void loadAnimation(size_t model_loc, size_t anim_loc, AnimSequence *anim_seq, std::vector<Texture*> sprites);
+
     BakedModel* getModel(size_t location);
     Model* getUnbakedModel(size_t location);
 

@@ -14,7 +14,6 @@ protected:
     EntitySystem* system;
     std::unique_ptr<RigidBody> rigid_body;
     size_t id;
-    bool show;
 
     friend class EntitySystem;
 public:

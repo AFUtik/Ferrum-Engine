@@ -15,11 +15,11 @@ private:
 	unsigned int vbo;
 	unsigned int ebo;
 	unsigned int instance_vbo;
-	unsigned int instance_count = 0;
+	unsigned int instance_count = 1;
 	unsigned int buffer_index = 0;
 	unsigned int ind_index = 0;
 	unsigned int ind_offset = 0;
-
+	
 	static constexpr size_t INSTANCE_MEMORY_SIZE = INSTANCE_DATA_LENGTH * sizeof(float);
 public:
 	Mesh(VertexBuffer *data);

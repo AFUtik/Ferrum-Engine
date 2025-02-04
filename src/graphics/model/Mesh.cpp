@@ -45,8 +45,6 @@ void Mesh::generate() {
 	glGenVertexArrays(1, &vao);
 	glGenBuffers(1, &vbo);
 
-	std::cout << "add mesh 1" << std::endl;
-
 	glBindVertexArray(vao);
 	glBindBuffer(GL_ARRAY_BUFFER, vbo);
 	glBufferData(

@@ -43,20 +43,11 @@ Mesh* LevelRenderer::makeMesh(Chunk* chunk) {
     }
     mesh->generate();
 
-    std::cout << "s1" << std::endl;
     float instance_data[INSTANCE_DATA_LENGTH];
     Matrix4x4ArrayUtils::fill(instance_data, 1.0f);
-    std::cout << "s2" << std::endl;
     Matrix4x4ArrayUtils::setPosition(instance_data, glm::vec3(chunk->x, chunk->y, 0.0f));
-    std::cout << "s3" << std::endl;
     for(int i = 0; i < 2; i++) instance_data[16+i] = 0.0f;
-
-    mesh->updateInstanceBuffer(1);
-    std::cout << "s4" << std::endl;
     mesh->updateInstanceBuffer(0, instance_data);
-    std::cout << "s5" << std::endl;
-    unsigned int &in_count = mesh->getInstancesAmount();
-    in_count = 1;
     return mesh;
 }
 
@@ -69,15 +60,10 @@ void LevelRenderer::render() {
         Mesh* mesh = nullptr;
 
         if(chunk->isDirty || render_chunk==nullptr) {
-            std::cout << "test chunk renderer 1" << std::endl; 
             mesh = makeMesh(chunk);
-            std::cout << "test chunk renderer 2" << std::endl; 
 
             RenderChunk* render_chunk = new RenderChunk(mesh);
-            std::cout << "test chunk renderer 3" << std::endl; 
-
             render_chunk_info->loadChunk(chunk, render_chunk);
-            std::cout << "test chunk renderer 4" << std::endl; 
         } else {
             mesh = render_chunk->getMesh();
         }

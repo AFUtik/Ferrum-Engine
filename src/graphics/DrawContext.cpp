@@ -21,7 +21,7 @@ DrawContext::DrawContext(ResourceManager* resource_m, GameContext* game_context)
 
     object_renderer = std::unique_ptr<ObjectRenderer>(obj_renderer);
     entity_renderer = std::make_unique<EntityRenderer>(obj_renderer, tex_m, model_m, game_context->getEntitySystem());
-    //level_renderer = std::make_unique<LevelRenderer>(obj_renderer, tex_m, model_m, game_context->getChunks());
+    level_renderer = std::make_unique<LevelRenderer>(obj_renderer, tex_m, model_m, game_context->getChunks());
 }
 
 void DrawContext::render() {

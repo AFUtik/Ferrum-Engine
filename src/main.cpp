@@ -54,7 +54,12 @@ int main(int, char**){
 	texture_m->loadTexture(MISSING_TEXTURE, "block1.png");
 	texture_m->loadTexture(DIRT_TEXTURE, "block3.png");
 	texture_m->loadTexture(GRASS_TEXTURE, "block2.png");
-	texture_m->loadAtlas(ALL_TEXTURES_ATLAS, {MISSING_TEXTURE, DIRT_TEXTURE, GRASS_TEXTURE});
+	texture_m->loadAtlasByTex(ALL_TEXTURES_ATLAS, {MISSING_TEXTURE, DIRT_TEXTURE, GRASS_TEXTURE});
+
+	texture_m->loadBunchToGroup("test_animation", TEST_ANIMATION_BUNCH, {
+		"Sprite-0002.png", "Sprite-0003.png", "Sprite-0004.png", "Sprite-0005.png", "Sprite-0010.png",
+		"Sprite-0006.png", "Sprite-0007.png", "Sprite-0008.png", "Sprite-0009.png", "Sprite-0011.png"
+	});
 	
 	std::cout << "test 2" << std::endl;
 

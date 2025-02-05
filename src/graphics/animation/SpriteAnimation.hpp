@@ -10,6 +10,8 @@ class TextureAtlasPos;
 class SpriteAnimation {
 private:
     size_t animation_location;
+    std::vector<unsigned int> anim_offsets;
+
     std::unique_ptr<AnimSequence> anim_seq;
     std::vector<TextureAtlasPos*> sprites_pos;
 public:

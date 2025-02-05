@@ -8,8 +8,8 @@ class AnimSequence {
 private:
     std::string seq_name;
 
+    std::vector<float> keyframes;
     unsigned int frames;
-    std::vector<float> keys;
     bool interpolate;
     bool reset;
 

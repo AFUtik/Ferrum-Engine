@@ -24,6 +24,7 @@ protected:
 public:
     BakedModel(Mesh* mesh) : mesh(mesh) {};
 
+    inline bool isCustomAtlas() {return true;}
     inline void setRenderMode(unsigned int value) {render_mode = value;};
 
     SpriteAnimation* getSpriteAnimation(size_t location);

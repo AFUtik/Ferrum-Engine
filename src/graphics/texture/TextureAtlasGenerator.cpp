@@ -6,7 +6,7 @@
 
 //#include <iostream>
 
-TextureAtlas* TextureAtlasGenerator::generateTextureAtlas(TextureMap &tex_map, const std::set<size_t> &tex_locs) {
+TextureAtlas* TextureAtlasGenerator::generateTextureAtlas(TextureMap &tex_map, const std::vector<size_t> &tex_locs) {
     GuillotinePacker packer(MIN_WIDTH, MIN_HEIGHT);
     std::vector<Rectangle> tiles;
     unsigned int padding = 1;

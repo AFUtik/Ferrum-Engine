@@ -15,7 +15,7 @@ class TextureAtlasGenerator {
 private:
 
 public:
-    static TextureAtlas* generateTextureAtlas(TextureMap &tex_map, const std::set<size_t> &tex_locs);
+    static TextureAtlas* generateTextureAtlas(TextureMap &tex_map, const std::vector<size_t> &tex_locs);
 };
 
 #endif

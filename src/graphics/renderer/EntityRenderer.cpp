@@ -19,7 +19,7 @@ void EntityRenderer::render() {
         size_t entity_count = map.size();
 
         int index = 0;
-        if(entity_count != instanced_amount) baked_model->updateInstances(entity_count);
+        //if(entity_count != instanced_amount) baked_model->updateInstances(entity_count);
         for (auto&& [ptr, unique_ptr] : map) {
             InstanceModelData& instance_model = baked_model->getInstanceModelData();
 

@@ -84,9 +84,9 @@ void Mesh::generate() {
 	glBindVertexArray(0);
 }
 
-void Mesh::updateInstanceBuffer(size_t size) {
+void Mesh::updateInstanceBuffer() {
 	glBindBuffer(GL_ARRAY_BUFFER, instance_vbo);
-    glBufferData(GL_ARRAY_BUFFER, size * INSTANCE_MEMORY_SIZE, nullptr, GL_DYNAMIC_DRAW);
+    glBufferData(GL_ARRAY_BUFFER, instance_buffer_size * INSTANCE_MEMORY_SIZE, nullptr, GL_DYNAMIC_DRAW);
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 

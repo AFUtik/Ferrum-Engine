@@ -11,6 +11,7 @@ class TextureAtlasPos;
 
 struct InstanceModelData : public Instance {
     size_t object_id;
+    bool active = false;
     float animation_time = 0.0f;
     unsigned int current_state = 0;
 

@@ -16,6 +16,7 @@ private:
 	unsigned int ebo;
 	unsigned int instance_vbo;
 	unsigned int instance_count = 1;
+	unsigned int instance_buffer_size = 1;
 	unsigned int buffer_index = 0;
 	unsigned int ind_index = 0;
 	unsigned int ind_offset = 0;
@@ -40,7 +41,7 @@ public:
 	inline VertexBuffer* getVertexBuffer() {return m_vertexBufferData.get();}
 
 	void updateInstanceBuffer(unsigned int index, unsigned int offset, float* data);
-	void updateInstanceBuffer(size_t size);
+	void updateInstanceBuffer();
 };
 
 #endif /* GRAPHICS_MESH_H_ */

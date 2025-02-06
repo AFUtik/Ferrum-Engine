@@ -80,7 +80,7 @@ int main(int, char**){
 
 	// MODEL CREATING AND ANIMATOR LOADING //
 	ModelManager* model_m = resource_m->getModelManager();
-	model_m->bakeModel(PlaneModel(), PLAYER_ENTITY, GRASS_TEXTURE, TEST_ANIMATION_ATLAS);
+	model_m->bakeModel(PlaneModel(), PLAYER_ENTITY, TEST_ANIMATION_BUNCH, TEST_ANIMATION_ATLAS);
 	model_m->loadAnimator(PLAYER_ENTITY, sprite_animator);
 
 	model_m->createModel(DIRT_TILE, DIRT_TEXTURE, ALL_TEXTURES_ATLAS);
@@ -133,13 +133,13 @@ int main(int, char**){
 
 	//PlayerEntity* player2 = new PlayerEntity();
 	ent_system->createEntity(player);
-	for(int i = 0; i < 1024; i++) {
-		PlayerEntity *new_player = new PlayerEntity();
-		RigidBody* body2 = new_player->getPhysicBody();
-		//body2->pixel_perfect = true;
-		body2->apply_direction(glm::linearRand(glm::vec2(-0.2f), glm::vec2(0.2f)));
-		ent_system->createEntity(new_player);
-	}
+	//for(int i = 0; i < 1024; i++) {
+	//	PlayerEntity *new_player = new PlayerEntity();
+	//	RigidBody* body2 = new_player->getPhysicBody();
+	//	//body2->pixel_perfect = true;
+	//	body2->apply_direction(glm::linearRand(glm::vec2(-0.2f), glm::vec2(0.2f)));
+	//	ent_system->createEntity(new_player);
+	//}
 
 	std::cout << "test 6" << std::endl;
 

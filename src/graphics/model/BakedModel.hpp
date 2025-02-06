@@ -47,7 +47,6 @@ public:
     InstanceModelData& getInstanceModelData();
     Mesh* getMesh();
 
-    inline unsigned int& getInstancesAmount() {return mesh->instance_count;}
     void updateInstance(const size_t &index);
     void updateInstances(const size_t &size);
 

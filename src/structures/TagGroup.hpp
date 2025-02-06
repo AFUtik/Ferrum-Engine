@@ -17,37 +17,31 @@ protected:
 public:
     TagGroup(TagGroup *parent, bool recursive) : parent(parent), recursive(recursive) {}
 
-    void addObject(const T &object) const {
+    void addObject(const T &object) {
         if(parent != nullptr && recursive==true) parent->addObject(object);
         objects.push_back(object);
     }
 
-    void addObject(const std::string &tag, const T &object) const {
+    void addObject(const std::string &tag, const T &object) {
         TagGroup &group = findGroup(tag);
         group.addObject(object);
     }
 
-    inline std::vector<T>& getObjects() const {
+    inline std::vector<T>& getObjects() {
         return objects;
     }
 
-    TagGroup* findGroup(std::string tag) {
+    TagGroup* findOrCreateGroup(std::string tag) {
         if(tag.empty()) return this;
 
-        std::string token;
-        for(size_t i = tag.size(); i >= 0; i++) {
-            const char &c = tag[i];
-            if(c == '.') break;
+        size_t dotPos = tag.find('.');
+        std::string currentTag = (dotPos == std::string::npos) ? tag : tag.substr(0, dotPos);
+        std::string remainingTags = (dotPos == std::string::npos) ? "" : tag.substr(dotPos + 1);
 
-            token = tag[i] + token;
-            tag.pop_back();
-        }
-        if(!tag.empty()) tag.pop_back();
+        auto& subgroup = subgroups[currentTag];
+        if (!subgroup) subgroup = std::make_shared<TagGroup>(this, recursive);
 
-        TagGroup* group = subgroups[token];
-        if(group==nullptr) return nullptr;
-
-        return group->findGroup(tag);
+        return subgroup->findOrCreateGroup(remainingTags);
     }
 };
 

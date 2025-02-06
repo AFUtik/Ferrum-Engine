@@ -1,11 +1,11 @@
 #ifndef MESH_HPP
 #define MESH_HPP
 
-#define INSTANCE_DATA_LENGTH (16+2) // MATRIX4X4 + VEC2 //
 #define MAX_INSTANCES 2000
 
 #include <memory>
 
+#include "Instance.hpp"
 #include "VertexBuffer.hpp"
 
 class Mesh {
@@ -21,6 +21,8 @@ private:
 	unsigned int ind_offset = 0;
 	
 	static constexpr size_t INSTANCE_MEMORY_SIZE = INSTANCE_DATA_LENGTH * sizeof(float);
+
+	friend class BakedModel;
 public:
 	Mesh(VertexBuffer *data);
 	~Mesh();
@@ -36,9 +38,8 @@ public:
 	void draw(unsigned int primitive);
 
 	inline VertexBuffer* getVertexBuffer() {return m_vertexBufferData.get();}
-	inline unsigned int& getInstancesAmount() {return instance_count;}
 
-	void updateInstanceBuffer(int index, float* data);
+	void updateInstanceBuffer(unsigned int index, unsigned int offset, float* data);
 	void updateInstanceBuffer(size_t size);
 };
 

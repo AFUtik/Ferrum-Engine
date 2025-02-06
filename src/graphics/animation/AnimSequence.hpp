@@ -13,14 +13,12 @@ private:
     bool interpolate;
     bool reset;
 
-    unsigned int curr_frame;
-    float curr_time_ms;
-    float total_time;
-public:
-    AnimSequence();
-    ~AnimSequence();
+    float duration;
 
-    unsigned int animate(float delta_time);
+    friend class SpriteAnimator;
+public:
+    AnimSequence(std::string name, unsigned int frames, const std::vector<float> &keyframes) : seq_name(name), frames(frames), keyframes(keyframes) {};
+    //~AnimSequence();
 };
 
 #endif

@@ -1,0 +1,6 @@
+#ifndef BITMAPFONTREADER_HPP
+#define BITMAPFONTREADER_HPP
+
+
+
+#endif 

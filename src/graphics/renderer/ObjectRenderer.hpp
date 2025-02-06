@@ -12,11 +12,11 @@ class ModelManager;
 
 class ObjectRenderer {
 protected:
-    GLTexture* basic_atlas;
     Shader* shader;
 
     unsigned int primitive;
 public:
+    GLTexture* current_binded_texture;
     ObjectRenderer(Shader* shader) : shader(shader) {};
 
     void render(Mesh* mesh);

@@ -8,29 +8,14 @@
 #include "TextureAtlas.hpp"
 #include "Texture.hpp"
 
+#include "../../structures/TagGroup.hpp"
+
 typedef std::unordered_map<size_t, std::unique_ptr<Texture>> TextureMap;
 typedef std::unordered_map<size_t, std::unique_ptr<TextureAtlas>> AtlasMap;
 
-class TextureGroup {
-protected:
-    std::unordered_map<std::string, TextureGroup> subgroups;
-    std::vector<size_t> *parent_locations;
-    std::vector<size_t> locations;
-
-    friend class TextureManager;
-public:
-    TextureGroup() : parent_locations(nullptr) {}
-
-    void loadLocation(const size_t &location) const;
-
-    const std::vector<size_t>& getLocations() const;
-
-    const TextureGroup& findGroup(const std::string tag);
-};
-
 class TextureManager {
 private:
-    TextureGroup texture_group;
+    TagGroup<size_t> texture_group;
     TextureMap texture_m;
     AtlasMap atlas_m;
 
@@ -49,7 +34,6 @@ public:
 
     void loadAtlasByGroups(size_t atlas_loc, std::vector<std::string> group_tags);
     void loadAtlasByTex(size_t atlas_loc, std::vector<size_t> tex_locs);
-
 
     const std::vector<size_t>& getTexturesByGroup(std::string group_tag);
     TextureAtlas* getAtlas(size_t location);

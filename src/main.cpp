@@ -56,19 +56,35 @@ int main(int, char**){
 	texture_m->loadTexture(GRASS_TEXTURE, "block2.png");
 	texture_m->loadAtlasByTex(ALL_TEXTURES_ATLAS, {MISSING_TEXTURE, DIRT_TEXTURE, GRASS_TEXTURE});
 
-	texture_m->loadBunchToGroup("test_animation", TEST_ANIMATION_BUNCH, {
+	texture_m->loadBunchToGroup("animations.test", TEST_ANIMATION_BUNCH, {
 		"Sprite-0002.png", "Sprite-0003.png", "Sprite-0004.png", "Sprite-0005.png", "Sprite-0010.png",
 		"Sprite-0006.png", "Sprite-0007.png", "Sprite-0008.png", "Sprite-0009.png", "Sprite-0011.png"
 	});
+	texture_m->loadAtlasByGroups(TEST_ANIMATION_ATLAS, {"animations.test"});
 	
 	std::cout << "test 2" << std::endl;
 
+	// ADDING TEXTURE POSITIONS TO VECTOR FOR ANIMATION //
+	TextureAtlas* atlas = texture_m->getAtlas(TEST_ANIMATION_ATLAS);
+	std::vector<TextureAtlasPos*> sprites_pos;
+	for(const size_t& loc : texture_m->getTexturesByGroup("animations.test")) {
+		sprites_pos.push_back(atlas->getAtlasPos(loc));
+	}
+
+	// CREATING SPRITE ANIMATOR //
+	SpriteAnimator* sprite_animator = new SpriteAnimator();
+	AnimSequence* anim_sequence = new AnimSequence("simle_sequence", 10, {
+		0.5f, 1.0f, 1.5f, 2.0f, 2.5f, 3.0f, 3.5f, 4.0f, 4.5f, 5.0f
+	});
+	sprite_animator->loadAnimSequence(anim_sequence, sprites_pos);
+
+	// MODEL CREATING AND ANIMATOR LOADING //
 	ModelManager* model_m = resource_m->getModelManager();
-	model_m->bakeModel(PlaneModel(), PLAYER_ENTITY, GRASS_TEXTURE, ALL_TEXTURES_ATLAS);
+	model_m->bakeModel(PlaneModel(), PLAYER_ENTITY, GRASS_TEXTURE, TEST_ANIMATION_ATLAS);
+	model_m->loadAnimator(PLAYER_ENTITY, sprite_animator);
+
 	model_m->createModel(DIRT_TILE, DIRT_TEXTURE, ALL_TEXTURES_ATLAS);
 	model_m->createModel(GRASS_TILE, GRASS_TEXTURE, ALL_TEXTURES_ATLAS);
-
-	BakedModel* baked_model = model_m->getModel(0);
 
 	std::cout << "test 3" << std::endl;
 

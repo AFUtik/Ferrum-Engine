@@ -30,7 +30,7 @@ void DrawContext::render() {
     shader->use();
     shader->uniformMatrix("projview", camera->getOrthoProjview());
     entity_renderer->render();
-    level_renderer->render();
+    //level_renderer->render();
     //chunk_renderer->render(game_context);
 }
 

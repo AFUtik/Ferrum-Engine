@@ -90,12 +90,12 @@ void Mesh::updateInstanceBuffer(size_t size) {
     glBindBuffer(GL_ARRAY_BUFFER, 0);
 }
 
-void Mesh::updateInstanceBuffer(int index, float* data) {
+void Mesh::updateInstanceBuffer(unsigned int index, unsigned int offset, float* data) {
 	glBindBuffer(GL_ARRAY_BUFFER, instance_vbo);
 	void* ptr = glMapBufferRange(GL_ARRAY_BUFFER, index * INSTANCE_MEMORY_SIZE, INSTANCE_MEMORY_SIZE,
 	                             GL_MAP_WRITE_BIT | GL_MAP_UNSYNCHRONIZED_BIT);
 	if (ptr) {
-	    memcpy(ptr, data, INSTANCE_MEMORY_SIZE);
+	    memcpy(ptr, data + offset, INSTANCE_MEMORY_SIZE);
 	    glUnmapBuffer(GL_ARRAY_BUFFER);
 	}
 	glBindBuffer(GL_ARRAY_BUFFER, 0);

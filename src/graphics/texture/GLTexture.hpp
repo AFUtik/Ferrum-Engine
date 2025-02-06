@@ -2,11 +2,9 @@
 #define GLTEXTURE_HPP
 
 class GLTexture {
-private:
+public:
     unsigned int texture_id;
 
-    friend class TextureGLHandler;
-public:
     GLTexture() {};
     ~GLTexture();
 

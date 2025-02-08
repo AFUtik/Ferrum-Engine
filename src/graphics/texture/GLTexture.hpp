@@ -4,8 +4,6 @@
 class GLTexture {
 public:
     unsigned int texture_id;
-
-    GLTexture() {};
     ~GLTexture();
 
     void bind();

@@ -1,9 +1,7 @@
 #include "TextureAtlasGenerator.hpp"
+
+#include "Texture.hpp"
 #include "TextureHandler.hpp"
-
-#include <algorithm>
-
-#include <iostream>
 
 static const unsigned int channels = 4;
 

@@ -3,8 +3,8 @@
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>	
 
-#include "window/Window.hpp"
-#include "window/Events.hpp"
+#include "graphics/window/Window.hpp"
+#include "graphics/window/Events.hpp"
 
 #include "imgui/imgui.h"
 #include "imgui/imgui_impl_glfw.h"

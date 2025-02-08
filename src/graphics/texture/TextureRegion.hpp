@@ -1,5 +1,5 @@
-#ifndef TEXTUREATLASPOS_HPP
-#define TEXTUREATLASPOS_HPP
+#ifndef TEXTUREREGION_HPP
+#define TEXTUREREGION_HPP
 
 struct TextureRegion {
     float u1, u2;

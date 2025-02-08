@@ -3,12 +3,12 @@
 #include "Texture.hpp"
 
 #include "TextureAtlasGenerator.hpp"
-
 #include "../../algorithms/Guillotine.hpp"
 
 #include <algorithm>
 #include <iostream>
 
+unsigned int TileMapper::padding = 0;
 unsigned int TileMapper::max_texture_size = 0;
 unsigned int TileMapper::min_texture_size = 0;
 
@@ -26,7 +26,7 @@ TextureRegion* createTextureRegion(uint32_t x, uint32_t y, uint32_t width, uint3
     return region;
 }
 
-Tilemap* TileMapper::generateTilemap(const std::map<std::string, Texture*> &textures) {
+Tilemap* TileMapper::generateTilemap(const std::vector<std::pair<std::string, Texture*>> &textures) {
     unsigned int atlas_size = min_texture_size*min_texture_size;
     unsigned int texture_amount = textures.size();
     unsigned int texture_width = textures.begin()->second->width; 
@@ -34,8 +34,6 @@ Tilemap* TileMapper::generateTilemap(const std::map<std::string, Texture*> &text
     while(atlas_size < texture_width*texture_height*texture_amount) atlas_size*=2;
     
     std::vector<std::pair<std::string, Rectangle>> tiles;
-    unsigned int padding = 1;
-
     for (auto&& [id, unique_ptr] : textures) {
         if(texture_width!=unique_ptr->width || texture_height!=unique_ptr->height) {
             std::cerr << "Error: Failed to generate tilemap. Different texture sizes." <<
@@ -56,12 +54,12 @@ Tilemap* TileMapper::generateTilemap(const std::map<std::string, Texture*> &text
         );
         tilemap->loadTextureRegion(tile.first, region);
     }
+    return tilemap;
 }
 
 Tilemap* TileMapper::generateDynamicTilemap(const std::map<std::string, Texture*> &textures) {
     GuillotinePacker packer(min_texture_size, min_texture_size);
     std::vector<std::pair<std::string, Rectangle>> tiles;
-    unsigned int padding = 1;
     for (auto&& [id, unique_ptr] : textures) {
         tiles.emplace_back(id, Rectangle(0, 0, unique_ptr->width + padding, unique_ptr->height + padding));
     }

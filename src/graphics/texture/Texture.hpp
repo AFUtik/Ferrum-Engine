@@ -1,8 +1,6 @@
 #ifndef TEXTURE_HPP
 #define TEXTURE_HPP
 
-#include <string>
-
 class Texture {
 public:
 	unsigned char* image_data;

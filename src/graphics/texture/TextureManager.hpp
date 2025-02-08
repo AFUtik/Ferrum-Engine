@@ -10,17 +10,12 @@
 
 #include "../../structures/TagGroup.hpp"
 
-typedef std::unordered_map<std::string, std::unique_ptr<Texture>> TextureMap;
-typedef std::unordered_map<std::string, std::unique_ptr<TextureAtlas>> AtlasMap;
-
 class TextureManager {
 private:
-    TagGroup<size_t> texture_group;
+    TagGroup<std::string> texture_group;
 
-    TextureMap texture_m;
-    AtlasMap atlas_m;
-
-    bool cleared = false;
+    std::unordered_map<std::string, std::unique_ptr<Texture>> texture_m;
+    std::unordered_map<std::string, std::unique_ptr<Tilemap>> tilemap_m;
     
     std::string resource_location;
     std::string texture_location;

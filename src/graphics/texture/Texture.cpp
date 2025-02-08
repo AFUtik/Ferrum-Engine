@@ -1,5 +1,7 @@
 #include "Texture.hpp"
 
+#include <string>
+
 Texture::Texture(bool loaded, int width, int height, unsigned char* image_data) : loaded(loaded), width(width), height(height), image_data(image_data) {}
 
 void Texture::flipImageVertically() {
@@ -18,11 +20,6 @@ void Texture::flipImageVertically() {
     free(temp_row);
 }
 
-//void Texture::bind() {
-//	//glBindTexture(GL_TEXTURE_2D, id);
-//}
-
 Texture::~Texture() {
 	free(image_data);
-	//glDeleteTextures(1, &id);
 }

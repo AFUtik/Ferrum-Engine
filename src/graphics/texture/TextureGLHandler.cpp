@@ -1,10 +1,9 @@
+#include "TextureGLHandler.hpp"
 #include "GLTexture.hpp"
 #include "Texture.hpp"
-#include "TextureGLHandler.hpp"
 
 #include <GL/glew.h>	
 #include <GLFW/glfw3.h>	
-
 
 GLTexture* TextureGLHandler::createTexture(Texture* texture) {
     GLTexture* gl_texture = new GLTexture();

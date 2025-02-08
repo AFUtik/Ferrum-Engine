@@ -12,7 +12,7 @@ private:
     std::vector<std::unique_ptr<AnimSequence>> anim_seq;
     std::vector<unsigned int> offsets;
 
-    unsigned int start_texture_location = 0;
+    //unsigned int start_texture_location = 0;
 
     Tilemap* tilemap;
 public:

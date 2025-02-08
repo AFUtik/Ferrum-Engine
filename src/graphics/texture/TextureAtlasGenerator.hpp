@@ -2,14 +2,13 @@
 #define TEXTUREATLASGENERATOR_HPP
 
 #include "../../structures/Rectangle.hpp"
-#include "Texture.hpp"
 
 #include <vector>
+#include <string>
 #include <map>
 
+class Texture;
 class Tilemap;
-class TextureAtlas;
-class TextureAtlasPos;
 
 class TextureAtlasGenerator {
 private:

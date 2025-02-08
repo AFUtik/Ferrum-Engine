@@ -26,25 +26,28 @@ protected:
     TextureAtlasPos* atlas_pos;
     TextureAtlas* atlas;
 
-    SpriteAnimator animator;
+    std::unique_ptr<SpriteAnimator> animator;
 
-    std::unique_ptr<GLTexture> mesh_texture;
-    
     std::vector<InstanceModelData> instances;
     std::unique_ptr<Mesh> mesh;
+
+    GLTexture* mesh_texture;
 
     unsigned int render_mode = 4; // GL_TRIANGLES //
 
     friend class ModelManager;
 public:
-    BakedModel(Mesh* mesh) : mesh(mesh) {};
+    BakedModel(Mesh* mesh) : mesh(mesh) {
+        instances.resize(1);
+    };
 
-    SpriteAnimator* getSpriteAnimator();
+    inline SpriteAnimator* getSpriteAnimator() {return animator.get();}
 
     inline bool isCustomAtlas() {return true;}
     inline void setRenderMode(unsigned int value) {render_mode = value;};
 
-    InstanceModelData& getInstanceModelData();
+    const unsigned int& getInstancesAmount();
+    InstanceModelData& getInstanceModelData(const size_t &index);
     Mesh* getMesh();
 
     void updateInstance(const size_t &index);

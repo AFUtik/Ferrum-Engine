@@ -1,21 +1,25 @@
 #ifndef TEXTUREATLASGENERATOR_HPP
 #define TEXTUREATLASGENERATOR_HPP
 
-#define MIN_HEIGHT 128
-#define MIN_WIDTH 128
+#include "../../structures/Rectangle.hpp"
+#include "Texture.hpp"
 
-#define MAX_HEIGHT 4096
-#define MAX_WIDTH 4096
+#include <vector>
+#include <map>
 
-#include "TextureManager.hpp"
-
+class Tilemap;
 class TextureAtlas;
+class TextureAtlasPos;
 
 class TextureAtlasGenerator {
 private:
-
+    static void pushIntoBuffer(uint32_t x, uint32_t y, uint32_t width, uint32_t height, int32_t padding, 
+                               uint8_t* raw_data,
+                               uint32_t buffer_width, uint32_t buffer_height,
+                               uint8_t* buffer);
 public:
-    static TextureAtlas* generateTextureAtlas(TextureMap &tex_map, const std::vector<size_t> &tex_locs);
+    static Texture* generateTextureAtlas(std::vector<std::pair<std::string, Rectangle>> &positions, const std::map<std::string, Texture*> &textures,
+                                         uint32_t atlas_width, uint32_t atlas_height, uint32_t padding);
 };
 
 #endif

@@ -1,21 +1,10 @@
 #ifndef GUILLOTINE_HPP
 #define GUILLOTINE_HPP
 
+#include "../structures/Rectangle.hpp"
 #include <vector>
 
-// The algorithm below is designed to pack textures into a Texture Atlas.
-struct Rectangle {
-    unsigned int x, y;
-    unsigned int width, height;
-    size_t data;
-
-    Rectangle(int x = 0, int y = 0, int width = 0, int height = 0)
-        : x(x), y(y), width(width), height(height){}
-
-    inline bool canFit(int tileWidth, int tileHeight) const {
-        return width >= tileWidth && height >= tileHeight;
-    }
-};
+// The algorithm below is designed to pack textures into a Texture Atlas. //
 
 class GuillotinePacker {
 private:

@@ -4,6 +4,7 @@
 #include <memory>
 
 #include "../texture/TextureManager.hpp"
+#include "../texture/GLTexture.hpp"
 #include "BakedModel.hpp"
 #include "Model.hpp"
 
@@ -13,6 +14,8 @@ private:
 
     std::unordered_map<size_t, std::unique_ptr<BakedModel>> baked_models;
     std::unordered_map<size_t, std::unique_ptr<Model>> unbaked_models;
+
+    std::unordered_map<size_t, std::unique_ptr<GLTexture>> gl_textures;
 public:
     ModelManager(TextureManager* tex_manager) : texture_manager(tex_manager) {}
 
@@ -22,7 +25,7 @@ public:
     BakedModel* getModel(size_t location);
     Model* getUnbakedModel(size_t location);
 
-    void bakeModel(Model model, size_t location, size_t texture_location, size_t atlas_location);
+    void bakeModel(Model model, size_t model_location, size_t texture_location, size_t atlas_location);
     void createModel(size_t location, size_t texture_location, size_t atlas_location);
 };
 

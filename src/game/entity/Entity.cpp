@@ -17,6 +17,9 @@ const glm::vec3& Entity::getTransform() {
 }
 
 void Entity::onUpdate(float delta) {
+    anim_time += delta;
+    if(anim_time > 6.0f) anim_time = 0.0f;
+
     rigid_body->update(delta);
 }
 

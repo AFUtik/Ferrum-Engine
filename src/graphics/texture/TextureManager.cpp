@@ -3,9 +3,9 @@
 #include "TextureGLHandler.hpp"
 #include "TextureAtlasGenerator.hpp"
 
+#include <map>
 
-
-TextureManager::TextureManager(std::string resource_loc) : resource_location(resource_loc), texture_location("") {}
+TextureManager::TextureManager(std::string resource_loc) : resource_location(resource_loc), texture_location(""), texture_group(nullptr, true) {}
 
 void TextureManager::changeTextureLocation(std::string location) {
     texture_location = location;
@@ -24,20 +24,20 @@ Texture* TextureManager::getTexture(size_t location) {
 }
 
 const std::vector<size_t>& TextureManager::getTexturesByGroup(std::string group_tag) {
-    return texture_group.findGroup(group_tag).locations;
+    return texture_group.findOrCreateGroup(group_tag)->getObjects();
 }
 
 void TextureManager::loadBunchToGroup(std::string group_tag, size_t tex_loc, const std::vector<std::string> &paths) {
-    const TextureGroup& group = texture_group.findGroup(group_tag);
+    TagGroup<size_t>* group = texture_group.findOrCreateGroup(group_tag);
     for(const std::string path : paths) {
-        group.loadLocation(tex_loc);
+        group->addObject(tex_loc);
         loadTexture(tex_loc, path);
         tex_loc++;
     }
 }
 
 void TextureManager::loadTextureToGroup(std::string group_tag, size_t tex_loc, std::string texture_name) {
-    texture_group.findGroup(group_tag).loadLocation(tex_loc);
+    texture_group.findOrCreateGroup(group_tag)->addObject(tex_loc);
     loadTexture(tex_loc, texture_name);
 }
 
@@ -46,18 +46,16 @@ void TextureManager::loadTexture(size_t location, const std::string &path) {
     if(texture != nullptr) texture_m[location] = std::unique_ptr<Texture>(texture);
 }
 
-void TextureManager::loadAtlasByGroups(size_t location, std::vector<std::string> group_tags) {
-    std::vector<size_t> common_group;
-    for(const std::string &tag : group_tags) {
-        const std::vector<size_t> &locations = texture_group.findGroup(tag).locations;
-        common_group.insert(common_group.end(), locations.begin(), locations.end());
-    }
-    TextureAtlas* texture_atlas = TextureAtlasGenerator::generateTextureAtlas(texture_m, common_group);
-    if(texture_atlas != nullptr) atlas_m[location] = std::unique_ptr<TextureAtlas>(texture_atlas);
+void TextureManager::loadAtlasByGroup(size_t location, std::string tag) {
+    loadAtlasByTex(location, texture_group.findOrCreateGroup(tag)->getObjects());
 }
 
-void TextureManager::loadAtlasByTex(size_t location, std::vector<size_t> tex_locs) {
-    TextureAtlas* texture_atlas = TextureAtlasGenerator::generateTextureAtlas(texture_m, tex_locs);
+void TextureManager::loadAtlasByTex(size_t location, const std::vector<size_t> &tex_locs) {
+    std::map<size_t, Texture*> textures;
+    for(const size_t &loc : tex_locs) {
+        textures.emplace(loc, texture_m[loc].get());
+    }
+    TextureAtlas* texture_atlas = TextureAtlasGenerator::generateTextureAtlas(textures);
     if(texture_atlas != nullptr) atlas_m[location] = std::unique_ptr<TextureAtlas>(texture_atlas);
 }
 

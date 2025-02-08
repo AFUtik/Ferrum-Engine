@@ -70,7 +70,7 @@ void Mesh::generate() {
 	
 	glGenBuffers(1, &instance_vbo);
 	glBindBuffer(GL_ARRAY_BUFFER, instance_vbo);
-	glBufferData(GL_ARRAY_BUFFER, instance_count * INSTANCE_MEMORY_SIZE, nullptr, GL_DYNAMIC_DRAW);
+	glBufferData(GL_ARRAY_BUFFER, instance_buffer_size * INSTANCE_MEMORY_SIZE, nullptr, GL_DYNAMIC_DRAW);
 	for (int j = 0; j < 4; j++) {
     	glEnableVertexAttribArray(j + i);
     	glVertexAttribPointer(j + i, 4, GL_FLOAT, GL_FALSE, INSTANCE_MEMORY_SIZE, (void*)(sizeof(GLfloat) * 4 * j));

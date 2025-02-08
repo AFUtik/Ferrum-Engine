@@ -15,8 +15,11 @@ protected:
     std::unique_ptr<RigidBody> rigid_body;
     size_t id;
 
+    
+
     friend class EntitySystem;
 public:
+    float anim_time = 0.0f;
     Entity(size_t id);
     // virtual ~Entity();
 

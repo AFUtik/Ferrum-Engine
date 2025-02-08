@@ -17,16 +17,17 @@ void EntityRenderer::render() {
         size_t entity_count = map.size();
 
         int index = 0;
-        baked_model->updateInstances(entity_count);
+        if(entity_count != baked_model->getInstancesAmount()) baked_model->updateInstances(entity_count);
         for (auto&& [ptr, unique_ptr] : map) {
-            InstanceModelData& instance_model = baked_model->getInstanceModelData();
+            InstanceModelData& instance_model = baked_model->getInstanceModelData(index);
+            instance_model.animation_time = ptr->anim_time;
 
             Matrix4x4ArrayUtils::setPosition(instance_model.data, unique_ptr->getTransform());
-            //TextureAtlasPos* texture_pos = animator->animate(TEST_ANIMATION, instance_model.current_state, instance_model.animation_time);
-            
+            TextureAtlasPos* texture_pos = animator->animate(TEST_ANIMATION, instance_model.current_state, ptr->anim_time);
+
             // assigning texture coordinates //
-            //instance_model.data[16] = texture_pos->u1;
-            //instance_model.data[17] = texture_pos->v1;
+            instance_model.data[16] = texture_pos->orig_u1;
+            instance_model.data[17] = texture_pos->orig_v1;
             
             baked_model->updateInstance(index);
             index++;

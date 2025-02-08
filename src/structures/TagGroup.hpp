@@ -15,7 +15,7 @@ protected:
     std::shared_ptr<TagGroup> parent = nullptr;
     bool recursive = true;
 public:
-    TagGroup(TagGroup *parent, bool recursive) : parent(parent), recursive(recursive) {}
+    TagGroup<T>(TagGroup<T> *parent, bool recursive) : parent(parent), recursive(recursive) {}
 
     void addObject(const T &object) {
         if(parent != nullptr && recursive==true) parent->addObject(object);

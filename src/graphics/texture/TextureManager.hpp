@@ -5,17 +5,18 @@
 #include <unordered_map>
 #include <string>
 
-#include "TextureAtlas.hpp"
+#include "Tilemap.hpp"
 #include "Texture.hpp"
 
 #include "../../structures/TagGroup.hpp"
 
-typedef std::unordered_map<size_t, std::unique_ptr<Texture>> TextureMap;
-typedef std::unordered_map<size_t, std::unique_ptr<TextureAtlas>> AtlasMap;
+typedef std::unordered_map<std::string, std::unique_ptr<Texture>> TextureMap;
+typedef std::unordered_map<std::string, std::unique_ptr<TextureAtlas>> AtlasMap;
 
 class TextureManager {
 private:
     TagGroup<size_t> texture_group;
+
     TextureMap texture_m;
     AtlasMap atlas_m;
 
@@ -27,18 +28,18 @@ public:
     TextureManager(std::string resource_location);
     void changeTextureLocation(std::string texture_location);
 
-    void loadBunchToGroup(std::string group_tag, size_t tex_loc, const std::vector<std::string> &paths);
-    void loadTextureToGroup(std::string group_tag, size_t tex_loc, std::string path);
+    void loadBunchToGroup(std::string group_tag, std::string tex_loc, const std::vector<std::string> &paths);
+    void loadTextureToGroup(std::string group_tag, std::string tex_loc, std::string path);
 
-    void loadTexture(size_t tex_loc, const std::string &path);
+    void loadTexture(std::string tex_loc, const std::string &path);
+    
+    void loadTilemapByGroup(std::string tilemap_loc, std::string group_tag);
+    void loadTilemapByTex(std::string tilemap_loc, const std::vector<std::string> &tex_locs);
 
-    void loadAtlasByGroups(size_t atlas_loc, std::vector<std::string> group_tags);
-    void loadAtlasByTex(size_t atlas_loc, std::vector<size_t> tex_locs);
+    const std::vector<std::string>& getTexturesByGroup(std::string group_tag);
 
-    const std::vector<size_t>& getTexturesByGroup(std::string group_tag);
-    TextureAtlas* getAtlas(size_t location);
-    Texture* getTexture(size_t location);
-    const TextureMap& getTextureMap();
+    Tilemap* getTilemap(std::string location);
+    Texture* getTexture(std::string location);
 
     void clearTextures();
 };

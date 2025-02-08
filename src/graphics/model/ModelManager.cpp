@@ -1,11 +1,20 @@
 #include "../texture/TextureManager.hpp"
 #include "../texture/TextureAtlasPos.hpp"
+#include "../texture/TextureGLHandler.hpp"
 
 #include "ModelManager.hpp"
 
 #include <iostream>
 
-void ModelManager::bakeModel(Model model, size_t location, size_t texture_location, size_t atlas_location) {
+void ModelManager::loadAnimator(size_t model_loc, SpriteAnimator *animator) {
+    BakedModel* baked_model = baked_models[model_loc].get();
+    if(baked_model==nullptr) {
+        std::cerr << "The baked model not found - " << model_loc << std::endl;
+    }
+    baked_model->animator = std::unique_ptr<SpriteAnimator>(animator);
+}
+
+void ModelManager::bakeModel(Model model, size_t model_location, size_t texture_location, size_t atlas_location) {
     TextureAtlas* atlas = texture_manager->getAtlas(atlas_location);
     if(atlas==nullptr) {
         std::cerr << "ModelManager: atlas not found - " << atlas_location << std::endl;
@@ -21,10 +30,18 @@ void ModelManager::bakeModel(Model model, size_t location, size_t texture_locati
     mesh->setUV(texture_pos->u1, texture_pos->u2, texture_pos->v1, texture_pos->v2);
     mesh->generate();
 
+    GLTexture* gl_texture = gl_textures[atlas_location].get();
+    if(gl_texture==nullptr) {
+        GLTexture *gl_new_texture = TextureGLHandler::createTexture(atlas->getTexture());
+        gl_textures[atlas_location] = std::unique_ptr<GLTexture>(gl_new_texture);
+        gl_texture = gl_new_texture;
+    }
+
     baked_model->mesh = std::unique_ptr<Mesh>(mesh);
+    baked_model->mesh_texture = gl_texture;
     baked_model->atlas = atlas;
     baked_model->atlas_pos = texture_pos;
-    baked_models[location] = std::unique_ptr<BakedModel>(baked_model);
+    baked_models[model_location] = std::unique_ptr<BakedModel>(baked_model);
 }
 
 void ModelManager::createModel(size_t location, size_t texture_location, size_t atlas_location) {

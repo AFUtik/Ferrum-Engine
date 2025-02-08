@@ -5,19 +5,23 @@
 #include <memory>
 
 class TextureAtlasPos;
+class Tilemap;
 
 class SpriteAnimator {
 private:
     std::vector<std::unique_ptr<AnimSequence>> anim_seq;
-    std::vector<TextureAtlasPos*> sprites_pos;
-    
     std::vector<unsigned int> offsets;
-public:
-    void loadAnimSequence(AnimSequence* sequence, std::vector<TextureAtlasPos*> sprites_pos);
 
-    TextureAtlasPos* animate(const size_t &sequence_id, unsigned int &current_frame, float delta_time);
+    unsigned int start_texture_location = 0;
+
+    Tilemap* tilemap;
+public:
+    SpriteAnimator(Tilemap* tilemap);
 
     AnimSequence* getAnimSequence(const size_t &sequence_id);
+    void loadAnimSequence(AnimSequence* sequence, std::string texture_location);
+
+    TextureAtlasPos* animateSequence(const size_t &sequence_id, unsigned int &current_frame, float &delta_time);
 };
 
 #endif

@@ -43,16 +43,13 @@ Mesh* LevelRenderer::makeMesh(Chunk* chunk) {
     }
     mesh->generate();
 
-    float instance_data[INSTANCE_DATA_LENGTH];
-    Matrix4x4ArrayUtils::fill(instance_data, 1.0f);
-    Matrix4x4ArrayUtils::setPosition(instance_data, glm::vec3(chunk->x, chunk->y, 0.0f));
-    for(int i = 0; i < 2; i++) instance_data[16+i] = 0.0f;
-    mesh->updateInstanceBuffer(0, instance_data);
+    //Matrix4x4ArrayUtils::setPosition(instance_data, glm::vec3(chunk->x, chunk->y, 0.0f));
+    
     return mesh;
 }
 
 void LevelRenderer::render() {
-    texture_m->getGLTexture(ALL_TEXTURES_ATLAS)->bind();
+    //texture_m->getGLTexture(ALL_TEXTURES_ATLAS)->bind();
     for(size_t i = 0; i < chunks->volume; i++) {
         Chunk* chunk = chunks->chunks[i];
 

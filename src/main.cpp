@@ -27,11 +27,9 @@
 #include "graphics/model/ModelManager.hpp"
 #include "graphics/model/PlaneModel.hpp"
 
-#include "graphics/texture/Textures.hpp"
 #include "graphics/texture/Texture.hpp"
 #include "graphics/texture/TextureHandler.hpp"
-#include "graphics/texture/TextureAtlas.hpp"
-#include "graphics/texture/TextureAtlasGenerator.hpp"
+#include "graphics/texture/TileMapper.hpp"
 
 #include "glm/glm.hpp"
 #include "glm/ext.hpp"
@@ -45,46 +43,45 @@ int main(int, char**){
     Window::init(WIDTH, HEIGHT, "Test Window", true);
 	Events::init();
 
+	GLint maxTextureSize;
+	glGetIntegerv(GL_MAX_TEXTURE_SIZE, &maxTextureSize);
+	TileMapper::setMaxSize(maxTextureSize);
+	TileMapper::setMinSize(64);
+
 	ResourceManager* resource_m = new ResourceManager("E:/Cpp/FerrumEngine/resources/");
 
 	std::cout << "test 1" << std::endl;
 
 	TextureManager* texture_m = resource_m->getTextureManager();
-	texture_m->changeTextureLocation("textures/tiles/");
-	texture_m->loadTexture(MISSING_TEXTURE, "block1.png");
-	texture_m->loadTexture(DIRT_TEXTURE, "block3.png");
-	texture_m->loadTexture(GRASS_TEXTURE, "block2.png");
-	texture_m->loadAtlasByTex(ALL_TEXTURES_ATLAS, {MISSING_TEXTURE, DIRT_TEXTURE, GRASS_TEXTURE});
+	//texture_m->changeTextureLocation("textures/tiles/");
+	//texture_m->loadBunchToGroup("tiles.blocks", BLOCKS_BUNCH, {"block1.png","block3.png","block2.png"});
+	//texture_m->loadAtlasByGroup(ALL_TEXTURES_ATLAS, "tiles.blocks");
 
-	texture_m->loadBunchToGroup("animations.test", TEST_ANIMATION_BUNCH, {
-		"Sprite-0002.png", "Sprite-0003.png", "Sprite-0004.png", "Sprite-0005.png", "Sprite-0010.png",
-		"Sprite-0006.png", "Sprite-0007.png", "Sprite-0008.png", "Sprite-0009.png", "Sprite-0011.png"
+	texture_m->changeTextureLocation("textures/anim/");
+	texture_m->loadBunchToGroup("animations.test", "animation_texture", {
+		"Sprite-0002.png", "Sprite-0003.png", "Sprite-0004.png", "Sprite-0005.png", "Sprite-0006.png",
+		"Sprite-0007.png", "Sprite-0008.png", "Sprite-0009.png", "Sprite-0010.png", "Sprite-0011.png"
 	});
-	texture_m->loadAtlasByGroups(TEST_ANIMATION_ATLAS, {"animations.test"});
+	texture_m->loadTilemapByGroup("animation_tilemap", "animations.test");
 	
 	std::cout << "test 2" << std::endl;
 
-	// ADDING TEXTURE POSITIONS TO VECTOR FOR ANIMATION //
-	TextureAtlas* atlas = texture_m->getAtlas(TEST_ANIMATION_ATLAS);
-	std::vector<TextureAtlasPos*> sprites_pos;
-	for(const size_t& loc : texture_m->getTexturesByGroup("animations.test")) {
-		sprites_pos.push_back(atlas->getAtlasPos(loc));
-	}
-
 	// CREATING SPRITE ANIMATOR //
-	SpriteAnimator* sprite_animator = new SpriteAnimator();
+	Tilemap* anim_tilemap = texture_m->getTilemap("animation");
+
+	SpriteAnimator* sprite_animator = new SpriteAnimator(anim_tilemap);
 	AnimSequence* anim_sequence = new AnimSequence("simle_sequence", 10, {
-		0.5f, 1.0f, 1.5f, 2.0f, 2.5f, 3.0f, 3.5f, 4.0f, 4.5f, 5.0f
+		0.0f, 0.5f, 1.0f, 1.5f, 2.0f, 2.5f, 3.0f, 3.5f, 4.0f, 4.5f, 5.0f
 	});
 	sprite_animator->loadAnimSequence(anim_sequence, sprites_pos);
 
 	// MODEL CREATING AND ANIMATOR LOADING //
 	ModelManager* model_m = resource_m->getModelManager();
-	model_m->bakeModel(PlaneModel(), PLAYER_ENTITY, TEST_ANIMATION_BUNCH, TEST_ANIMATION_ATLAS);
+	model_m->bakeModel(PlaneModel(), PLAYER_ENTITY, TEST_ANIMATION_BUNCH + 9, TEST_ANIMATION_ATLAS);
 	model_m->loadAnimator(PLAYER_ENTITY, sprite_animator);
 
-	model_m->createModel(DIRT_TILE, DIRT_TEXTURE, ALL_TEXTURES_ATLAS);
-	model_m->createModel(GRASS_TILE, GRASS_TEXTURE, ALL_TEXTURES_ATLAS);
+	//model_m->createModel(DIRT_TILE, DIRT_TEXTURE, ALL_TEXTURES_ATLAS);
+	//model_m->createModel(GRASS_TILE, GRASS_TEXTURE, ALL_TEXTURES_ATLAS);
 
 	std::cout << "test 3" << std::endl;
 
@@ -130,19 +127,18 @@ int main(int, char**){
 	RigidBody* body = player->getPhysicBody();
 	body->pixel_perfect = true;
 	camera->follow(body->pixel_position);
+	ent_system->createEntity(player);
 
 	//PlayerEntity* player2 = new PlayerEntity();
-	ent_system->createEntity(player);
 	//for(int i = 0; i < 1024; i++) {
 	//	PlayerEntity *new_player = new PlayerEntity();
 	//	RigidBody* body2 = new_player->getPhysicBody();
 	//	//body2->pixel_perfect = true;
-	//	body2->apply_direction(glm::linearRand(glm::vec2(-0.2f), glm::vec2(0.2f)));
+	//	body2->apply_direction(glm::linearRand(glm::vec2(-5.2f), glm::vec2(5.2f)));
 	//	ent_system->createEntity(new_player);
 	//}
 
 	std::cout << "test 6" << std::endl;
-
 	while (!Window::isShouldClose()) {
         double currentTime = glfwGetTime();
         context->delta_time = currentTime - context->last_ticks;
@@ -198,7 +194,7 @@ int main(int, char**){
 			ImGui_ImplGlfw_NewFrame();
 			ImGui::NewFrame();
 
-			ent_system->update(context->delta_time);
+			ent_system->update(H);
 			draw_context.render();
 			
         	ImGui::ShowDemoWindow();

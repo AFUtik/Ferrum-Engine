@@ -5,6 +5,7 @@ class Mesh;
 class BakedModel;
 class Shader;
 class GLTexture;
+
 class TextureManager;
 class ModelManager;
 
@@ -12,14 +13,18 @@ class ModelManager;
 
 class ObjectRenderer {
 protected:
-    Shader* shader;
+    TextureManager* texture_manager;
+    ModelManager* model_manager;
 
     unsigned int primitive;
-public:
-    GLTexture* current_binded_texture;
-    ObjectRenderer(Shader* shader) : shader(shader) {};
 
-    void render(Mesh* mesh);
+    friend class DrawContext;
+public:
+    ObjectRenderer() : texture_manager(nullptr), model_manager(nullptr) {};
+
+    ObjectRenderer(TextureManager* texture_m, ModelManager* model_m) : texture_manager(texture_m), model_manager(model_m) {};
+
+    virtual void render();
 };
 
 #endif

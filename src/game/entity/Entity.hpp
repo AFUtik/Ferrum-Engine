@@ -13,17 +13,16 @@ class Entity {
 protected:
     EntitySystem* system;
     std::unique_ptr<RigidBody> rigid_body;
-    size_t id;
 
-    
+    std::string tag;
 
     friend class EntitySystem;
 public:
     float anim_time = 0.0f;
-    Entity(size_t id);
+    Entity(std::string tag);
     // virtual ~Entity();
 
-    size_t getId();
+    const std::string& getTag();
     const glm::vec3& getTransform();
     RigidBody* getPhysicBody();
 

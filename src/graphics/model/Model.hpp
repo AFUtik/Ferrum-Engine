@@ -5,18 +5,18 @@
 #include "VertexInfo.hpp"
 
 class ModelManager;
-class TextureAtlasPos;
+class TextureRegion;
 
 class Model {
 protected:
     VertexBuffer *vertexBufferData;
-    TextureAtlasPos* tex_atlas_pos;
+    TextureRegion* texture_reg;
 
     friend class ModelManager;
 public:
     Model() {};
 
-    inline TextureAtlasPos* getUVPos() {return tex_atlas_pos;};
+    inline TextureRegion* getTextureRegion() {return texture_reg;};
 };
 
 #endif

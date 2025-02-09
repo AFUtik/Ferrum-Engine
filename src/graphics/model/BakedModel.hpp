@@ -6,8 +6,8 @@
 #include "Mesh.hpp"
 #include "Instance.hpp"
 
-class TextureAtlas;
-class TextureAtlasPos;
+class Tilemap;
+class TextureRegion;
 
 struct InstanceModelData : public Instance {
     size_t object_id;
@@ -23,15 +23,15 @@ struct InstanceModelData : public Instance {
 
 class BakedModel {
 protected:
-    TextureAtlasPos* atlas_pos;
-    TextureAtlas* atlas;
+    TextureRegion* texture_reg;
+    Tilemap* tilemap;
 
     std::unique_ptr<SpriteAnimator> animator;
 
     std::vector<InstanceModelData> instances;
     std::unique_ptr<Mesh> mesh;
 
-    GLTexture* mesh_texture;
+    GLTexture* texture;
 
     unsigned int render_mode = 4; // GL_TRIANGLES //
 
@@ -43,7 +43,6 @@ public:
 
     inline SpriteAnimator* getSpriteAnimator() {return animator.get();}
 
-    inline bool isCustomAtlas() {return true;}
     inline void setRenderMode(unsigned int value) {render_mode = value;};
 
     const unsigned int& getInstancesAmount();

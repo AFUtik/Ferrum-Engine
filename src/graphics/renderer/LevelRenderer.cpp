@@ -1,14 +1,11 @@
 #include "LevelRenderer.hpp"
 
-#include "../texture/Textures.hpp"
 #include "../texture/TextureManager.hpp"
 #include "../model/ModelManager.hpp"
 
 #include "../../game/level/Tile.hpp"
 #include "../../game/level/Chunk.hpp"
 #include "../../game/level/Chunks.hpp"
-
-#include "../../math/MatrixUtils.hpp"
 
 #include "glm/ext.hpp"
 #include <iostream>
@@ -32,7 +29,7 @@ Mesh* LevelRenderer::makeMesh(Chunk* chunk) {
             Tile& tile = chunk->tiles[(y*CHUNK_W)+x];
             if(tile.id==0) continue;
 
-            TextureAtlasPos* uv_pos = model_m->getUnbakedModel(tile.id)->getUVPos();
+            TextureRegion* uv_pos = model_m->getUnbakedModel("asd")->getTextureRegion();
 
             mesh->xyz(x-0.5f, y-0.5f, 0.0f).uv(uv_pos->u1, uv_pos->v1);
             mesh->xyz(x-0.5f, y+0.5f, 0.0f).uv(uv_pos->u1, uv_pos->v2);
@@ -64,6 +61,6 @@ void LevelRenderer::render() {
         } else {
             mesh = render_chunk->getMesh();
         }
-        object_renderer->render(mesh);
+        //object_renderer->render(mesh);
     }
 }

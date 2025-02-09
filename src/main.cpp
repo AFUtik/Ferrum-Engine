@@ -5,12 +5,12 @@
 
 #include "graphics/window/Window.hpp"
 #include "graphics/window/Events.hpp"
+#include "graphics/window/Context.hpp"
 
 #include "imgui/imgui.h"
 #include "imgui/imgui_impl_glfw.h"
 #include "imgui/imgui_impl_opengl3.h"
 
-#include "window/Context.hpp"
 
 #include "physics/RigidBody.hpp"
 #include "game/GameContext.hpp"
@@ -25,10 +25,8 @@
 #include "graphics/texture/TextureManager.hpp"
 #include "graphics/model/BakedModel.hpp"
 #include "graphics/model/ModelManager.hpp"
-#include "graphics/model/PlaneModel.hpp"
+#include "graphics/model/Quad.hpp"
 
-#include "graphics/texture/Texture.hpp"
-#include "graphics/texture/TextureHandler.hpp"
 #include "graphics/texture/TileMapper.hpp"
 
 #include "glm/glm.hpp"
@@ -51,11 +49,14 @@ int main(int, char**){
 	ResourceManager* resource_m = new ResourceManager("E:/Cpp/FerrumEngine/resources/");
 
 	std::cout << "test 1" << std::endl;
+	// Register Entity Renderer //
+	GameContext game_context(resource_m);
+	DrawContext draw_context(resource_m, &game_context);
+	EntitySystem* ent_system = game_context.getEntitySystem();
+	draw_context.registerRenderer<EntityRenderer>("entity_renderer", new EntityRenderer(ent_system));
 
+	// Textures // 
 	TextureManager* texture_m = resource_m->getTextureManager();
-	//texture_m->changeTextureLocation("textures/tiles/");
-	//texture_m->loadBunchToGroup("tiles.blocks", BLOCKS_BUNCH, {"block1.png","block3.png","block2.png"});
-	//texture_m->loadAtlasByGroup(ALL_TEXTURES_ATLAS, "tiles.blocks");
 
 	texture_m->changeTextureLocation("textures/anim/");
 	texture_m->loadBunchToGroup("animations.test", "animation_texture", {
@@ -63,33 +64,23 @@ int main(int, char**){
 		"Sprite-0007.png", "Sprite-0008.png", "Sprite-0009.png", "Sprite-0010.png", "Sprite-0011.png"
 	});
 	texture_m->loadTilemapByGroup("animation_tilemap", "animations.test");
-	
-	std::cout << "test 2" << std::endl;
+
 
 	// CREATING SPRITE ANIMATOR //
-	Tilemap* anim_tilemap = texture_m->getTilemap("animation");
-
+	Tilemap* anim_tilemap = texture_m->getTilemap("animation_tilemap");
+	
 	SpriteAnimator* sprite_animator = new SpriteAnimator(anim_tilemap);
 	AnimSequence* anim_sequence = new AnimSequence("simle_sequence", 10, {
 		0.0f, 0.5f, 1.0f, 1.5f, 2.0f, 2.5f, 3.0f, 3.5f, 4.0f, 4.5f, 5.0f
 	});
-	sprite_animator->loadAnimSequence(anim_sequence, sprites_pos);
+	sprite_animator->loadAnimSequence(anim_sequence, "animation_texture0");
 
 	// MODEL CREATING AND ANIMATOR LOADING //
 	ModelManager* model_m = resource_m->getModelManager();
-	model_m->bakeModel(PlaneModel(), PLAYER_ENTITY, TEST_ANIMATION_BUNCH + 9, TEST_ANIMATION_ATLAS);
-	model_m->loadAnimator(PLAYER_ENTITY, sprite_animator);
+	model_m->bakeModel(Quad(), "player", "animation_texture0", "animation_tilemap");
+	model_m->loadAnimator("player", sprite_animator);
 
-	//model_m->createModel(DIRT_TILE, DIRT_TEXTURE, ALL_TEXTURES_ATLAS);
-	//model_m->createModel(GRASS_TILE, GRASS_TEXTURE, ALL_TEXTURES_ATLAS);
-
-	std::cout << "test 3" << std::endl;
-
-	GameContext game_context(resource_m);
-	DrawContext draw_context(resource_m, &game_context);
-
-	std::cout << "test 4" << std::endl;
-
+	// Chunks //
 	Chunks* chunks = game_context.getChunks();
 	chunks->set(3, 3);
 
@@ -99,7 +90,6 @@ int main(int, char**){
 
 	glEnable(GL_DEPTH_TEST);
 	glDisable(GL_CULL_FACE);
-	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
     IMGUI_CHECKVERSION();
@@ -109,7 +99,6 @@ int main(int, char**){
 	ImGui_ImplGlfw_InitForOpenGL(Window::window, true);
 	ImGui_ImplOpenGL3_Init("#version 330");
 
-    //Camera* camera = new Camera(glm::vec3(0, 0, 1), glm::radians(90.0f));
 	Camera* camera = draw_context.getCamera();
 	camera->set_xyz(0.0f, 0.0f, 1.0f);
 
@@ -120,8 +109,6 @@ int main(int, char**){
 	camera->smooth_factor = 1.0f;
 
     Context* context = new Context();
-	
-	EntitySystem* ent_system = game_context.getEntitySystem();
 
 	PlayerEntity* player = new PlayerEntity();
 	RigidBody* body = player->getPhysicBody();
@@ -130,7 +117,7 @@ int main(int, char**){
 	ent_system->createEntity(player);
 
 	//PlayerEntity* player2 = new PlayerEntity();
-	//for(int i = 0; i < 1024; i++) {
+	//for(int i = 0; i < 5024; i++) {
 	//	PlayerEntity *new_player = new PlayerEntity();
 	//	RigidBody* body2 = new_player->getPhysicBody();
 	//	//body2->pixel_perfect = true;
@@ -188,14 +175,16 @@ int main(int, char**){
 				camera->rotation = mat4(1.0f);
 				camera->rotate(camera->cur_y, camera->cur_x, 0);
 			}
+			
+			ent_system->update(H);
+			draw_context.render();
 
 			// IMGUI WINDOW // 
         	ImGui_ImplOpenGL3_NewFrame();
 			ImGui_ImplGlfw_NewFrame();
 			ImGui::NewFrame();
 
-			ent_system->update(H);
-			draw_context.render();
+			
 			
         	ImGui::ShowDemoWindow();
 			ImGui::Render();
@@ -206,10 +195,6 @@ int main(int, char**){
 			context->time_accu -= context->delta_time;
 		}
     }
-	//Texture* texture = TextureAtlasGenerator::generateTextureAtlas(texture_m, 512, 512, 
-	//{MISSING_TEXTURE, DIRT_TEXTURE, GRASS_TEXTURE}
-	//)->getTexture();
-	//save_texture_png("E:/Cpp/FerrumEngine/resources/textures/atlases/atlas.png", texture);
 	Window::terminate();
     return 0;
 }

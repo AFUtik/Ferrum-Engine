@@ -1,5 +1,5 @@
 #include "Camera.hpp"
-#include "../window/Window.hpp"
+#include "window/Window.hpp"
 
 #include <glm/ext.hpp>
 
@@ -10,7 +10,6 @@ Camera::Camera(vec3 pos, float fov) : fov(fov), rotation(1.0f), position(pos), f
 
 void Camera::unfollow() {
 	followed = &position;
-
 }
 
 void Camera::follow(vec3 &pos) {

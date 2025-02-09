@@ -1,12 +1,12 @@
 #include "../texture/TextureManager.hpp"
-#include "../texture/TextureAtlasPos.hpp"
+#include "../texture/TextureRegion.hpp"
 #include "../texture/TextureGLHandler.hpp"
 
 #include "ModelManager.hpp"
 
 #include <iostream>
 
-void ModelManager::loadAnimator(size_t model_loc, SpriteAnimator *animator) {
+void ModelManager::loadAnimator(std::string model_loc, SpriteAnimator *animator) {
     BakedModel* baked_model = baked_models[model_loc].get();
     if(baked_model==nullptr) {
         std::cerr << "The baked model not found - " << model_loc << std::endl;
@@ -14,58 +14,58 @@ void ModelManager::loadAnimator(size_t model_loc, SpriteAnimator *animator) {
     baked_model->animator = std::unique_ptr<SpriteAnimator>(animator);
 }
 
-void ModelManager::bakeModel(Model model, size_t model_location, size_t texture_location, size_t atlas_location) {
-    TextureAtlas* atlas = texture_manager->getAtlas(atlas_location);
-    if(atlas==nullptr) {
-        std::cerr << "ModelManager: atlas not found - " << atlas_location << std::endl;
+void ModelManager::bakeModel(Model model, std::string model_loc, std::string texture_loc, std::string tilemap_loc) {
+    Tilemap* tilemap = texture_manager->getTilemap(tilemap_loc);
+    if(tilemap==nullptr) {
+        std::cerr << "ModelManager: atlas not found - " << tilemap_loc << std::endl;
         return;
     }
-    TextureAtlasPos* texture_pos = atlas->getAtlasPos(texture_location);
-    if(texture_pos==nullptr) {
-        std::cerr << "ModelManager: texture position not found - " << texture_location << std::endl;
+    TextureRegion* texture_reg = tilemap->getTextureRegion(texture_loc);
+    if(texture_reg==nullptr) {
+        std::cerr << "ModelManager: texture position not found - " << texture_reg << std::endl;
         return;
     }
     BakedModel* baked_model = new BakedModel(nullptr);
     Mesh* mesh = new Mesh(model.vertexBufferData);
-    mesh->setUV(texture_pos->u1, texture_pos->u2, texture_pos->v1, texture_pos->v2);
+    mesh->setUV(texture_reg->u1, texture_reg->u2, texture_reg->v1, texture_reg->v2);
     mesh->generate();
 
-    GLTexture* gl_texture = gl_textures[atlas_location].get();
+    GLTexture* gl_texture = gl_textures[tilemap_loc].get();
     if(gl_texture==nullptr) {
-        GLTexture *gl_new_texture = TextureGLHandler::createTexture(atlas->getTexture());
-        gl_textures[atlas_location] = std::unique_ptr<GLTexture>(gl_new_texture);
+        GLTexture *gl_new_texture = TextureGLHandler::createTexture(tilemap->getAtlasTexture());
+        gl_textures[tilemap_loc] = std::unique_ptr<GLTexture>(gl_new_texture);
         gl_texture = gl_new_texture;
     }
 
     baked_model->mesh = std::unique_ptr<Mesh>(mesh);
-    baked_model->mesh_texture = gl_texture;
-    baked_model->atlas = atlas;
-    baked_model->atlas_pos = texture_pos;
-    baked_models[model_location] = std::unique_ptr<BakedModel>(baked_model);
+    baked_model->texture = gl_texture;
+    baked_model->tilemap = tilemap;
+    baked_model->texture_reg = texture_reg;
+    baked_models[model_loc] = std::unique_ptr<BakedModel>(baked_model);
 }
 
-void ModelManager::createModel(size_t location, size_t texture_location, size_t atlas_location) {
-    TextureAtlas* atlas = texture_manager->getAtlas(atlas_location);
+void ModelManager::createModel(std::string model_loc, std::string texture_loc, std::string tilemap_loc) {
+    Tilemap* atlas = texture_manager->getTilemap(texture_loc);
     if(atlas==nullptr) {
-        std::cerr << "ModelManager: atlas not found - " << atlas_location << std::endl;
+        std::cerr << "ModelManager: atlas not found - " << texture_loc << std::endl;
         return;
     }
-    TextureAtlasPos* texture_pos = atlas->getAtlasPos(texture_location);
-    if(texture_pos==nullptr) {
-        std::cerr << "ModelManager: texture position not found - " << texture_location << std::endl;
+    TextureRegion* texture_reg = atlas->getTextureRegion(texture_loc);
+    if(texture_reg==nullptr) {
+        std::cerr << "ModelManager: texture position not found - " << texture_loc << std::endl;
         return;
     }
 
     Model* model = new Model();
-    model->tex_atlas_pos = texture_pos;
+    model->texture_reg = texture_reg;
     model->vertexBufferData = nullptr;
-    unbaked_models[location] = std::unique_ptr<Model>(model);
+    unbaked_models[model_loc] = std::unique_ptr<Model>(model);
 }
 
-BakedModel* ModelManager::getModel(size_t location) {
+BakedModel* ModelManager::getModel(const std::string &location) {
     return baked_models[location].get();
 }
 
-Model* ModelManager::getUnbakedModel(size_t location) {
+Model* ModelManager::getUnbakedModel(const std::string &location) {
     return unbaked_models[location].get();
 }

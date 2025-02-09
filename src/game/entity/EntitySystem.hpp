@@ -10,7 +10,7 @@
 
 #include "Entity.hpp"
 
-typedef std::map<size_t, std::map<Entity*, std::unique_ptr<Entity>>> EntityMap;
+typedef std::map<std::string, std::map<Entity*, std::unique_ptr<Entity>>> EntityMap;
 
 class EntitySystem {
 protected:

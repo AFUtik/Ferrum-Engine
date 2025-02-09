@@ -1,5 +1,5 @@
-#ifndef ENTITYMODEL_HPP
-#define ENTITYMODEL_HPP
+#ifndef QUAD_HPP
+#define QUAD_HPP
 
 #include "Model.hpp"
 
@@ -16,9 +16,9 @@ static unsigned int indices[] = {
 };
 
 
-class PlaneModel : public Model {
+class Quad : public Model {
 public:
-    PlaneModel() : Model() {
+    Quad() : Model() {
 		vertexBufferData = new VertexBuffer();
 
 		vertexBufferData->vertex_arr = vertices;

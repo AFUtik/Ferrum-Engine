@@ -3,7 +3,7 @@
 #include "TextureGLHandler.hpp"
 #include "TileMapper.hpp"
 
-#include <map>
+#include <iostream>
 
 TextureManager::TextureManager(std::string resource_loc) : resource_location(resource_loc), texture_location(""), texture_group(nullptr, true) {}
 
@@ -27,8 +27,9 @@ void TextureManager::loadBunchToGroup(std::string group_tag, std::string tex_loc
     TagGroup<std::string>* group = texture_group.findOrCreateGroup(group_tag);
     int index = 0;
     for(const std::string &path : paths) {
-        group->addObject(tex_loc + '_' + std::to_string(index));
-        loadTexture(tex_loc, path);
+        std::string new_loc = tex_loc + std::to_string(index);
+        group->addObject(new_loc);
+        loadTexture(new_loc, path);
         index++;
     }
 }
@@ -47,13 +48,14 @@ void TextureManager::loadTilemapByGroup(std::string location, std::string tag) {
     loadTilemapByTex(location, texture_group.findOrCreateGroup(tag)->getObjects());
 }
 
-void TextureManager::loadTilemapByTex(std::string location, const std::vector<std::string> &tex_locs) {
-    std::map<std::string, Texture*> textures;
+void TextureManager::loadTilemapByTex(std::string tilemap_loc, const std::vector<std::string> &tex_locs) {
+    std::vector<std::pair<std::string, Texture*>> textures;
+    textures.reserve(tex_locs.size());
     for(const std::string &loc : tex_locs) {
-        textures.emplace(loc, texture_m[loc].get());
+        textures.emplace_back(loc, texture_m[loc].get());
     }
     Tilemap* tilemap = TileMapper::generateTilemap(textures);
-    if(tilemap != nullptr) tilemap_m[location] = std::unique_ptr<Tilemap>(tilemap);
+    if(tilemap != nullptr) tilemap_m[tilemap_loc] = std::unique_ptr<Tilemap>(tilemap);
 }
 
 void TextureManager::clearTextures() {

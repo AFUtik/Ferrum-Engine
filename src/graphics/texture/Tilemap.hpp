@@ -8,11 +8,14 @@
 #include "Texture.hpp"
 #include "TextureRegion.hpp"
 
+#include <iostream>
+
 class Texture;
 
 class Tilemap {
 private:
     std::unordered_map<std::string, std::unique_ptr<TextureRegion>> regions_map;
+    std::unordered_map<std::string, size_t> regions_pos;
     std::vector<TextureRegion*> regions;
 
     std::unique_ptr<Texture> atlas_texture;
@@ -22,18 +25,13 @@ private:
 public:
     Tilemap(Texture* texture) : atlas_texture(texture) {}
 
-    inline void loadTextureRegion(std::string location, TextureRegion* region) {
-        regions_map[location] = std::unique_ptr<TextureRegion>(region);
-        regions.push_back(region);
-    }
+    void loadTextureRegion(std::string location, TextureRegion* region);
 
-    inline TextureRegion* getTextureRegion(const size_t &index) {
-        return regions[index];
-    }
+    const size_t& getTextureRegionPos(const std::string &location);
 
-    inline TextureRegion* getTextureRegion(const std::string &location) {
-        return regions_map[location].get();
-    }
+    TextureRegion* getTextureRegion(const size_t &index);
+
+    TextureRegion* getTextureRegion(const std::string &location);
 
     inline Texture* getAtlasTexture() {
         return atlas_texture.get();

@@ -1,11 +1,11 @@
 #include "Entity.hpp"
 
-Entity::Entity(size_t id) : system(nullptr), id(id) {
+Entity::Entity(std::string tag) : system(nullptr), tag(tag) {
 
 }
 
-size_t Entity::getId() {
-    return id;
+const std::string& Entity::getTag() {
+    return tag;
 }
 
 RigidBody* Entity::getPhysicBody() {

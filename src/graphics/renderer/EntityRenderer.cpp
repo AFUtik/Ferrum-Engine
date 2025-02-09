@@ -5,14 +5,11 @@
 #include "../model/BakedModel.hpp"
 #include "../model/ModelManager.hpp"
 
-
-#include "../texture/Textures.hpp"
-
 #include <iostream>
 
 void EntityRenderer::render() {
-    for (auto&& [id, map] : entity_s->entity_map) {
-        BakedModel* baked_model = model_m->getModel(id);
+    for (auto&& [tag, map] : entity_s->entity_map) {
+        BakedModel* baked_model = model_manager->getModel(tag);
         SpriteAnimator* animator = baked_model->getSpriteAnimator();
         size_t entity_count = map.size();
 
@@ -23,7 +20,7 @@ void EntityRenderer::render() {
             instance_model.animation_time = ptr->anim_time;
 
             Matrix4x4ArrayUtils::setPosition(instance_model.data, unique_ptr->getTransform());
-            TextureAtlasPos* texture_pos = animator->animate(TEST_ANIMATION, instance_model.current_state, ptr->anim_time);
+            TextureRegion* texture_pos = animator->animateSequence(TEST_ANIMATION, instance_model.current_state, ptr->anim_time);
 
             // assigning texture coordinates //
             instance_model.data[16] = texture_pos->orig_u1;

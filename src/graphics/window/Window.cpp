@@ -4,8 +4,8 @@
 #include <GLFW/glfw3.h>
 
 #include "Window.hpp"
-#include "../graphics/texture/Texture.hpp"
-#include "../graphics/texture/TextureHandler.hpp"
+#include "../texture/Texture.hpp"
+#include "../texture/TextureHandler.hpp"
 
 GLFWwindow* Window::window;
 Texture* Window::iconTexture;

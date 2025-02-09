@@ -1,14 +1,18 @@
 #ifndef TEXTUREATLASGENERATOR_HPP
 #define TEXTUREATLASGENERATOR_HPP
 
-#include "../../structures/Rectangle.hpp"
+#include "../../utils/structures/Rectangle.hpp"
 
 #include <vector>
 #include <string>
 #include <map>
 
+
 class Texture;
 class Tilemap;
+
+typedef Rectangle TexturePos;
+typedef std::pair<std::string, Texture*> TextureEntry;
 
 class TextureAtlasGenerator {
 private:
@@ -17,7 +21,7 @@ private:
                                uint32_t buffer_width, uint32_t buffer_height,
                                uint8_t* buffer);
 public:
-    static Texture* generateTextureAtlas(std::vector<std::pair<std::string, Rectangle>> &positions, const std::map<std::string, Texture*> &textures,
+    static Texture* generateTextureAtlas(std::vector<std::pair<TexturePos, TextureEntry*>> &textures,
                                          uint32_t atlas_width, uint32_t atlas_height, uint32_t padding);
 };
 

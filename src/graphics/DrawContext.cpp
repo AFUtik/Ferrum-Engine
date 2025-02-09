@@ -15,13 +15,13 @@ DrawContext::DrawContext(ResourceManager* resource_m, GameContext* game_context)
 		std::cerr << "failed to load shader" << std::endl;
 	}
 
-    ModelManager* model_m = resource_m->getModelManager();
     TextureManager* tex_m = resource_m->getTextureManager();
-    ObjectRenderer* obj_renderer = new ObjectRenderer(shader.get());
+    ModelManager* model_m = resource_m->getModelManager();
 
-    object_renderer = std::unique_ptr<ObjectRenderer>(obj_renderer);
-    entity_renderer = std::make_unique<EntityRenderer>(obj_renderer, tex_m, model_m, game_context->getEntitySystem());
-    level_renderer = std::make_unique<LevelRenderer>(obj_renderer, tex_m, model_m, game_context->getChunks());
+    object_renderer = std::make_unique<ObjectRenderer>(tex_m, model_m);
+
+    //entity_renderer = std::make_unique<EntityRenderer>(obj_renderer, tex_m, model_m, game_context->getEntitySystem());
+    //level_renderer = std::make_unique<LevelRenderer>(obj_renderer, tex_m, model_m, game_context->getChunks());
 }
 
 void DrawContext::render() {
@@ -29,9 +29,10 @@ void DrawContext::render() {
 
     shader->use();
     shader->uniformMatrix("projview", camera->getOrthoProjview());
-    entity_renderer->render();
-    //level_renderer->render();
-    //chunk_renderer->render(game_context);
+
+    for(auto&& [loc, renderer] : renderers) {
+        renderer->render();
+    }
 }
 
 Camera* DrawContext::getCamera() {

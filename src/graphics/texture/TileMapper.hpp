@@ -1,14 +1,9 @@
 #ifndef TILEMAPMAPPER_HPP
 #define TILEMAPMAPPER_HPP
 
-#include <map>
-#include <vector>
-#include <string>
+#include "TextureAtlasGenerator.hpp"
 
 struct TextureRegion;
-
-class Texture;
-class Tilemap;
 
 class TileMapper {
 private:
@@ -23,8 +18,8 @@ public:
     static inline void setMinSize(const unsigned int &size) {min_texture_size = size;}
     static inline void setMaxSize(const unsigned int &size) {max_texture_size = size;}
 
-    static Tilemap* generateTilemap(const std::map<std::string, Texture*> &textures);
-    static Tilemap* generateDynamicTilemap(const std::map<std::string, Texture*> &textures); // Creates a tilemap with different sizes of tiles. //
+    static Tilemap* generateTilemap(std::vector<TextureEntry> &textures);
+    static Tilemap* generateDynamicTilemap(std::vector<TextureEntry> &textures); // Creates a tilemap with different sizes of tiles. //
 };
 
 #endif

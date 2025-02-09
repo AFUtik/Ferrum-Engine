@@ -46,7 +46,7 @@ Mesh* BakedModel::getMesh() {
 };
 
 void BakedModel::bindTexture() {
-    mesh_texture->bind();
+    texture->bind();
 };
 
 void BakedModel::render() {

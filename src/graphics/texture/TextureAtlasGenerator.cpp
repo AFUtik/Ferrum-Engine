@@ -21,12 +21,12 @@ void TextureAtlasGenerator::pushIntoBuffer(uint32_t x, uint32_t y, uint32_t widt
     }
 }
 
-Texture* TextureAtlasGenerator::generateTextureAtlas(std::vector<std::pair<std::string, Rectangle>> &positions, const std::map<std::string, Texture*> &textures,
+Texture* TextureAtlasGenerator::generateTextureAtlas(std::vector<std::pair<TexturePos, TextureEntry*>> &textures,
                                                      uint32_t atlas_width, uint32_t atlas_height, uint32_t padding) {
     unsigned char* buffer = new unsigned char[atlas_width*channels*atlas_height];
-    for(std::pair<std::string, Rectangle> &data : positions) {
-        Texture* texture = textures.at(data.first);
-        pushIntoBuffer(data.second.x, data.second.y, texture->width, texture->height, padding, texture->image_data, 
+    for(auto& tex_data : textures) {
+        Texture* texture = tex_data.second->second;
+        pushIntoBuffer(tex_data.first.x, tex_data.first.y, texture->width, texture->height, padding, texture->image_data, 
                        atlas_width, atlas_height, buffer);
     }
     Texture* texture = new Texture(true, atlas_width, atlas_height, buffer);

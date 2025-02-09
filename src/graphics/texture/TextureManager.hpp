@@ -8,7 +8,7 @@
 #include "Tilemap.hpp"
 #include "Texture.hpp"
 
-#include "../../structures/TagGroup.hpp"
+#include "../../utils/structures/TagGroup.hpp"
 
 class TextureManager {
 private:

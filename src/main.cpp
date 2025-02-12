@@ -12,6 +12,7 @@
 #include "imgui/imgui.h"
 #include "imgui/imgui_impl_glfw.h"
 #include "imgui/imgui_impl_opengl3.h"
+#include "imgui/game-editor/ImguiGameEditor.hpp"
 
 #include "physics/RigidBody.hpp"
 #include "game/level/Tiles.hpp"
@@ -99,9 +100,11 @@ int main(int, char**){
     IMGUI_CHECKVERSION();
 	ImGui::CreateContext();
 	ImGuiIO& io = ImGui::GetIO(); (void)io;
+	io.IniFilename = nullptr; /* Disables adding imgui.ini files to a project */ 
 	ImGui::StyleColorsDark();
 	ImGui_ImplGlfw_InitForOpenGL(Window::window, true);
 	ImGui_ImplOpenGL3_Init("#version 330");
+	ImguiGameEditor imgui_editor(&ferrum_engine);
 
 	Camera* camera = draw_context.getCamera();
 	camera->set_xyz(0.0f, 0.0f, 1.0f);
@@ -188,14 +191,8 @@ int main(int, char**){
 			ImGui_ImplGlfw_NewFrame();
 			ImGui::NewFrame();
 
-			// Рисуем окно
-        	ImGui::Begin("Пример окна ImGui");
-        	ImGui::Text("Привет, мир!");
-        	static float slider_value = 0.5f;
-        	ImGui::SliderFloat("Слайдер", &slider_value, 0.0f, 1.0f);
-        	ImGui::End();
-			//
-			//
+        	imgui_editor.update();
+
         	//ImGui::ShowDemoWindow();
 			ImGui::Render();
 			ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());

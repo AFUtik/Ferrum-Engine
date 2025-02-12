@@ -1,6 +1,3 @@
-//#include "Chunks.hpp"
-
-//#include "../graphics/ChunkRenderer.hpp"
 #include "GameContext.hpp"
 #include "entity/Entity.hpp"
 

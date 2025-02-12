@@ -6,6 +6,7 @@
 # Custom
 
 
+external/
 TODO.md
 vcpkg-configuration.json
 vcpkg.json

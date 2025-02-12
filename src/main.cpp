@@ -1,5 +1,7 @@
 #include <iostream>
 
+#include "FerrumEngine.hpp"
+
 #include <GL/glew.h>
 #include <GLFW/glfw3.h>	
 
@@ -11,23 +13,22 @@
 #include "imgui/imgui_impl_glfw.h"
 #include "imgui/imgui_impl_opengl3.h"
 
-
 #include "physics/RigidBody.hpp"
-#include "game/GameContext.hpp"
 #include "game/level/Tiles.hpp"
 #include "game/entity/Entities.hpp"
 #include "game/entity/Entity.hpp"
 #include "game/entity/PlayerEntity.hpp"
 #include "game/entity/EntitySystem.hpp"
-#include "graphics/DrawContext.hpp"
 #include "graphics/Camera.hpp"
-#include "graphics/ResourceManager.hpp"
+
 #include "graphics/texture/TextureManager.hpp"
+#include "graphics/texture/TileMapper.hpp"
+
 #include "graphics/model/BakedModel.hpp"
 #include "graphics/model/ModelManager.hpp"
 #include "graphics/model/Quad.hpp"
 
-#include "graphics/texture/TileMapper.hpp"
+#include "graphics/renderer/EntityRenderer.hpp"
 
 #include "glm/glm.hpp"
 #include "glm/ext.hpp"
@@ -46,17 +47,20 @@ int main(int, char**){
 	TileMapper::setMaxSize(maxTextureSize);
 	TileMapper::setMinSize(64);
 
-	ResourceManager* resource_m = new ResourceManager("E:/Cpp/FerrumEngine/resources/");
-
 	std::cout << "test 1" << std::endl;
+	// Ferrum Engine Initialization //
+	ResourceManager::setLocation("E:/Cpp/FerrumEngine/resources/");
+	FerrumEngine ferrum_engine;
 	// Register Entity Renderer //
-	GameContext game_context(resource_m);
-	DrawContext draw_context(resource_m, &game_context);
+	ResourceManager& resource_m = ferrum_engine.getResourceManager();
+	GameContext& game_context = ferrum_engine.getGameContext();
+	DrawContext& draw_context = ferrum_engine.getDrawContext();
+
 	EntitySystem* ent_system = game_context.getEntitySystem();
-	draw_context.registerRenderer<EntityRenderer>("entity_renderer", new EntityRenderer(ent_system));
+	draw_context.registerRenderer("entity_renderer", new EntityRenderer(ent_system));
 
 	// Textures // 
-	TextureManager* texture_m = resource_m->getTextureManager();
+	TextureManager* texture_m = resource_m.getTextureManager();
 
 	texture_m->changeTextureLocation("textures/anim/");
 	texture_m->loadBunchToGroup("animations.test", "animation_texture", {
@@ -76,7 +80,7 @@ int main(int, char**){
 	sprite_animator->loadAnimSequence(anim_sequence, "animation_texture0");
 
 	// MODEL CREATING AND ANIMATOR LOADING //
-	ModelManager* model_m = resource_m->getModelManager();
+	ModelManager* model_m = resource_m.getModelManager();
 	model_m->bakeModel(Quad(), "player", "animation_texture0", "animation_tilemap");
 	model_m->loadAnimator("player", sprite_animator);
 
@@ -184,12 +188,18 @@ int main(int, char**){
 			ImGui_ImplGlfw_NewFrame();
 			ImGui::NewFrame();
 
-			
-			
-        	ImGui::ShowDemoWindow();
+			// Рисуем окно
+        	ImGui::Begin("Пример окна ImGui");
+        	ImGui::Text("Привет, мир!");
+        	static float slider_value = 0.5f;
+        	ImGui::SliderFloat("Слайдер", &slider_value, 0.0f, 1.0f);
+        	ImGui::End();
+			//
+			//
+        	//ImGui::ShowDemoWindow();
 			ImGui::Render();
 			ImGui_ImplOpenGL3_RenderDrawData(ImGui::GetDrawData());
-
+//
         	Window::swapBuffers();
 			Events::pullEvents();
 			context->time_accu -= context->delta_time;

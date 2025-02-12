@@ -7,7 +7,7 @@
 
 #include <GLFW/glfw3.h>	
 
-DrawContext::DrawContext(ResourceManager* resource_m, GameContext* game_context) : resource_m(resource_m), 
+DrawContext::DrawContext(ResourceManager* resource_m) : resource_m(resource_m), 
     camera(new Camera(glm::vec3(0.0f), 0.0f)) 
 {
     shader = std::unique_ptr<Shader>(load_shader("resources/shaders/core.vert", "resources/shaders/core.frag"));

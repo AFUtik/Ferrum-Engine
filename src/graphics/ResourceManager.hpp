@@ -13,12 +13,12 @@ private:
     std::unique_ptr<ModelManager> model_m;
     std::unique_ptr<TextureManager> texture_m;
 
-    std::string location;
+    static std::string location;
 public:
-    ResourceManager(std::string location);
+    ResourceManager();
 
     std::string getLocation() const;
-    void changeResourceLocation(std::string resource_location);
+    static void setLocation(std::string resource_location);
 
     ModelManager* getModelManager();
     TextureManager* getTextureManager();

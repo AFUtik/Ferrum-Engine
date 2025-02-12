@@ -8,7 +8,7 @@
 #include "level/Chunks.hpp"
 class GameContext {
 private:
-    std::shared_ptr<ResourceManager> resource_m;
+    ResourceManager* resource_m;
 
     std::unique_ptr<EntitySystem> entity_system;
     std::unique_ptr<Chunks> chunks;

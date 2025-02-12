@@ -2,8 +2,7 @@
 #define DRAWCONTEXT_HPP
 
 #include <memory>
-
-#include "../game/GameContext.hpp"
+#include <map>
 
 #include "Camera.hpp"
 #include "Shader.hpp"
@@ -11,14 +10,13 @@
 #include "ResourceManager.hpp"
 
 #include "renderer/ObjectRenderer.hpp"
-#include "renderer/EntityRenderer.hpp"
-#include "renderer/LevelRenderer.hpp"
 //class ChunkRenderer;
 
 
 class DrawContext {
 private:
-    std::shared_ptr<ResourceManager> resource_m;
+    ResourceManager* resource_m;
+    
     std::unique_ptr<Camera> camera;
     std::unique_ptr<Shader> shader;
 
@@ -26,7 +24,7 @@ private:
 
     std::map<std::string, std::unique_ptr<ObjectRenderer>> renderers;
 public:
-    DrawContext(ResourceManager* resource_m, GameContext* game_context);
+    DrawContext(ResourceManager* resource_m);
 
     Camera* getCamera();
 

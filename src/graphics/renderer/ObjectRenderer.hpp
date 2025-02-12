@@ -20,7 +20,7 @@ protected:
 
     friend class DrawContext;
 public:
-    ObjectRenderer() : texture_manager(nullptr), model_manager(nullptr) {};
+    ObjectRenderer() : texture_manager(nullptr), model_manager(nullptr), primitive(4) {};
 
     ObjectRenderer(TextureManager* texture_m, ModelManager* model_m) : texture_manager(texture_m), model_manager(model_m) {};
 

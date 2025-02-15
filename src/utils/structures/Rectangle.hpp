@@ -2,11 +2,11 @@
 #define RECTANGLE_HPP
 
 struct Rectangle {
-    float x, y;
-    float x2, y2;
-    float width, height;
+    unsigned int x, y;
+    unsigned int x2, y2;
+    unsigned int width, height;
 
-    Rectangle(int x = 0, int y = 0, int width = 0, int height = 0)
+    Rectangle(unsigned int x = 0, unsigned int y = 0, unsigned int width = 0, unsigned int height = 0)
         : x(x), y(y), x2(x+width), y2(y+height), width(width), height(height){}
 
     inline bool canFit(int tileWidth, int tileHeight) const {

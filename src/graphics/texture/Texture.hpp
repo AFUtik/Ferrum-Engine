@@ -4,8 +4,9 @@
 class Texture {
 public:
 	unsigned char* image_data;
-	int width, height;
+	unsigned int width, height;
 	bool loaded;
+	bool delete_data = true;
 
 	Texture(bool loaded, int width, int height, unsigned char* image_data);
 	~Texture();

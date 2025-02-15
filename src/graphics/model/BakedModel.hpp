@@ -37,7 +37,7 @@ protected:
 
     friend class ModelManager;
 public:
-    BakedModel(Mesh* mesh) : mesh(mesh) {
+    BakedModel(Mesh* mesh) : mesh(mesh), animator(nullptr) {
         instances.resize(1);
     };
 

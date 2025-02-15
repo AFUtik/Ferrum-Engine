@@ -20,12 +20,13 @@ void EntityRenderer::render() {
             instance_model.animation_time = ptr->anim_time;
 
             Matrix4x4ArrayUtils::setPosition(instance_model.data, unique_ptr->getTransform());
-            TextureRegion* texture_pos = animator->animateSequence(TEST_ANIMATION, instance_model.current_state, ptr->anim_time);
+            if(animator != nullptr) {
+                TextureRegion* texture_pos = animator->animateSequence(TEST_ANIMATION, instance_model.current_state, ptr->anim_time);
 
-            // assigning texture coordinates //
-            instance_model.data[16] = texture_pos->orig_u1;
-            instance_model.data[17] = texture_pos->orig_v1;
-            
+                // assigning texture coordinates //
+                instance_model.data[16] = texture_pos->orig_u1;
+                instance_model.data[17] = texture_pos->orig_v1;
+            }
             baked_model->updateInstance(index);
             index++;
         }

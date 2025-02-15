@@ -5,9 +5,9 @@
 #include <unordered_map>
 #include <string>
 
-#include "Tilemap.hpp"
 #include "Texture.hpp"
 
+#include "../../utils/tilemap/Tilemap.hpp"
 #include "../../utils/structures/TagGroup.hpp"
 
 class TextureManager {
@@ -28,6 +28,9 @@ public:
 
     void loadTexture(std::string tex_loc, const std::string &path);
     
+    void loadTilemap(std::string tilemap_loc, std::vector<Atlas> atlases);
+    void loadTilemap(std::string tilemap_loc, Atlas &atlas);
+
     void loadTilemapByGroup(std::string tilemap_loc, std::string group_tag);
     void loadTilemapByTex(std::string tilemap_loc, const std::vector<std::string> &tex_locs);
 

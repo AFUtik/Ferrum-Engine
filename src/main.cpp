@@ -23,13 +23,13 @@
 #include "graphics/Camera.hpp"
 
 #include "graphics/texture/TextureManager.hpp"
-#include "graphics/texture/TileMapper.hpp"
 
 #include "graphics/model/BakedModel.hpp"
 #include "graphics/model/ModelManager.hpp"
 #include "graphics/model/Quad.hpp"
-
 #include "graphics/renderer/EntityRenderer.hpp"
+
+#include "utils/tilemap/TileMapper.hpp"
 
 #include "glm/glm.hpp"
 #include "glm/ext.hpp"
@@ -45,6 +45,7 @@ int main(int, char**){
 
 	GLint maxTextureSize;
 	glGetIntegerv(GL_MAX_TEXTURE_SIZE, &maxTextureSize);
+	TileMapper::usePadding(1);
 	TileMapper::setMaxSize(maxTextureSize);
 	TileMapper::setMinSize(64);
 
@@ -62,7 +63,6 @@ int main(int, char**){
 
 	// Textures // 
 	TextureManager* texture_m = resource_m.getTextureManager();
-
 	texture_m->changeTextureLocation("textures/anim/");
 	texture_m->loadBunchToGroup("animations.test", "animation_texture", {
 		"Sprite-0002.png", "Sprite-0003.png", "Sprite-0004.png", "Sprite-0005.png", "Sprite-0006.png",
@@ -70,24 +70,25 @@ int main(int, char**){
 	});
 	texture_m->loadTilemapByGroup("animation_tilemap", "animations.test");
 
+	texture_m->changeTextureLocation("textures/atlases/");
+	texture_m->loadTextureToGroup("atlases.test", "voxels", "voxels.png");
+	Atlas voxel_atlas("voxels", 32, 32, 4);
+	texture_m->loadTilemap("voxels_tilemap", {voxel_atlas});
+
 
 	// CREATING SPRITE ANIMATOR //
-	Tilemap* anim_tilemap = texture_m->getTilemap("animation_tilemap");
-	
-	SpriteAnimator* sprite_animator = new SpriteAnimator(anim_tilemap);
-	AnimSequence* anim_sequence = new AnimSequence("simle_sequence", 10, {
-		0.0f, 0.5f, 1.0f, 1.5f, 2.0f, 2.5f, 3.0f, 3.5f, 4.0f, 4.5f, 5.0f
-	});
-	sprite_animator->loadAnimSequence(anim_sequence, "animation_texture0");
+	//Tilemap* anim_tilemap = texture_m->getTilemap("animation_tilemap");
+	//
+	//SpriteAnimator* sprite_animator = new SpriteAnimator(anim_tilemap);
+	//AnimSequence* anim_sequence = new AnimSequence("simle_sequence", 10, {
+	//	0.0f, 0.5f, 1.0f, 1.5f, 2.0f, 2.5f, 3.0f, 3.5f, 4.0f, 4.5f, 5.0f
+	//});
+	//sprite_animator->loadAnimSequence(anim_sequence, "animation_texture0");
 
 	// MODEL CREATING AND ANIMATOR LOADING //
 	ModelManager* model_m = resource_m.getModelManager();
-	model_m->bakeModel(Quad(), "player", "animation_texture0", "animation_tilemap");
-	model_m->loadAnimator("player", sprite_animator);
-
-	// Chunks //
-	Chunks* chunks = game_context.getChunks();
-	chunks->set(3, 3);
+	model_m->bakeModel(Quad(), "player", "voxels0", "voxels_tilemap");
+	//model_m->loadAnimator("player", sprite_animator);
 
 	std::cout << "test 5" << std::endl;
 
@@ -95,6 +96,7 @@ int main(int, char**){
 
 	glEnable(GL_DEPTH_TEST);
 	glDisable(GL_CULL_FACE);
+	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
     IMGUI_CHECKVERSION();

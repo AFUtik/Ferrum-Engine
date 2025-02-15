@@ -5,12 +5,19 @@
 #include <unordered_map>
 #include <memory>
 
-#include "Texture.hpp"
-#include "TextureRegion.hpp"
+#include "../../graphics/texture/Texture.hpp"
+#include "../../graphics/texture/TextureRegion.hpp"
 
-#include <iostream>
+struct Atlas {
+    std::string name;
+    Texture* texture;
+    uint32_t tile_width;
+    uint32_t tile_height;
+    uint32_t tile_amount;
 
-class Texture;
+    Atlas(std::string name, uint32_t tile_width, uint32_t tile_height, uint32_t tile_amount) : 
+        name(name), tile_width(tile_width), tile_height(tile_height), tile_amount(tile_amount) {}
+};
 
 class Tilemap {
 private:

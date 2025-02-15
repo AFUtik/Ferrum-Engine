@@ -21,5 +21,7 @@ void Texture::flipImageVertically() {
 }
 
 Texture::~Texture() {
-	free(image_data);
+    if(delete_data) {
+        free(image_data);
+    }
 }

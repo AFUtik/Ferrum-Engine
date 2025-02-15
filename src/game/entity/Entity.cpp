@@ -1,13 +1,5 @@
 #include "Entity.hpp"
 
-Entity::Entity(std::string tag) : system(nullptr), tag(tag) {
-
-}
-
-const std::string& Entity::getTag() {
-    return tag;
-}
-
 RigidBody* Entity::getPhysicBody() {
     return rigid_body.get();
 }

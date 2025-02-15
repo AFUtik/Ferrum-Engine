@@ -8,23 +8,17 @@
 class EntitySystem;
 
 #include "../../physics/RigidBody.hpp"
-
-class Entity {
+#include "../GameObject.hpp"
+class Entity : public GameObject {
 protected:
     EntitySystem* system;
     std::unique_ptr<RigidBody> rigid_body;
 
-    std::string tag;
-
     friend class EntitySystem;
 public:
     float anim_time = 0.0f;
-    Entity(std::string tag);
-    // virtual ~Entity();
+    using GameObject::GameObject;
 
-    const std::string& getTag();
-    const glm::vec3& getTransform();
-    RigidBody* getPhysicBody();
 
     void onUpdate(float delta);
     void onCreate();

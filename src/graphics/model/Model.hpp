@@ -5,12 +5,12 @@
 #include "VertexInfo.hpp"
 
 class ModelManager;
-class TextureRegion;
+struct TextureRegion;
 
 class Model {
 protected:
     VertexBuffer *vertexBufferData;
-    TextureRegion* texture_reg;
+    TextureRegion *texture_reg;
 
     friend class ModelManager;
 public:

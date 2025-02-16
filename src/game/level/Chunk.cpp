@@ -19,9 +19,9 @@ Chunk::Chunk(int x, int y) : x(x), y(y) {
 
 			float n = glm::perlin(glm::vec2(real_x, real_y) * 0.5f);
 			if(n > 0.15f) {
-				tiles[y * CHUNK_H + x].id = 1;
+				tiles[y * CHUNK_H + x].id = "asd";
 			} else {
-				tiles[y * CHUNK_H + x].id = 0;
+				tiles[y * CHUNK_H + x].id = "asd";
 			}
 
 			

@@ -43,21 +43,17 @@ void Mesh::endIndex() {
 
 void Mesh::generate() {
 	glGenVertexArrays(1, &vao);
-	glGenBuffers(1, &vbo);
-
 	glBindVertexArray(vao);
+	
+	/* VERTEX BUFFER */
+	glGenBuffers(1, &vbo);
 	glBindBuffer(GL_ARRAY_BUFFER, vbo);
 	glBufferData(
-	GL_ARRAY_BUFFER, 
-	sizeof(GLfloat) * m_vertexBufferData->vertex_count * m_vertexBufferData->vertex_size, 
-	m_vertexBufferData->vertex_arr, 
-	GL_STATIC_DRAW
+		GL_ARRAY_BUFFER, 
+		sizeof(GLfloat) * m_vertexBufferData->vertex_count * m_vertexBufferData->vertex_size, 
+		m_vertexBufferData->vertex_arr, 
+		GL_STATIC_DRAW
 	);
-
-	glGenBuffers(1, &ebo);
-	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
-	glBufferData(GL_ELEMENT_ARRAY_BUFFER, m_vertexBufferData->indices_size * sizeof(GLuint), m_vertexBufferData->index_arr, GL_STATIC_DRAW);
-
 	int offset = 0;
 	int i = 0;
 	while(m_vertexBufferData->attributes_arr[i]) {
@@ -68,9 +64,25 @@ void Mesh::generate() {
 		i++;
 	}
 	
+	/* EBO BUFFER */
+	glGenBuffers(1, &ebo);
+	glBindBuffer(GL_ELEMENT_ARRAY_BUFFER, ebo);
+	glBufferData(
+		GL_ELEMENT_ARRAY_BUFFER, 
+		m_vertexBufferData->indices_size * sizeof(GLuint), 
+		m_vertexBufferData->index_arr, 
+		GL_STATIC_DRAW
+	);
+	
+	/* INSTANCE BUFFER */
 	glGenBuffers(1, &instance_vbo);
 	glBindBuffer(GL_ARRAY_BUFFER, instance_vbo);
-	glBufferData(GL_ARRAY_BUFFER, instance_buffer_size * INSTANCE_MEMORY_SIZE, nullptr, GL_DYNAMIC_DRAW);
+	glBufferData(
+		GL_ARRAY_BUFFER,
+		instance_buffer_size * INSTANCE_MEMORY_SIZE, 
+		nullptr, 
+		GL_DYNAMIC_DRAW
+	);
 	for (int j = 0; j < 4; j++) {
     	glEnableVertexAttribArray(j + i);
     	glVertexAttribPointer(j + i, 4, GL_FLOAT, GL_FALSE, INSTANCE_MEMORY_SIZE, (void*)(sizeof(GLfloat) * 4 * j));

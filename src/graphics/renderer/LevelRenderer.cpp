@@ -1,11 +1,11 @@
 #include "LevelRenderer.hpp"
 
-#include "../texture/TextureManager.hpp"
-#include "../model/ModelManager.hpp"
-
 #include "../../game/level/Tile.hpp"
 #include "../../game/level/Chunk.hpp"
 #include "../../game/level/Chunks.hpp"
+
+#include "../model/ModelManager.hpp"
+#include "../model/VertexInfo.hpp"
 
 #include "glm/ext.hpp"
 #include <iostream>
@@ -15,21 +15,21 @@ Mesh* LevelRenderer::makeMesh(Chunk* chunk) {
     vertexBuffer->attributes_arr = attrs;
     vertexBuffer->attributes_size = 3;
 
-    vertexBuffer->vertex_arr = new float[CHUNK_VOL*VERTEX_SIZE*4];
-    vertexBuffer->vertex_count = CHUNK_VOL*4;
+    vertexBuffer->vertex_arr = new float[CHUNK_VOL*VERTEX_SIZE*QUAD_VERTEX_SIZE];
+    vertexBuffer->vertex_count = CHUNK_VOL*QUAD_VERTEX_SIZE;
     vertexBuffer->vertex_size = VERTEX_SIZE;
 
-    vertexBuffer->index_arr = new unsigned int[CHUNK_VOL*SQUARE_INDEX_SIZE];
-    vertexBuffer->indices_size = CHUNK_VOL*SQUARE_INDEX_SIZE;
+    vertexBuffer->index_arr = new unsigned int[CHUNK_VOL*QUAD_INDEX_SIZE];
+    vertexBuffer->indices_size = CHUNK_VOL*QUAD_INDEX_SIZE;
     
     Mesh* mesh = new Mesh(vertexBuffer);
 
     for(int y = 0; y < CHUNK_H; y++) {
         for(int x = 0; x < CHUNK_W; x++) {
             Tile& tile = chunk->tiles[(y*CHUNK_W)+x];
-            if(tile.id==0) continue;
+            if(tile.numeric_id==0) continue;
 
-            TextureRegion* uv_pos = model_m->getUnbakedModel("asd")->getTextureRegion();
+            TextureRegion* uv_pos = model_manager->getUnbakedModel(tile.id)->getTextureRegion();
 
             mesh->xyz(x-0.5f, y-0.5f, 0.0f).uv(uv_pos->u1, uv_pos->v1);
             mesh->xyz(x-0.5f, y+0.5f, 0.0f).uv(uv_pos->u1, uv_pos->v2);
@@ -39,9 +39,6 @@ Mesh* LevelRenderer::makeMesh(Chunk* chunk) {
         }
     }
     mesh->generate();
-
-    //Matrix4x4ArrayUtils::setPosition(instance_data, glm::vec3(chunk->x, chunk->y, 0.0f));
-    
     return mesh;
 }
 

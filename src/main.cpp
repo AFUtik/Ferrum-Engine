@@ -96,6 +96,7 @@ int main(int, char**){
 
 	glEnable(GL_DEPTH_TEST);
 	glDisable(GL_CULL_FACE);
+
 	glEnable(GL_BLEND);
 	glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA);
 
@@ -120,17 +121,18 @@ int main(int, char**){
     Context* context = new Context();
 
 	PlayerEntity* player = new PlayerEntity();
-	RigidBody* body = player->getPhysicBody();
-	body->pixel_perfect = true;
-	camera->follow(body->pixel_position);
+	RigidBody& body = player->getPhysicBody();
+	body.position = glm::vec3(0.0f, 0.0f, 2.0f);
+	body.pixel_perfect = true;
+	camera->follow(body.pixel_position);
 	ent_system->createEntity(player);
 
 	//PlayerEntity* player2 = new PlayerEntity();
-	//for(int i = 0; i < 5024; i++) {
+	//for(int i = 0; i < 1024; i++) {
 	//	PlayerEntity *new_player = new PlayerEntity();
-	//	RigidBody* body2 = new_player->getPhysicBody();
+	//	RigidBody& body2 = new_player->getPhysicBody();
 	//	//body2->pixel_perfect = true;
-	//	body2->apply_direction(glm::linearRand(glm::vec2(-5.2f), glm::vec2(5.2f)));
+	//	body2.apply_direction(glm::linearRand(glm::vec2(-5.2f), glm::vec2(5.2f)));
 	//	ent_system->createEntity(new_player);
 	//}
 
@@ -156,16 +158,16 @@ int main(int, char**){
 				Events::toggle_cursor();
 			}
 			if (Events::pressed(GLFW_KEY_W)) {
-				body->apply_direction(vec2(0.0f, 1.0f));
+				body.apply_direction(vec2(0.0f, 1.0f));
 			}
 			if (Events::pressed(GLFW_KEY_S)) {
-				body->apply_direction(vec2(0.0f, -1.0f));
+				body.apply_direction(vec2(0.0f, -1.0f));
 			}
 			if (Events::pressed(GLFW_KEY_D)) {
-				body->apply_direction(vec2(1.0f, 0.0f));
+				body.apply_direction(vec2(1.0f, 0.0f));
 			}
 			if (Events::pressed(GLFW_KEY_A)) {
-				body->apply_direction(vec2(-1.0f, 0.0f));
+				body.apply_direction(vec2(-1.0f, 0.0f));
 			}
 			if (Events::pressed(GLFW_KEY_0)) {
 				camera->set_xyz(0, 0, 1);
@@ -186,7 +188,7 @@ int main(int, char**){
 			}
 			
 			ent_system->update(H);
-			draw_context.render();
+			draw_context.render(); 
 
 			// IMGUI WINDOW // 
         	ImGui_ImplOpenGL3_NewFrame();

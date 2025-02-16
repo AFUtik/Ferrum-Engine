@@ -1,9 +1,11 @@
 #ifndef TILE_HPP
 #define TILE_HPP
 
+#include <string>
+
 struct Tile {
-    unsigned int texture_id;
-    unsigned int id;
+    std::string id;
+    unsigned int numeric_id;
 };
 
 #endif

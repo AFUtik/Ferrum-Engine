@@ -3,6 +3,7 @@
 
 #define MAX_INSTANCES 2000
 
+#include <vector>
 #include <memory>
 
 #include "Instance.hpp"
@@ -15,6 +16,8 @@ private:
 	unsigned int vbo;
 	unsigned int ebo;
 	unsigned int instance_vbo;
+
+	std::vector<Instance> instances;
 	float* instance_data;
 	unsigned int instance_count = 1;
 	unsigned int instance_buffer_size = 1;

@@ -1,24 +1,20 @@
 #ifndef BAKEDMODEL_HPP
 #define BAKEDMODEL_HPP
 
-#include "../animation/SpriteAnimator.hpp"
 #include "../texture/GLTexture.hpp"
 #include "Mesh.hpp"
-#include "Instance.hpp"
 
 class Tilemap;
-class TextureRegion;
+struct TextureRegion;
 
-struct InstanceModelData : public Instance {
-    size_t object_id;
-    bool active = false;
-    float animation_time = 0.0f;
-    unsigned int current_state = 0;
+class GameObject;
+struct Instance;
 
-    inline void clearAnimation() {
-        animation_time = 0.0f;
-        current_state = 0;
-    }
+struct InstanceModelData {
+    Instance *instance = nullptr;
+    GameObject *object = nullptr;
+
+    size_t instance_id;
 };
 
 class BakedModel {
@@ -26,10 +22,8 @@ protected:
     TextureRegion* texture_reg;
     Tilemap* tilemap;
 
-    std::unique_ptr<SpriteAnimator> animator;
-
-    std::vector<InstanceModelData> instances;
     std::unique_ptr<Mesh> mesh;
+    std::vector<InstanceModelData> model_instances;
 
     GLTexture* texture;
 
@@ -37,11 +31,9 @@ protected:
 
     friend class ModelManager;
 public:
-    BakedModel(Mesh* mesh) : mesh(mesh), animator(nullptr) {
-        instances.resize(1);
+    BakedModel(Mesh* mesh) : mesh(mesh) {
+        model_instances.resize(1);
     };
-
-    inline SpriteAnimator* getSpriteAnimator() {return animator.get();}
 
     inline void setRenderMode(unsigned int value) {render_mode = value;};
 

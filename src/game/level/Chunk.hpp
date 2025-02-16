@@ -20,7 +20,6 @@ public:
     std::vector<Entity*> entities;
 	GridCollider* grid_collider;
 	Lightmap* lightmap;
-	Mesh* mesh;
 
 	unsigned char biome;
 	bool isDirty = false;

@@ -1,11 +1,17 @@
-#ifndef GAMEOBJECT
-#define GAMEOBJECT
+#ifndef GAMEOBJECT_HPP
+#define GAMEOBJECT_HPP
+
+#include "GameProperties.hpp"
 
 #include "../physics/RigidBody.hpp"
-#include "GameProperties.hpp"
+
+#include "animation/SpriteAnimator.hpp"
 
 class StaticGameObject {
 protected:
+    SpriteAnimator* animator;
+    AnimationInfo anim_info;
+
     GameProperties properties;
 
     std::string object_id;
@@ -16,9 +22,11 @@ public:
 };
 
 class PhysicGameObject : public StaticGameObject {
-private:
+protected:
     RigidBody rigidbody;
 public:
+    PhysicGameObject(std::string id) : StaticGameObject(id), rigidbody(glm::vec3(0.0f), 0.0f, 0.0f) {};
+
     const glm::vec3& getTransform();
     RigidBody& getPhysicBody();
 };

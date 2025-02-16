@@ -9,19 +9,15 @@ class GLTexture;
 class Chunks;
 class RenderChunkInfo;
 
-class LevelRenderer {
+class LevelRenderer : public ObjectRenderer {
 private:
-    ObjectRenderer* object_renderer;
-    TextureManager* texture_m;
-    ModelManager* model_m;
-    Chunks* chunks;
-
     std::unique_ptr<RenderChunkInfo> render_chunk_info;
 
+    Chunks* chunks;
+    
     Mesh* makeMesh(Chunk* chunk);
 public:
-    LevelRenderer(ObjectRenderer* obj_renderer, TextureManager* tex_m, ModelManager* model_m, Chunks* chunks) : 
-    texture_m(tex_m), model_m(model_m), chunks(chunks), object_renderer(obj_renderer), render_chunk_info(new RenderChunkInfo()) {};
+    LevelRenderer(Chunks* chunks) : chunks(chunks), render_chunk_info(new RenderChunkInfo()) {};
 
     void render();
 };

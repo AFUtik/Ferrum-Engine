@@ -10,13 +10,13 @@
 void EntityRenderer::render() {
     for (auto&& [tag, map] : entity_s->entity_map) {
         BakedModel* baked_model = model_manager->getModel(tag);
-        SpriteAnimator* animator = baked_model->getSpriteAnimator();
+        //SpriteAnimator* animator = baked_model->getSpriteAnimator();
         size_t entity_count = map.size();
 
         int index = 0;
-        if(entity_count != baked_model->getInstancesAmount()) baked_model->updateInstances(entity_count);
+        baked_model->updateInstances(entity_count);
         for (auto&& [ptr, unique_ptr] : map) {
-            InstanceModelData& instance_model = baked_model->getInstanceModelData(index);
+            //InstanceModelData& instance_model = baked_model->getInstanceModelData(index);
             instance_model.animation_time = ptr->anim_time;
 
             Matrix4x4ArrayUtils::setPosition(instance_model.data, unique_ptr->getTransform());

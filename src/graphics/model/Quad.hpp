@@ -24,8 +24,8 @@ public:
 		vertexBufferData->vertex_size = VERTEX_SIZE;
 		vertexBufferData->vertex_count = QUAD_VERTEX_SIZE;
 		
-		vertexBufferData->attributes_arr = attrs;
-		vertexBufferData->attributes_size = 3;
+		vertexBufferData->attrs_arr = attrs;
+		vertexBufferData->attrs_size = 3;
 
 		vertexBufferData->index_arr = indices.data();
 		vertexBufferData->indices_size = QUAD_INDEX_SIZE;

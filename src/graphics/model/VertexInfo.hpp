@@ -10,4 +10,4 @@
 
 #define QUAD_VERTEX_SIZE 4
 
-static unsigned int attrs[] = {COORD_SIZE, TEX_COORD_SIZE, 0};
+static unsigned int ATTRIBUTES[] = {COORD_SIZE, TEX_COORD_SIZE, 0};

@@ -10,35 +10,21 @@ struct TextureRegion;
 class GameObject;
 struct Instance;
 
-struct InstanceModelData {
-    Instance *instance = nullptr;
-    GameObject *object = nullptr;
-
-    size_t instance_id;
-};
-
 class BakedModel {
 protected:
     TextureRegion* texture_reg;
     Tilemap* tilemap;
 
     std::unique_ptr<Mesh> mesh;
-    std::vector<InstanceModelData> model_instances;
-
     GLTexture* texture;
 
     unsigned int render_mode = 4; // GL_TRIANGLES //
 
     friend class ModelManager;
 public:
-    BakedModel(Mesh* mesh) : mesh(mesh) {
-        model_instances.resize(1);
-    };
+    BakedModel(Mesh* mesh) : mesh(mesh) {};
 
     inline void setRenderMode(unsigned int value) {render_mode = value;};
-
-    const unsigned int& getInstancesAmount();
-    InstanceModelData& getInstanceModelData(const size_t &index);
     Mesh* getMesh();
 
     void updateInstance(const size_t &index);

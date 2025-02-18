@@ -6,14 +6,6 @@
 
 #include <iostream>
 
-void ModelManager::loadAnimator(std::string model_loc, SpriteAnimator *animator) {
-    BakedModel* baked_model = baked_models[model_loc].get();
-    if(baked_model==nullptr) {
-        std::cerr << "The baked model not found - " << model_loc << std::endl;
-    }
-    baked_model->animator = std::unique_ptr<SpriteAnimator>(animator);
-}
-
 void ModelManager::bakeModel(Model model, std::string model_loc, std::string texture_loc, std::string tilemap_loc) {
     Tilemap* tilemap = texture_manager->getTilemap(tilemap_loc);
     if(tilemap==nullptr) {
